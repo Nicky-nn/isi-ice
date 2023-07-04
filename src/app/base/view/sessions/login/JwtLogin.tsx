@@ -16,14 +16,14 @@ import React, { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { object, string } from 'yup'
 
-import fcvFondo from '/assets/images/expoIsipass.jpg'
+import fcvFondo from '/assets/images/isibackgroud.jpg'
 
 import { isEmptyValue } from '../../../../utils/helper'
 import { Paragraph } from '../../../components/Template/Typography'
 import useAuth from '../../../hooks/useAuth'
 
 // const fondo = import.meta.env.ISI_FONDO || fcvFondo
-const fondo = '/assets/images/expoIsipass.jpg'
+const fondo = '/assets/images/isibackgroud.jpg'
 
 const FlexBox = styled(Box)(() => ({
   display: 'flex',
