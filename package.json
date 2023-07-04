@@ -1,8 +1,8 @@
 {
-  "name": "isi-ice",
+  "name": "isiexpo",
   "private": true,
   "version": "0.1.0",
-  "description": "Facturacion Impuesto a los Consumos Específicos ",
+  "description": "Facturacion Exportaciones",
   "license": "MIT",
   "scripts": {
     "dev": "vite --port 3002 --host",
@@ -12,10 +12,10 @@
     "lint:format": "prettier  --loglevel warn --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
     "lint": "yarn lint:format && yarn lint:fix ",
     "zip": "yarn run build && yarn run compress:zip || yarn run compress:7z || yarn run compress:rar",
-    "compress:zip": "cd dist && zip -r dev.ice.isipass.com.bo.zip .",
-    "compress:7z": "cd dist && 7z a -r dev.ice.isipass.com.bo.zip .",
-    "compress:rar": "cd dist && rar a -r dev.ice.isipass.com.bo.rar .",
-    "deploy": "printf \"cd htdocs && rm -rf * && unzip -o dist/dev.ice.isipass.com.bo.zip\" | ssh nick@200.105.174.10"
+    "compress:zip": "cd dist && zip -r dev.expo.isipass.com.bo.zip .",
+    "compress:7z": "cd dist && 7z a -r dev.expo.isipass.com.bo.zip .",
+    "compress:rar": "cd dist && rar a -r dev.expo.isipass.com.bo.rar .",
+    "deploy": "printf \"cd htdocs && rm -rf * && unzip -o dist/dev.expo.isipass.com.bo.zip\" | ssh nick@200.105.174.10"
   },
   "authors": [
     {
