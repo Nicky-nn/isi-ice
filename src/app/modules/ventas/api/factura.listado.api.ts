@@ -15,13 +15,8 @@ export interface ApiFacturaResponse {
 }
 
 const query = gql`
-  query EXP_LISTADO($limit: Int!, $reverse: Boolean, $page: Int!, $query: String) {
-    facturaExportacionListado(
-      limit: $limit
-      reverse: $reverse
-      page: $page
-      query: $query
-    ) {
+  query LISTADO($limit: Int!, $reverse: Boolean, $page: Int!, $query: String) {
+    facturaIceListado(limit: $limit, reverse: $reverse, page: $page, query: $query) {
       pageInfo {
         hasNextPage
         hasPrevPage
@@ -70,8 +65,6 @@ const query = gql`
             descripcionProducto
           }
           codigoProducto
-          codigoNandina
-          descripcion
           cantidad
           unidadMedida {
             codigoClasificador
@@ -121,5 +114,5 @@ export const fetchFacturaListado = async (
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(query, { ...pageInfo })
-  return data.facturaExportacionListado
+  return data.facturaIceListado
 }

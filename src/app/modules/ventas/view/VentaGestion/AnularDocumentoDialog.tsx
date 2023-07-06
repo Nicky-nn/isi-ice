@@ -79,6 +79,7 @@ const AnularDocumentoDialog: FunctionComponent<Props> = (props: Props) => {
         preConfirm: () => {
           setLoading(true)
           const input = { id: factura?.cuf, codigoMotivo: value.codigoMotivo }
+          console.log(input)
           return fetchFacturaAnular(factura?.cuf || '', value.codigoMotivo)
         },
         allowOutsideClick: () => !Swal.isLoading(),

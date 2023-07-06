@@ -221,7 +221,7 @@ const VentaGestion: FC<any> = () => {
           <Breadcrumb
             routeSegments={[
               { name: 'Ventas', path: '/ventas/gestion' },
-              { name: 'Gestión de Exportaciones' },
+              { name: 'Gestión de Consumos Específicos' },
             ]}
           />
         </div>

@@ -7,8 +7,8 @@ import { AccessToken } from '../../../base/models/paramsModel'
 import { FacturaProps } from '../interfaces/factura'
 
 export const ALQ_ONLINE = gql`
-  mutation EXPO_ANULAR($cuf: String!, $codigoMotivo: Int!) {
-    facturaExportacionAnular(cuf: $cuf, codigoMotivo: $codigoMotivo) {
+  mutation ANULAR($cuf: String!, $codigoMotivo: Int!) {
+    facturaIceAnular(cuf: $cuf, codigoMotivo: $codigoMotivo) {
       cuf
     }
   }
@@ -21,9 +21,8 @@ export const fetchFacturaAnular = async (
   const client = new GraphQLClient(import.meta.env.ISI_API_URL)
   const token = localStorage.getItem(AccessToken)
   client.setHeader('authorization', `Bearer ${token}`)
-  // console.log('cuf', cuf)
-  // console.log('codigoMotivo', codigoMotivo)
 
   const data: any = await client.request(ALQ_ONLINE, { cuf, codigoMotivo })
-  return data.facturaExportacionAnular
+  console.log('data', data)
+  return data.facturaIceAnular
 }

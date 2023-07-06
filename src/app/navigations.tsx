@@ -38,7 +38,7 @@ export const navigations: NavigationProps[] = [
         path: '/ventas/registro',
       },
       {
-        name: 'Gestión de Exportaciones',
+        name: 'Gestión de Consumos',
         iconText: 'ALGE',
         path: '/ventas/gestion',
       },
@@ -55,6 +55,18 @@ export const navigations: NavigationProps[] = [
   //     },
   //   ],
   // },
+  {
+    name: 'Alicuota',
+    icon: 'science_sharp',
+    children: [
+      {
+        name: 'Gestión de Alicuotas',
+        iconText: 'AL',
+        path: '/alicuota/gestion',
+      },
+    ],
+  },
+
   {
     name: 'Servicios',
     icon: 'storefront_sharp',

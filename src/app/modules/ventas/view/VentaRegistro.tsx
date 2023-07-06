@@ -63,16 +63,6 @@ const VentaRegistro = () => {
             )}
           </Grid>
           <Grid item lg={7} md={12} xs={12}>
-            <div style={{ padding: '10px 0' }}>
-              <SimpleCard title={'Direcciones'}>
-                <Direcciones form={form} />
-              </SimpleCard>
-            </div>
-            <div style={{ padding: '10px 0' }}>
-              <SimpleCard title={'Información Adicional'}>
-                <InformacionAdicional form={form} />
-              </SimpleCard>
-            </div>
             <div style={{ padding: '20px 0' }}>
               <SimpleCard title={'Cliente / Método de pago'}>
                 <DatosTransaccionComercial form={form} user={user!} />
@@ -83,12 +73,9 @@ const VentaRegistro = () => {
           </Grid>
 
           <Grid item lg={5} md={6} xs={12}>
-            <SimpleCard title={'Gastos'}>
-              <Gastos form={form} />
-              <div style={{ padding: '20px 0' }}>
-                <VentaTotales form={form} />
-              </div>
-            </SimpleCard>
+            <div style={{ padding: '20px 0' }}>
+              <VentaTotales form={form} />
+            </div>
           </Grid>
         </Grid>
       </form>

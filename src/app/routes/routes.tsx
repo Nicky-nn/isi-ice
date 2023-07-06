@@ -5,6 +5,7 @@ import MatxLayout from '../base/components/Template/MatxLayout/MatxLayout'
 import dashboardRoutes from '../base/view/dashboard/DashboardRoutes'
 import NotFound from '../base/view/sessions/NotFound'
 import sessionRoutes from '../base/view/sessions/SessionRoutes'
+import alicuotasRoutes from '../modules/alicuota/AlicuotaRoutes'
 import clientesRoutes from '../modules/clientes/ClientesRoutes'
 import cuentaRoutes from '../modules/cuenta/CuentaRoutes'
 import notaCreditoDebitoRoutes from '../modules/notaCreditoDebito/NotaCreditoDebitoRoutes'
@@ -26,6 +27,7 @@ export const appRoutes = [
       ...clientesRoutes,
       ...cuentaRoutes,
       ...proveedorRoutes,
+      ...alicuotasRoutes,
       ...notaCreditoDebitoRoutes,
     ],
   },
