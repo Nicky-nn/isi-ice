@@ -7,9 +7,8 @@ import { PageInfoProps, PageInputProps } from '../../../interfaces'
 import { ProveedorProps } from '../interfaces/proveedor.interface'
 
 const gqlQuery = gql`
-  query ALICUOTA($id: ID!) {
-    alicuotaIce(id: $id) {
-      _id
+  query ALICUOTA($subPartidaArancelaria: String!) {
+    alicuotaIce(subPartidaArancelaria: $subPartidaArancelaria) {
       subPartidaArancelaria
       descripcion
       alicuotaEspecifica
@@ -18,12 +17,14 @@ const gqlQuery = gql`
   }
 `
 
-export const apiAlicuota = async (id: string): Promise<ProveedorProps> => {
+export const apiAlicuota = async (
+  subPartidaArancelaria: string,
+): Promise<ProveedorProps> => {
   const client = new GraphQLClient(import.meta.env.ISI_API_URL)
   const token = localStorage.getItem(AccessToken)
   // Set a single header
   client.setHeader('authorization', `Bearer ${token}`)
-  const data: any = await client.request(gqlQuery, { id })
+  const data: any = await client.request(gqlQuery, { subPartidaArancelaria })
   // console.log(data)
   return data.alicuotaIce
 }

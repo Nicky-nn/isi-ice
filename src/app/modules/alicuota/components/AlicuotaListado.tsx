@@ -38,11 +38,6 @@ type Props = OwnProps
 
 const tableColumns: MRT_ColumnDef<ProveedorProps>[] = [
   {
-    accessorKey: '_id',
-    header: 'ID',
-    size: 100,
-  },
-  {
     accessorKey: 'subPartidaArancelaria',
     header: 'Sub Partida Arancelaria',
     size: 210,
@@ -140,7 +135,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
   const columns = useMemo(() => tableColumns, [])
 
   const handleDeleteData = async (data: any) => {
-    const resp = data.map((item: any) => item.original._id).join(',')
+    const resp = data.map((item: any) => item.original.subPartidaArancelaria).join(',')
     await swalAsyncConfirmDialog({
       text: 'Confirma que desea eliminar los registros seleccionados, esta operación no se podra revertir',
       preConfirm: () => {
@@ -236,7 +231,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
               >
                 <StyledMenuItem
                   onClick={() => {
-                    setSelectedProveedorCodigo(row.original._id)
+                    setSelectedProveedorCodigo(row.original.subPartidaArancelaria)
                     setOpenActualizarProveedor(true)
                   }}
                 >

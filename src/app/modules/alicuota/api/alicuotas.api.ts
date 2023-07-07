@@ -9,7 +9,6 @@ import { ProveedorProps } from '../interfaces/proveedor.interface'
 const gqlQuery = gql`
   query ALICUOTAS {
     alicuotaIceListado {
-      _id
       subPartidaArancelaria
       descripcion
       alicuotaPorcentual

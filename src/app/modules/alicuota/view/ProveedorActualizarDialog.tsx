@@ -32,10 +32,14 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
     initialValues: PROVEEDOR_INITIAL_VALUES,
     validationSchema: proveedorRegistroValidationSchema,
     onSubmit: async (values) => {
-      const { _id, ...valuesWithoutCodigo } = values // Excluir la propiedad 'codigo'
+      const { subPartidaArancelaria, ...valuesWithoutCodigo } = values // Excluir la propiedad 'codigo'
+      console.log(subPartidaArancelaria, valuesWithoutCodigo)
       await swalAsyncConfirmDialog({
         preConfirm: () => {
-          return apiProveedorActualizar(_id || '', valuesWithoutCodigo).catch((err) => {
+          return apiProveedorActualizar(
+            subPartidaArancelaria || '',
+            valuesWithoutCodigo,
+          ).catch((err) => {
             swalException(err)
             return false
           })

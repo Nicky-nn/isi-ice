@@ -1,5 +1,4 @@
 export interface ProveedorProps {
-  _id: string
   subPartidaArancelaria: string
   descripcion: string
   alicuotaPorcentual: number
@@ -12,16 +11,12 @@ export interface ProveedorProps {
 }
 
 export interface ProveedorInputProp {
-  id?: string
-  _id?: string
   subPartidaArancelaria: string
   descripcion: string
   alicuotaPorcentual: number
   alicuotaEspecifica: number
 }
 export interface ProveedorActualizarInputProp {
-  _id?: string
-  subPartidaArancelaria: string
   descripcion: string
   alicuotaPorcentual: number
   alicuotaEspecifica: number
@@ -34,7 +29,6 @@ export const PROVEEDOR_INITIAL_VALUES: ProveedorInputProp = {
   alicuotaEspecifica: 0,
 }
 export interface ProveedorApiInputProps {
-  _id?: string
   subPartidaArancelaria: string
   descripcion: string
   alicuotaPorcentual: number

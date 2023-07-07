@@ -30,15 +30,20 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
     initialValues: PROVEEDOR_INITIAL_VALUES,
     validationSchema: proveedorRegistroValidationSchema,
     onSubmit: async (values) => {
-      // console.log(values)
+      const { subPartidaArancelaria, ...valuesWithoutCodigo } = values
+      console.log(subPartidaArancelaria, valuesWithoutCodigo)
       await swalAsyncConfirmDialog({
         preConfirm: () => {
-          return apiProveedorRegistro(values).catch((err) => {
+          return apiProveedorRegistro(
+            subPartidaArancelaria || '',
+            //@ts-ignore
+            valuesWithoutCodigo,
+          ).catch((err) => {
             swalException(err)
             return false
           })
         },
-        text: 'Confirma que desea registrar al Alicuota',
+        text: 'Confirma que desea actualizar Alicuota?',
       }).then((resp) => {
         if (resp.isConfirmed) {
           notSuccess()

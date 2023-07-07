@@ -9,9 +9,11 @@ import {
 } from '../interfaces/proveedor.interface'
 
 const gqlMutation = gql`
-  mutation ALICUOTAS_ACTUALIZACION($id: ID!, $input: AlicuotaIceInput!) {
-    alicuotaIceActualizar(id: $id, input: $input) {
-      _id
+  mutation ALICUOTAS_ACTUALIZACION(
+    $subPartidaArancelaria: String!
+    $input: AlicuotaIceInput!
+  ) {
+    alicuotaIceActualizar(subPartidaArancelaria: $subPartidaArancelaria, input: $input) {
       subPartidaArancelaria
       descripcion
       alicuotaEspecifica
@@ -23,7 +25,7 @@ const gqlMutation = gql`
 `
 
 export const apiProveedorActualizar = async (
-  id: string,
+  subPartidaArancelaria: string,
   input: ProveedorActualizarInputProp,
 ): Promise<ProveedorProps> => {
   try {
@@ -31,7 +33,7 @@ export const apiProveedorActualizar = async (
     const token = localStorage.getItem(AccessToken)
     // Set a single header
     client.setHeader('authorization', `Bearer ${token}`)
-    const data: any = await client.request(gqlMutation, { id, input })
+    const data: any = await client.request(gqlMutation, { subPartidaArancelaria, input })
     return data.proveedorActualizar
   } catch (e: any) {
     throw new MyGraphQlError(e)

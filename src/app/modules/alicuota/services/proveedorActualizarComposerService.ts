@@ -8,7 +8,6 @@ export const proveedorActualizarComposeService = (
   input: ProveedorInputProp,
 ): ProveedorApiInputProps => {
   return <any>{
-    _id: input.id,
     subPartidaArancelaria: genReplaceEmpty(input.subPartidaArancelaria, ''),
     descripcion: genReplaceEmpty(input.descripcion, ''),
     alicuotaEspecifica: genReplaceEmpty(input.alicuotaEspecifica, ''),
