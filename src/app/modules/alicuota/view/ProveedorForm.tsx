@@ -2,10 +2,10 @@ import { Grid, TextField } from '@mui/material'
 import { FormikProps } from 'formik'
 import React, { FunctionComponent } from 'react'
 
-import { ProveedorInputProp } from '../interfaces/alicuota.interface'
+import { AlicuotaInputProp } from '../interfaces/alicuota.interface'
 
 interface OwnProps {
-  formik: FormikProps<ProveedorInputProp>
+  formik: FormikProps<AlicuotaInputProp>
 }
 
 type Props = OwnProps

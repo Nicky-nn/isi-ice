@@ -4,7 +4,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 
 import { AccessToken } from '../../../base/models/paramsModel'
 import { PageInfoProps, PageInputProps } from '../../../interfaces'
-import { ProveedorProps } from '../interfaces/alicuota.interface'
+import { AlicuotaProps } from '../interfaces/alicuota.interface'
 
 const gqlQuery = gql`
   query ALICUOTA($subPartidaArancelaria: String!) {
@@ -19,7 +19,7 @@ const gqlQuery = gql`
 
 export const apiAlicuota = async (
   subPartidaArancelaria: string,
-): Promise<ProveedorProps> => {
+): Promise<AlicuotaProps> => {
   const client = new GraphQLClient(import.meta.env.ISI_API_URL)
   const token = localStorage.getItem(AccessToken)
   // Set a single header

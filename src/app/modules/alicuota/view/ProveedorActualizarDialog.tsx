@@ -9,9 +9,9 @@ import { apiAlicuota } from '../api/alicuota.api'
 import { apiProveedorActualizar } from '../api/proveedorActualizar.api'
 import { apiProveedorRegistro } from '../api/XproveedorRegistro.api'
 import {
-  PROVEEDOR_INITIAL_VALUES,
-  ProveedorInputProp,
-  ProveedorProps,
+  ALICUOTA_INITIAL_VALUES,
+  AlicuotaInputProp,
+  AlicuotaProps,
 } from '../interfaces/alicuota.interface'
 import { proveedorRegistroValidationSchema } from '../validator/proveedorRegistro.validator'
 import ProveedorForm from './ProveedorForm'
@@ -20,7 +20,7 @@ interface OwnProps {
   keepMounted: boolean
   open: boolean
   codigo: string
-  onClose: (value?: ProveedorProps) => void
+  onClose: (value?: AlicuotaProps) => void
 }
 
 type Props = OwnProps
@@ -28,8 +28,8 @@ type Props = OwnProps
 const ProveedorActualizar: FunctionComponent<Props> = (props) => {
   const { onClose, open, ...other } = props
 
-  const formik: FormikProps<ProveedorInputProp> = useFormik<ProveedorInputProp>({
-    initialValues: PROVEEDOR_INITIAL_VALUES,
+  const formik: FormikProps<AlicuotaInputProp> = useFormik<AlicuotaInputProp>({
+    initialValues: ALICUOTA_INITIAL_VALUES,
     validationSchema: proveedorRegistroValidationSchema,
     onSubmit: async (values) => {
       const { subPartidaArancelaria, ...valuesWithoutCodigo } = values // Excluir la propiedad 'codigo'

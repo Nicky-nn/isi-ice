@@ -1,12 +1,12 @@
 import { genReplaceEmpty } from '../../../utils/helper'
 import {
-  ProveedorApiInputProps,
-  ProveedorInputProp,
+  AlicuotaApiInputProps,
+  AlicuotaInputProp,
 } from '../interfaces/alicuota.interface'
 
 export const proveedorActualizarComposeService = (
-  input: ProveedorInputProp,
-): ProveedorApiInputProps => {
+  input: AlicuotaInputProp,
+): AlicuotaApiInputProps => {
   return <any>{
     subPartidaArancelaria: genReplaceEmpty(input.subPartidaArancelaria, ''),
     descripcion: genReplaceEmpty(input.descripcion, ''),

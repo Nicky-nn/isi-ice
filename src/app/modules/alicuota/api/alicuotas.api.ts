@@ -4,7 +4,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 
 import { AccessToken } from '../../../base/models/paramsModel'
 import { PageInfoProps, PageInputProps } from '../../../interfaces'
-import { ProveedorProps } from '../interfaces/alicuota.interface'
+import { AlicuotaProps } from '../interfaces/alicuota.interface'
 
 const gqlQuery = gql`
   query ALICUOTAS {
@@ -25,7 +25,7 @@ const gqlQuery = gql`
 interface ProveedorResponse {
   [x: string]: any
   pageInfo: PageInfoProps
-  docs: ProveedorProps[]
+  docs: AlicuotaProps[]
 }
 
 export const apiAlicuotas = async (

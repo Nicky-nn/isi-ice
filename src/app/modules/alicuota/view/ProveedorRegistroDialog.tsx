@@ -7,9 +7,9 @@ import { notSuccess } from '../../../utils/notification'
 import { swalAsyncConfirmDialog, swalException } from '../../../utils/swal'
 import { apiProveedorRegistro } from '../api/XproveedorRegistro.api'
 import {
-  PROVEEDOR_INITIAL_VALUES,
-  ProveedorInputProp,
-  ProveedorProps,
+  ALICUOTA_INITIAL_VALUES,
+  AlicuotaInputProp,
+  AlicuotaProps,
 } from '../interfaces/alicuota.interface'
 import { proveedorRegistroValidationSchema } from '../validator/proveedorRegistro.validator'
 import ProveedorForm from './ProveedorForm'
@@ -18,7 +18,7 @@ interface OwnProps {
   id: string
   keepMounted: boolean
   open: boolean
-  onClose: (value?: ProveedorProps) => void
+  onClose: (value?: AlicuotaProps) => void
 }
 
 type Props = OwnProps
@@ -26,8 +26,8 @@ type Props = OwnProps
 const ProveedorRegistro: FunctionComponent<Props> = (props) => {
   const { onClose, open, ...other } = props
 
-  const formik: FormikProps<ProveedorInputProp> = useFormik<ProveedorInputProp>({
-    initialValues: PROVEEDOR_INITIAL_VALUES,
+  const formik: FormikProps<AlicuotaInputProp> = useFormik<AlicuotaInputProp>({
+    initialValues: ALICUOTA_INITIAL_VALUES,
     validationSchema: proveedorRegistroValidationSchema,
     onSubmit: async (values) => {
       const { subPartidaArancelaria, ...valuesWithoutCodigo } = values

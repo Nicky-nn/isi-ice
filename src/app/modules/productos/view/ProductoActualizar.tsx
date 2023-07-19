@@ -96,6 +96,7 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
       setProducto(response[0])
       const act = await fetchSinActividades()
       // console.log('act', act)
+      console.log('response', response)
       if (response) {
         // form.reset(response)
         const codigoActividad = response.sinProductoServicio
@@ -120,17 +121,8 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
         form.setValue('codigoProducto', response.codigoProducto)
         form.setValue('descripcion', response.descripcion)
         form.setValue('precio', response.precio)
-        form.setValue('codigoNandina', response.codigoNandina || '')
-
-        // const tip = await apiTipoProductoListado()
-        // const tipoProducto = response.tipoProducto
-        // const matchinTipoProducto = tip.find((tp) => tp._id === tipoProducto.codigoParent)
-        // console.log('matchinTipoProducto', matchinTipoProducto)
-        // // form.setValue('tipoProducto._id', tipoProducto._id)
-        // // form.setValue('tipoProducto.codigoParent', tipoProducto.codigoParent)
-        // // form.setValue('tipoProducto.descripcion', tipoProducto.descripcion)
-        // // form.setValue('tipoProducto.parientes', matchinTipoProducto?.parientes || '')
-        // // form.setValue('tipoProducto.descripcion', matchinTipoProducto?.descripcion || '')
+        form.setValue('subPartidaArancelaria', response.subPartidaArancelaria)
+        form.setValue('marcaIce', response.marcaIce)
       } else {
         notDanger('No se encontró el producto')
         navigate(-1)

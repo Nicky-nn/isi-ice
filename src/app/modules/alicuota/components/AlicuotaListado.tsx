@@ -26,9 +26,9 @@ import { localization } from '../../../utils/localization'
 import { notSuccess } from '../../../utils/notification'
 import { swalAsyncConfirmDialog, swalException } from '../../../utils/swal'
 import { alicuotaRouteMap } from '../AlicuotaRoutesMap'
-import { apiProveedores } from '../api/alicuotas.api'
+import { apiAlicuotas } from '../api/alicuotas.api'
 import { apiProveedorEliminar } from '../api/proveedorEliminar.api'
-import { ProveedorProps } from '../interfaces/alicuota.interface'
+import { AlicuotaProps } from '../interfaces/alicuota.interface'
 import ProveedorActualizarDialog from '../view/ProveedorActualizarDialog'
 import ProveedorRegistroDialog from '../view/ProveedorRegistroDialog'
 
@@ -36,7 +36,7 @@ interface OwnProps {}
 
 type Props = OwnProps
 
-const tableColumns: MRT_ColumnDef<ProveedorProps>[] = [
+const tableColumns: MRT_ColumnDef<AlicuotaProps>[] = [
   {
     accessorKey: 'subPartidaArancelaria',
     header: 'Sub Partida Arancelaria',
@@ -94,7 +94,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
 
     setIssRefetching(false) // Establece el estado de "isRefetching" como falso para ocultar el indicador de carga
   }
-  const { data, isError, isLoading, status, refetch } = useQuery<ProveedorProps[]>(
+  const { data, isError, isLoading, status, refetch } = useQuery<AlicuotaProps[]>(
     [
       'alicuotasListado',
       columnFilters,
@@ -113,7 +113,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
         query,
       }
       // const { pageInfo, docs } = await apiProveedores(fetchPagination)
-      const docs = await apiProveedores(fetchPagination)
+      const docs = await apiAlicuotas(fetchPagination)
       const pageInfo = {
         hasNextPage: false,
         hasPrevPage: false,
@@ -286,7 +286,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
         id={'proveedorRegistroDialog'}
         keepMounted={false}
         open={openNuevoProveedor}
-        onClose={(value?: ProveedorProps) => {
+        onClose={(value?: AlicuotaProps) => {
           if (value) {
             refetch().then()
           }
@@ -297,7 +297,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
         keepMounted={false}
         open={openActualizarProveedor}
         codigo={selectedProveedorCodigo || ''} // Añade esta prop para enviar el código del proveedor
-        onClose={(value?: ProveedorProps) => {
+        onClose={(value?: AlicuotaProps) => {
           if (value) {
             refetch().then()
           }

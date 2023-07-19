@@ -6,7 +6,7 @@ import { object, string } from 'yup'
 
 import Breadcrumb from '../../../base/components/Template/Breadcrumb/Breadcrumb'
 import { genRandomString } from '../../../utils/helper'
-import { ProveedorInputProp } from '../interfaces/alicuota.interface'
+import { AlicuotaInputProp } from '../interfaces/alicuota.interface'
 import ProveedorForm from './ProveedorForm'
 
 interface OwnProps {}
@@ -24,7 +24,7 @@ const validationSchema = object({
 })
 
 const ProveedorRegistro: FunctionComponent<Props> = (props) => {
-  const formik: FormikProps<ProveedorInputProp> = useFormik<ProveedorInputProp>({
+  const formik: FormikProps<AlicuotaInputProp> = useFormik<AlicuotaInputProp>({
     initialValues: {
       subPartidaArancelaria: '',
       alicuotaEspecifica: 0,
