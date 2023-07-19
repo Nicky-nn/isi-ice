@@ -317,16 +317,16 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               render={({ field }) => (
                 <FormTextField
                   type="number"
-                  inputProps={{ min: 0, max: 3 }}
+                  inputProps={{ min: 1, max: 3 }}
                   name="marcaIce"
                   label="Marca ICE"
                   value={field.value}
                   onChange={(e) => {
                     const inputValue = e.target.value
-                    // Validar que solo sean números entre 0 y 2
+                    // Validar que solo sean números entre 1 y 2
                     if (
                       /^\d*$/.test(inputValue) &&
-                      Number(inputValue) >= 0 &&
+                      Number(inputValue) >= 1 &&
                       Number(inputValue) <= 2
                     ) {
                       // Actualizar el valor solo si cumple las condiciones

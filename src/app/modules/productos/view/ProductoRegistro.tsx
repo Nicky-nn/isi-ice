@@ -63,7 +63,6 @@ const ProductoRegistro: FunctionComponent<Props> = (props) => {
       },
     }).then((resp) => {
       if (resp.isConfirmed) {
-        // console.log('resp.value', resp)
         notSuccess()
         // navigate(`/productos/modificar/${resp.value.codigoProducto}`, { replace: true })
         navigate(`/productos/gestion/`, { replace: true })
@@ -120,15 +119,6 @@ const ProductoRegistro: FunctionComponent<Props> = (props) => {
             <Grid item lg={12} md={12} xs={12}>
               {<ProductoPrecio form={form} />}
             </Grid>
-            {/* <Grid item lg={12} md={12} xs={12}>
-              {<ProductoInventario form={form} />}
-            </Grid> */}
-            {/* <Grid item lg={12} md={12} xs={12}>
-              {<ProductoOpciones form={form} />}
-            </Grid> */}
-            {/* <Grid item lg={12} md={12} xs={12}>
-              {<ProductoVariantes form={form} />}
-            </Grid> */}
           </Grid>
         </Grid>
         <Grid item lg={4} md={4} xs={12}>
