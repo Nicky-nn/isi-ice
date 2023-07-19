@@ -3,6 +3,13 @@ export interface SinUnidadMedidaProps {
   descripcion: string
 }
 
+export interface subPartidaArancelariaProps {
+  subPartidaArancelaria: string
+  descripcion: string
+  alicuotaPorcentual: number
+  alicuotaEspecifica: number
+}
+
 export interface SinTipoDocumentoSectorProps {
   codigoClasificador: number
   descripcion: string

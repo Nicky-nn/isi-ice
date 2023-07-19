@@ -10,7 +10,7 @@ import {
   PROVEEDOR_INITIAL_VALUES,
   ProveedorInputProp,
   ProveedorProps,
-} from '../interfaces/proveedor.interface'
+} from '../interfaces/alicuota.interface'
 import { proveedorRegistroValidationSchema } from '../validator/proveedorRegistro.validator'
 import ProveedorForm from './ProveedorForm'
 

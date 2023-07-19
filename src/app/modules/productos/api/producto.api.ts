@@ -15,13 +15,13 @@ export interface ApiProductoResponse {
 }
 
 const query = gql`
-  query ALQ_PRODUCTO_LISTADO(
+  query ICE_PRODUCTO_LISTADO(
     $limit: Int!
     $reverse: Boolean
     $page: Int!
     $query: String
   ) {
-    expoProductoListado(limit: $limit, reverse: $reverse, page: $page, query: $query) {
+    iceProductoListado(limit: $limit, reverse: $reverse, page: $page, query: $query) {
       pageInfo {
         hasNextPage
         hasPrevPage
@@ -31,7 +31,6 @@ const query = gql`
       }
       docs {
         codigoProducto
-        codigoNandina
         state
         nombre
         descripcion
@@ -67,6 +66,11 @@ const query = gql`
           codigoClasificador
           descripcion
         }
+        marcaIce
+        subPartidaArancelaria
+        alicuotaDescripcion
+        alicuotaEspecifica
+        alicuotaPorcentual
         state
         usucre
         createdAt
@@ -86,5 +90,6 @@ export const apiProductos = async (
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(query, { ...pageInfo })
-  return data.expoProductoListado
+  console.log(data.iceProductoListado)
+  return data.iceProductoListado
 }

@@ -28,7 +28,7 @@ import { swalAsyncConfirmDialog, swalException } from '../../../utils/swal'
 import { alicuotaRouteMap } from '../AlicuotaRoutesMap'
 import { apiProveedores } from '../api/alicuotas.api'
 import { apiProveedorEliminar } from '../api/proveedorEliminar.api'
-import { ProveedorProps } from '../interfaces/proveedor.interface'
+import { ProveedorProps } from '../interfaces/alicuota.interface'
 import ProveedorActualizarDialog from '../view/ProveedorActualizarDialog'
 import ProveedorRegistroDialog from '../view/ProveedorRegistroDialog'
 

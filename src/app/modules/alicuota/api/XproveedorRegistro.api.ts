@@ -3,7 +3,7 @@
 import { gql, GraphQLClient } from 'graphql-request'
 
 import { AccessToken } from '../../../base/models/paramsModel'
-import { ProveedorInputProp, ProveedorProps } from '../interfaces/proveedor.interface'
+import { ProveedorInputProp, ProveedorProps } from '../interfaces/alicuota.interface'
 
 const gqlQuery = gql`
   mutation ALICUOTA_REGISTRO($subPartidaArancelaria: String!, $input: AlicuotaIceInput!) {

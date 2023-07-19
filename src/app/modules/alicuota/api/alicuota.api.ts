@@ -4,7 +4,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 
 import { AccessToken } from '../../../base/models/paramsModel'
 import { PageInfoProps, PageInputProps } from '../../../interfaces'
-import { ProveedorProps } from '../interfaces/proveedor.interface'
+import { ProveedorProps } from '../interfaces/alicuota.interface'
 
 const gqlQuery = gql`
   query ALICUOTA($subPartidaArancelaria: String!) {

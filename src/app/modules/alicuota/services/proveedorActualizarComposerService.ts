@@ -2,7 +2,7 @@ import { genReplaceEmpty } from '../../../utils/helper'
 import {
   ProveedorApiInputProps,
   ProveedorInputProp,
-} from '../interfaces/proveedor.interface'
+} from '../interfaces/alicuota.interface'
 
 export const proveedorActualizarComposeService = (
   input: ProveedorInputProp,

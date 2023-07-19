@@ -28,6 +28,7 @@ export const productoComposeService = (aql: ProductoInputProps): any => {
     ),
     tipoProductoId: aql.tipoProducto?._id,
     codigoProveedor: aql.codigoProveedor?.codigo,
-    codigoNandina: aql.codigoNandina,
+    marcaIce: aql.marcaIce,
+    subPartidaArancelaria: aql.subPartidaArancelaria,
   }
 }

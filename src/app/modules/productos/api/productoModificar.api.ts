@@ -6,22 +6,17 @@ import { AccessToken } from '../../../base/models/paramsModel'
 import { ProductoInputApiProps, ProductoProps } from '../interfaces/producto.interface'
 
 const gqlQuery = gql`
-  mutation PRODUCTOS_ACTUALIZAR(
-    $codigoProducto: String!
-    $input: ExpoProductoActualizarInput!
-  ) {
-    expoProductoActualizar(codigoProducto: $codigoProducto, input: $input) {
+  mutation PRODUCTOS_ACTUALIZAR($codigoProducto: String!, $input: IceProductoInput!) {
+    iceProductoActualizar(codigoProducto: $codigoProducto, input: $input) {
       codigoProducto
-      tipoProducto {
-        _id
-        descripcion
-        codigoParent
-        parientes
-      }
-      proveedor {
-        codigo
-        nombre
-      }
+      descripcion
+      marcaIce
+      subPartidaArancelaria
+      alicuotaDescripcion
+      alicuotaEspecifica
+      alicuotaPorcentual
+      usucre
+      usumod
     }
   }
 `
@@ -37,5 +32,5 @@ export const apiProductoModificar = async (
     codigoProducto: codigoProducto,
     input: input,
   })
-  return data.expoProductoActualizar
+  return data.iceProductoActualizar
 }

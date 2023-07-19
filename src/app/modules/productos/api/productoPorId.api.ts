@@ -7,36 +7,52 @@ import { ProductoProps } from '../interfaces/producto.interface'
 
 const query = gql`
   query EXPO_PRODUCTO($codigoProducto: ID!) {
-    expoProducto(codigoProducto: $codigoProducto) {
+    iceProducto(codigoProducto: $codigoProducto) {
       codigoProducto
-      codigoNandina
-      descripcion
       nombre
+      descripcion
+      actividadEconomica {
+        codigoCaeb
+        descripcion
+        tipoActividad
+      }
+      descripcionHtml
+      tipoProducto {
+        _id
+        descripcion
+        codigoParent
+      }
+      imagen {
+        altText
+        url
+      }
+      proveedor {
+        codigo
+        nombre
+        correo
+      }
       sinProductoServicio {
         codigoActividad
         codigoProducto
         descripcionProducto
       }
+      precio
+      precioComparacion
+      costo
       unidadMedida {
         codigoClasificador
         descripcion
       }
-      proveedor {
-        codigo
-        nombre
-      }
-      tipoProducto {
-        _id
-        codigoParent
-        descripcion
-        parientes
-      }
-      precio
+      marcaIce
+      subPartidaArancelaria
+      alicuotaDescripcion
+      alicuotaEspecifica
+      alicuotaPorcentual
       state
       usucre
-      createdAt
       usumod
       updatedAt
+      createdAt
     }
   }
 `
@@ -48,5 +64,5 @@ export const apiProductoPorId = async (id: string): Promise<ProductoProps> => {
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(query, { codigoProducto: id })
-  return data.expoProducto
+  return data.iceProducto
 }

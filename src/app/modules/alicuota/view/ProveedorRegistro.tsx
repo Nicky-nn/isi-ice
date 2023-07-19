@@ -6,7 +6,7 @@ import { object, string } from 'yup'
 
 import Breadcrumb from '../../../base/components/Template/Breadcrumb/Breadcrumb'
 import { genRandomString } from '../../../utils/helper'
-import { ProveedorInputProp } from '../interfaces/proveedor.interface'
+import { ProveedorInputProp } from '../interfaces/alicuota.interface'
 import ProveedorForm from './ProveedorForm'
 
 interface OwnProps {}

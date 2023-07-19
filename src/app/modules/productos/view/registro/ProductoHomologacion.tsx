@@ -1,4 +1,15 @@
-import { FormControl, FormHelperText, Grid } from '@mui/material'
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  SelectChangeEvent,
+} from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
@@ -10,8 +21,13 @@ import { MyInputLabel } from '../../../../base/components/MyInputs/MyInputLabel'
 import { reactSelectStyles } from '../../../../base/components/MySelect/ReactSelect'
 import SimpleCard from '../../../../base/components/Template/Cards/SimpleCard'
 import useAuth from '../../../../base/hooks/useAuth'
+import { PageInputProps } from '../../../../interfaces'
+import { apiAlicuotas2 } from '../../../alicuota/api/alicuotas.api'
+import { apiProveedores } from '../../../proveedor/api/proveedores.api'
+import { AlicuotasProps } from '../../../proveedor/interfaces/proveedor.interface'
 import { fetchSinProductoServicioPorActividad } from '../../../sin/api/sinProductoServicio.api'
 import useQueryActividadesPorDocumentoSector from '../../../sin/hooks/useQueryActividadesPorDocumentoSector'
+import { subPartidaArancelariaProps } from '../../../sin/interfaces/sin.interface'
 import {
   SinActividadesDocumentoSectorProps,
   SinActividadesProps,
@@ -32,7 +48,7 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
       setValue,
       getValues,
       watch,
-      formState: { errors },
+      formState: { errors, isSubmitting },
     },
   } = props
 
@@ -123,6 +139,29 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
       }
     }
   }, [actLoading, actividades])
+
+  const [openDialog, setOpenDialog] = useState(false)
+  const [cambioValor, setcambioValor] = useState('')
+
+  const { data: alicuota, refetch } = useQuery<AlicuotasProps[], Error>(
+    ['alicuotaData', openDialog],
+    // @ts-ignore
+    async () => {
+      const response = await apiAlicuotas2()
+      return response
+    },
+  )
+
+  const [ice, setIce] = React.useState('')
+  const handleChange = (selectedOption: any) => {
+    setIce(selectedOption.value)
+  }
+
+  const options = [
+    { value: 10, label: 'Ten' },
+    { value: 20, label: 'Twenty' },
+    { value: 30, label: 'Thirty' },
+  ]
 
   return (
     <>
@@ -271,20 +310,66 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               )}
             />
           </Grid>
-          <Grid item lg={12} md={12} xs={12}>
+          <Grid item lg={3} md={12} xs={12}>
             <Controller
-              name={'codigoNandina'}
               control={control}
+              name="marcaIce"
               render={({ field }) => (
                 <FormTextField
-                  name="codigoNandina"
-                  label="Codigo Nandina"
-                  error={Boolean(errors.codigoNandina)}
-                  helperText={errors.codigoNandina?.message}
+                  type="number"
+                  inputProps={{ min: 0, max: 3 }}
+                  name="marcaIce"
+                  label="Marca ICE"
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    const inputValue = e.target.value
+                    // Validar que solo sean números entre 0 y 2
+                    if (
+                      /^\d*$/.test(inputValue) &&
+                      Number(inputValue) >= 0 &&
+                      Number(inputValue) <= 2
+                    ) {
+                      // Actualizar el valor solo si cumple las condiciones
+                      // Esto también garantizará que el valor se almacene correctamente en el controlador de react-hook-form
+                      field.onChange(e)
+                    }
+                  }}
                   onBlur={field.onBlur}
+                  error={Boolean(errors.marcaIce)}
+                  helperText={'Escriba la marca ICE'}
                 />
+              )}
+            />
+          </Grid>
+
+          <Grid item lg={9} md={12} xs={12}>
+            <Controller
+              control={control}
+              name={'subPartidaArancelaria'}
+              render={({ field }) => (
+                <FormControl fullWidth>
+                  <MyInputLabel shrink>Sub Partida Arancelaria </MyInputLabel>
+                  <Select<AlicuotasProps>
+                    {...field}
+                    styles={reactSelectStyles}
+                    menuPosition={'fixed'}
+                    name="subPartidaArancelaria"
+                    placeholder={
+                      field.value ? field.value : 'Seleccione Sub Partida Arancelaria...'
+                    }
+                    value={field.value as any}
+                    onChange={(alicuota: any) => {
+                      // field.onChange(alicuota)
+                      setValue('subPartidaArancelaria', alicuota.subPartidaArancelaria)
+                    }}
+                    options={alicuota as any}
+                    isClearable={true}
+                    getOptionValue={(ps) => ps.subPartidaArancelaria}
+                    getOptionLabel={(ps) =>
+                      `${ps.subPartidaArancelaria} - ${ps.descripcion} - ${ps.alicuotaPorcentual}% - ${ps.alicuotaEspecifica}`
+                    }
+                  />
+                </FormControl>
               )}
             />
           </Grid>

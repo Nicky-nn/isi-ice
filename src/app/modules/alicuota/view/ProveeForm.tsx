@@ -2,7 +2,7 @@ import { Grid, TextField } from '@mui/material'
 import React, { FunctionComponent } from 'react'
 import { useForm, UseFormReturn } from 'react-hook-form'
 
-import { ProveedorInputProp } from '../interfaces/proveedor.interface'
+import { ProveedorInputProp } from '../interfaces/alicuota.interface'
 
 interface OwnProps {
   form: UseFormReturn<ProveedorInputProp>

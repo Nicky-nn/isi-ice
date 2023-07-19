@@ -6,7 +6,7 @@ import { AccessToken } from '../../../base/models/paramsModel'
 
 const query = gql`
   mutation expoProductoListado_PRODUCTOS_ELIMINAR($codigoProducto: String!) {
-    expoProductoEliminar(codigoProducto: $codigoProducto)
+    iceProductoEliminar(codigoProducto: $codigoProducto)
   }
 `
 
@@ -17,5 +17,5 @@ export const apiProductosEliminar = async (codigoProducto: string): Promise<bool
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(query, { codigoProducto })
-  return data.fcvProductosEliminar
+  return data.iceProductoEliminar
 }

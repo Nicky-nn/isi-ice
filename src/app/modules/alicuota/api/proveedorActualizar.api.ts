@@ -6,7 +6,7 @@ import {
   ProveedorActualizarInputProp,
   ProveedorInputProp,
   ProveedorProps,
-} from '../interfaces/proveedor.interface'
+} from '../interfaces/alicuota.interface'
 
 const gqlMutation = gql`
   mutation ALICUOTAS_ACTUALIZACION(

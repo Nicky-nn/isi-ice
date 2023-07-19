@@ -13,6 +13,18 @@ export interface ProveedorProps {
   usumod?: string
 }
 
+export interface AlicuotasProps {
+  subPartidaArancelaria: string
+  descripcion: string
+  alicuotaPorcentual: number
+  alicuotaEspecifica: number
+  createdAt: string
+  state: string
+  updatedAt: string
+  usucre: string
+  usumod?: string
+}
+
 export interface ProveedorInputProp {
   codigo: string
   nombre: string

@@ -1,4 +1,4 @@
-export interface ProveedorProps {
+export interface AlicuotaProps {
   subPartidaArancelaria: string
   descripcion: string
   alicuotaPorcentual: number
@@ -10,25 +10,25 @@ export interface ProveedorProps {
   usumod?: string
 }
 
-export interface ProveedorInputProp {
+export interface AlicuotaInputProp {
   subPartidaArancelaria: string
   descripcion: string
   alicuotaPorcentual: number
   alicuotaEspecifica: number
 }
-export interface ProveedorActualizarInputProp {
+export interface AlicuotaActualizarInputProp {
   descripcion: string
   alicuotaPorcentual: number
   alicuotaEspecifica: number
 }
 
-export const PROVEEDOR_INITIAL_VALUES: ProveedorInputProp = {
+export const ALICUOTA_INITIAL_VALUES: AlicuotaInputProp = {
   subPartidaArancelaria: '',
   descripcion: '',
   alicuotaPorcentual: 0,
   alicuotaEspecifica: 0,
 }
-export interface ProveedorApiInputProps {
+export interface AlicuotaApiInputProps {
   subPartidaArancelaria: string
   descripcion: string
   alicuotaPorcentual: number

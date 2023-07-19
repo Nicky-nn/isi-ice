@@ -4,7 +4,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 
 import { AccessToken } from '../../../base/models/paramsModel'
 import { PageInfoProps, PageInputProps } from '../../../interfaces'
-import { ProveedorProps } from '../interfaces/proveedor.interface'
+import { ProveedorProps } from '../interfaces/alicuota.interface'
 
 const gqlQuery = gql`
   query ALICUOTAS {
@@ -23,13 +23,23 @@ const gqlQuery = gql`
 `
 
 interface ProveedorResponse {
+  [x: string]: any
   pageInfo: PageInfoProps
   docs: ProveedorProps[]
 }
 
-export const apiProveedores = async (
+export const apiAlicuotas = async (
   pageInfo: PageInputProps,
 ): Promise<ProveedorResponse> => {
+  const client = new GraphQLClient(import.meta.env.ISI_API_URL)
+  const token = localStorage.getItem(AccessToken)
+  // Set a single header
+  client.setHeader('authorization', `Bearer ${token}`)
+  const data: any = await client.request(gqlQuery)
+  return data.alicuotaIceListado
+}
+
+export const apiAlicuotas2 = async (): Promise<ProveedorResponse> => {
   const client = new GraphQLClient(import.meta.env.ISI_API_URL)
   const token = localStorage.getItem(AccessToken)
   // Set a single header

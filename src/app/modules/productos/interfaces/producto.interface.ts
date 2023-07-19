@@ -85,7 +85,6 @@ export interface OpcionesProductoProps {
 
 export interface ProductoInputProps {
   codigoProducto: string
-  codigoNandina: string
   nombre: string
   descripcion: string
   descripcionHtml: string
@@ -96,6 +95,8 @@ export interface ProductoInputProps {
   tipoProducto: TipoProductoProps | null
   codigoProveedor: ProveedorProps | null
   state?: string
+  marcaIce?: number
+  subPartidaArancelaria?: string
 }
 
 export const PRODUCTO_VARIANTE_INITIAL_VALUES: ProductoVarianteInputProps = {
@@ -117,7 +118,6 @@ export const PRODUCTO_VARIANTE_INITIAL_VALUES: ProductoVarianteInputProps = {
 
 export const PRODUCTO_INITIAL_VALUES: ProductoInputProps = {
   codigoProducto: '',
-  codigoNandina: '',
   nombre: '',
   descripcion: '',
   descripcionHtml: '',
@@ -128,6 +128,8 @@ export const PRODUCTO_INITIAL_VALUES: ProductoInputProps = {
   tipoProducto: null,
   codigoProveedor: null,
   state: '',
+  marcaIce: 1,
+  subPartidaArancelaria: '',
 }
 
 export interface ProductoVarianteApiProps {

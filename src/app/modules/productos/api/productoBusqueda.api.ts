@@ -15,39 +15,52 @@ export interface FacturaProps {
 
 const productoQuery = (query: string) => gql`
     query PRODUCTOS_BUSQUEDA {
-        fcvProductoBusqueda(query: "${query}") {
+        iceProductoBusqueda(query: "${query}") {
             codigoProducto
-            titulo
-            nombre
-            codigoBarras
-            precio
-            precioComparacion
-            inventario{
-                stock
-            }
-            unidadMedida{
-                codigoClasificador
-                descripcion
-            }
-            producto{
-                _id
-                titulo
-                rangoPrecios{
-                    precioVarianteMaximo
-                    precioVarianteMinimo
-                }
-                sinProductoServicio{
-                    codigoActividad
-                    codigoProducto
-                }
-                tipoProducto
-                totalVariantes
-                seguimientoInventario
-                imagenDestacada{
-                    altText
-                    url
-                }
-            }
+			nombre
+			descripcion
+			actividadEconomica{
+				codigoCaeb
+				descripcion
+				tipoActividad
+			}
+			descripcionHtml
+			tipoProducto{
+				_id
+				descripcion
+				codigoParent
+			}
+			imagen{
+				altText
+				url
+			}
+			proveedor{
+				codigo
+				nombre
+				correo
+			}
+			sinProductoServicio{
+				codigoActividad
+				codigoProducto
+				descripcionProducto
+			}
+			precio
+			precioComparacion
+			costo
+			unidadMedida{
+				codigoClasificador
+				descripcion
+			}
+			marcaIce
+			subPartidaArancelaria
+			alicuotaDescripcion
+			alicuotaEspecifica
+			alicuotaPorcentual
+			state
+			usucre
+			usumod
+			updatedAt
+			createdAt
         }
     }
 `
@@ -61,5 +74,5 @@ export const fetchProductoBusqueda = async (
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(productoQuery(query))
-  return data?.fcvProductoBusqueda || []
+  return data?.iceProductoBusqueda || []
 }
