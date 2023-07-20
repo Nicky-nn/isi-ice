@@ -43,7 +43,7 @@ const VentaRegistro = () => {
         <Breadcrumb
           routeSegments={[
             { name: 'Ventas', path: '/ventas/registro' },
-            { name: 'Registrar Exportación' },
+            { name: 'Registrar ICE' },
           ]}
         />
       </div>

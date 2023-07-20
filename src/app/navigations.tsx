@@ -29,11 +29,11 @@ export const navigations: NavigationProps[] = [
     type: 'label',
   },
   {
-    name: 'Exportaciones',
+    name: 'Consumos Específicos',
     icon: 'point_of_sale',
     children: [
       {
-        name: 'Registrar Exportación',
+        name: 'Registrar ICE',
         iconText: 'ALRE',
         path: '/ventas/registro',
       },
