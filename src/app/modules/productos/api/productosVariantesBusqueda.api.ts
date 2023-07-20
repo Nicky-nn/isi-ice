@@ -7,10 +7,9 @@ import { ProductoVarianteProps } from '../interfaces/producto.interface'
 
 const reqQuery = gql`
   query BUSQUEDA($query: String!) {
-    expoProductoBusqueda(query: $query) {
+    iceProductoBusqueda(query: $query) {
       state
       codigoProducto
-      codigoNandina
       nombre
       descripcion
       actividadEconomica {
@@ -45,6 +44,11 @@ const reqQuery = gql`
         codigoClasificador
         descripcion
       }
+      alicuotaEspecifica
+      alicuotaPorcentual
+      alicuotaDescripcion
+      marcaIce
+      subPartidaArancelaria
     }
   }
 `
@@ -58,5 +62,5 @@ export const apiProductosVariantesBusqueda = async (
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(reqQuery, { query })
-  return data?.expoProductoBusqueda || []
+  return data?.iceProductoBusqueda || []
 }

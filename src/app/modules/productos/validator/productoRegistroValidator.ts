@@ -7,7 +7,6 @@ import { ProductoInputProps } from '../interfaces/producto.interface'
 export const productoRegistroValidatorResponde = async (
   alq: ProductoInputProps,
 ): Promise<boolean> => {
-  console.log('validacion', alq)
   setLocale(es)
   const schema = object({
     codigoProducto: string().required('Debe ingresar el código del producto'),
@@ -23,10 +22,8 @@ export const productoRegistroValidatorResponde = async (
 
   try {
     await schema.validate(alq, { abortEarly: false })
-    console.log('validacion correcta')
     return true
   } catch (e: any) {
-    console.log('validacion incorrecta')
     console.log(e)
     return false
   }

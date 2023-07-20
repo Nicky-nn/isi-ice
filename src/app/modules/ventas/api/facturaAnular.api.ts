@@ -23,6 +23,5 @@ export const fetchFacturaAnular = async (
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(ALQ_ONLINE, { cuf, codigoMotivo })
-  console.log('data', data)
   return data.facturaIceAnular
 }

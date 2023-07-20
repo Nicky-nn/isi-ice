@@ -10,8 +10,23 @@ const gqlQuery = gql`
     usuarioRestriccion {
       sucursales {
         codigo
+        telefono
+        direccion
+        departamento {
+          codigo
+          codigoPais
+          sigla
+          departamento
+        }
+        municipio
         puntosVenta {
           codigo
+          tipoPuntoVenta {
+            codigoClasificador
+            descripcion
+          }
+          nombre
+          descripcion
         }
       }
     }

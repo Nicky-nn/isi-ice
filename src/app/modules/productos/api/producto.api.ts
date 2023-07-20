@@ -90,6 +90,5 @@ export const apiProductos = async (
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(query, { ...pageInfo })
-  console.log(data.iceProductoListado)
   return data.iceProductoListado
 }

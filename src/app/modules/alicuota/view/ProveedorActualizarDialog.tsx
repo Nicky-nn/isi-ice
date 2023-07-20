@@ -33,7 +33,6 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
     validationSchema: proveedorRegistroValidationSchema,
     onSubmit: async (values) => {
       const { subPartidaArancelaria, ...valuesWithoutCodigo } = values // Excluir la propiedad 'codigo'
-      console.log(subPartidaArancelaria, valuesWithoutCodigo)
       await swalAsyncConfirmDialog({
         preConfirm: () => {
           return apiProveedorActualizar(

@@ -56,7 +56,12 @@ export interface ProductoVarianteProps {
   usumod?: string
   updatedAt?: Date
   proveedor?: ProveedorProps
-  codigoNandina?: string
+  marcaIce?: number
+  subPartidaArancelaria?: string
+  alicuotaDescripcion?: string
+  alicuotaEspecifica?: number
+  alicuotaPorcentual?: number
+  cantidadIce?: number
 }
 
 export interface ProductoVarianteInputProps {

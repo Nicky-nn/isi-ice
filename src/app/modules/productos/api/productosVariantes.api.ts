@@ -17,7 +17,7 @@ const reqQuery = gql`
     $page: Int!
     $query: String
   ) {
-    expoProductoListado(limit: $limit, reverse: $reverse, page: $page, query: $query) {
+    iceProductoListado(limit: $limit, reverse: $reverse, page: $page, query: $query) {
       pageInfo {
         hasNextPage
         hasPrevPage
@@ -27,7 +27,6 @@ const reqQuery = gql`
       }
       docs {
         codigoProducto
-        codigoNandina
         state
         nombre
         descripcion
@@ -63,6 +62,11 @@ const reqQuery = gql`
           codigoClasificador
           descripcion
         }
+        marcaIce
+        subPartidaArancelaria
+        alicuotaDescripcion
+        alicuotaEspecifica
+        alicuotaPorcentual
         state
         usucre
         createdAt
@@ -89,5 +93,5 @@ export const apiProductosVariantes = async (
   client.setHeader('authorization', `Bearer ${token}`)
 
   const data: any = await client.request(reqQuery, { ...pageInfo })
-  return data?.expoProductoListado || []
+  return data?.iceProductoListado || []
 }

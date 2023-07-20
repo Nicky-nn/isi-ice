@@ -44,8 +44,30 @@ const ProductosVariantes: FunctionComponent<Props> = (props) => {
         header: 'Producto / Servicio',
       },
       {
-        accessorKey: 'codigoNandina',
-        header: 'Código Nandina',
+        accessorKey: 'unidadMedida.descripcion',
+        header: 'Unidad Medida',
+        enableColumnFilter: false,
+      },
+      {
+        accessorKey: 'marcaIce',
+        header: 'Marca ICE',
+        size: 150,
+      },
+      {
+        accessorKey: 'subPartidaArancelaria',
+        header: 'Sub Partida Arancelaria',
+      },
+      {
+        accessorKey: 'alicuotaDescripcion',
+        header: 'Alicuota',
+      },
+      {
+        accessorKey: 'alicuotaEspecifica',
+        header: 'Alicuota Especifica',
+      },
+      {
+        accessorKey: 'alicuotaPorcentual',
+        header: 'Alicuota Porcentual',
       },
       {
         accessorKey: 'precio',
@@ -57,11 +79,6 @@ const ProductosVariantes: FunctionComponent<Props> = (props) => {
           return numberWithCommas(row.precio, {})
         },
         size: 100,
-      },
-      {
-        accessorKey: 'unidadMedida.descripcion',
-        header: 'Unidad Medida',
-        enableColumnFilter: false,
       },
       {
         accessorKey: 'sinProductoServicio.codigoActividad',

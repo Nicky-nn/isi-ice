@@ -95,8 +95,6 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
       const response = await apiProductoPorId(codigoProducto)
       setProducto(response[0])
       const act = await fetchSinActividades()
-      // console.log('act', act)
-      console.log('response', response)
       if (response) {
         // form.reset(response)
         const codigoActividad = response.sinProductoServicio

@@ -79,7 +79,7 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
   const handleFocus = (event: any) => event.target.select()
   const onSubmit: SubmitHandler<FacturaInputProps> = async (data) => {
     const inputFactura = composeFactura(data)
-    const notification = checked
+    const notification = true
     const validator = await composeFacturaValidator(inputFactura).catch((err: Error) => {
       notError(err.message)
     })
@@ -257,6 +257,17 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
           >
             <ListItemText primary={<strong>TOTAL</strong>} />
           </ListItem>
+          <ListItem
+            style={{ padding: 0 }}
+            secondaryAction={
+              <Typography variant="subtitle1" gutterBottom>
+                {numberWithCommas(calculoMoneda(Number(getValues('total')) || 0), {})}
+                <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
+              </Typography>
+            }
+          >
+            <ListItemText primary={<strong>TOTAL ICE ESPECÍFICO</strong>} />
+          </ListItem>
           <Divider
             variant="inset"
             component="li"
@@ -307,20 +318,6 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             <Typography variant="h6" gutterBottom mr={2} align={'right'} color={'red'}>
               {numberWithCommas(calculoMoneda(getValues('inputVuelto') || 0), {})}
             </Typography>
-          </Grid>
-
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={9} md={9} lg={9}>
-              <h3 style={{ paddingInlineStart: 30 }}>Notificar al Correo Electrónico</h3>
-            </Grid>
-            <Grid item xs={3} md={3} lg={3}>
-              <Switch
-                defaultChecked={false}
-                sx={{ transform: 'scale(1.5)' }}
-                checked={checked}
-                onChange={handleChange}
-              />
-            </Grid>
           </Grid>
 
           <Grid item xs={12} md={12} lg={12}>

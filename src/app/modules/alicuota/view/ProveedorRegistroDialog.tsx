@@ -31,7 +31,6 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
     validationSchema: proveedorRegistroValidationSchema,
     onSubmit: async (values) => {
       const { subPartidaArancelaria, ...valuesWithoutCodigo } = values
-      console.log(subPartidaArancelaria, valuesWithoutCodigo)
       await swalAsyncConfirmDialog({
         preConfirm: () => {
           return apiProveedorRegistro(

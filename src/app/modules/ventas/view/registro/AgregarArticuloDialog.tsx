@@ -50,7 +50,9 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
     verificarStock: false,
     id: genRandomString(5),
     codigoProducto: genRandomString(10).toUpperCase(),
-    codigoNandina: '',
+    marcaIce: 1,
+    alicuotaEspecifica: '',
+    alicuotaPorcentual: '',
     nombre: '',
     precio: 0,
     titulo: '',
@@ -81,7 +83,6 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
 
   const handleOk = () => {
     try {
-      // console.log(inputForm)
       if (inputForm.titulo.trim().length === 0) {
         throw new Error('Debe ingresar título del producto')
       }
@@ -97,27 +98,29 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
       if (isEmptyValue(inputForm.sinProductoServicio)) {
         throw new Error('Seleccione producto para homologación')
       }
-      if (inputForm.codigoNandina.trim().length === 0) {
-        throw new Error('Debe ingresar código nandina')
+      if (isEmptyValue(inputForm.marcaIce)) {
+        throw new Error('Debe ingresar marca ICE')
+      } else if (
+        inputForm.marcaIce === 1 &&
+        (isEmptyValue(inputForm.alicuotaEspecifica) ||
+          isEmptyValue(inputForm.alicuotaPorcentual))
+      ) {
+        throw new Error('Debe ingresar alicuota especifica y porcentual')
       }
+
       // Se elimino para q no marque error Funion no funcional vea doumnetacion
       const nuevoDetalle = {
         _id: inputForm.id,
         id: inputForm.id,
         sinProductoServicio: inputForm.sinProductoServicio,
         codigoProducto: inputForm.codigoProducto,
-        codigoNandina: inputForm.codigoNandina,
-        // producto: {
-        //   // titulo: inputForm.titulo,
-        //   descripcion: inputForm.nombre,
-        //   descripcionHtml: inputForm.nombre,
-        //   // opcionesProducto: [],
-        //   // tipoProducto: null,
-        //   // totalVariantes: 1,
-        //   // varianteUnica: true,
-        //   // proveedor: null,
-        //   // usucre: user.nombres,
-        // },
+        marcaIce: parseInt(inputForm.marcaIce),
+        ...(inputForm.marcaIce === 1
+          ? {
+              alicuotaEspecifica: parseFloat(inputForm.alicuotaEspecifica),
+              alicuotaPorcentual: parseFloat(inputForm.alicuotaPorcentual),
+            }
+          : {}),
         titulo: inputForm.titulo,
         nombre: inputForm.nombre,
         codigoBarras: null,
@@ -130,6 +133,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
         inventario: inputForm.inventario,
         usucre: user.nombres,
       }
+
       onClose(nuevoDetalle)
     } catch (e: any) {
       notError(e.message)
@@ -171,7 +175,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
         open={open}
         {...other}
       >
-        <DialogTitle>Agregar Producto Personalizado</DialogTitle>
+        <DialogTitle>Agregar Servicio Personalizado</DialogTitle>
         <DialogContent dividers>
           {!isError ? (
             <Grid container spacing={2.5}>
@@ -223,19 +227,76 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                 </FormControl>
               </Grid>
 
-              <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <TextField
-                  id="codigoNandina"
-                  label="Codigo Nandina"
-                  size={'small'}
+                  type="number"
+                  id="marcaIce"
+                  label="Marca Ice"
+                  size="small"
                   fullWidth
-                  value={inputForm.codigoNandina}
+                  value={inputForm.marcaIce}
                   onChange={(e) => {
-                    setInputForm({
-                      ...inputForm,
-                      codigoNandina: e.target.value,
-                    })
+                    const inputValue = e.target.value
+                    // Validar que solo sean números entre 1 y 2
+                    if (/^[1-2]{1}$/.test(inputValue)) {
+                      setInputForm({
+                        ...inputForm,
+                        marcaIce: parseInt(inputValue),
+                      })
+                    }
                   }}
+                  onKeyDown={(e) => {
+                    const validKeys = [1, 2]
+                    if (!validKeys.includes(Number(e.key))) {
+                      e.preventDefault()
+                    }
+                  }}
+                  inputProps={{
+                    min: 1,
+                    max: 2,
+                  }}
+                />
+              </Grid>
+              <Grid item lg={4} md={4} sm={4} xs={4}>
+                <TextField
+                  id="alicuotaEspecifica"
+                  label="Alicuota Especifica"
+                  type="number"
+                  size="small"
+                  fullWidth
+                  value={inputForm.alicuotaEspecifica}
+                  onChange={(e) => {
+                    // Validar que solo sean números con hasta 5 decimales
+                    const inputValue = e.target.value
+                    if (/^\d+(\.\d{0,5})?$/.test(inputValue)) {
+                      setInputForm({
+                        ...inputForm,
+                        alicuotaEspecifica: parseFloat(inputValue),
+                      })
+                    }
+                  }}
+                  disabled={inputForm.marcaIce === 2}
+                />
+              </Grid>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
+                <TextField
+                  id="alicuotaPorcentual"
+                  label="Alicuota Porcentual"
+                  size="small"
+                  fullWidth
+                  type="number"
+                  value={inputForm.alicuotaPorcentual}
+                  onChange={(e) => {
+                    // Validar que solo sean números con hasta 5 decimales
+                    const inputValue = e.target.value
+                    if (/^\d+(\.\d{0,5})?$/.test(inputValue)) {
+                      setInputForm({
+                        ...inputForm,
+                        alicuotaPorcentual: parseFloat(inputValue),
+                      })
+                    }
+                  }}
+                  disabled={inputForm.marcaIce === 2}
                 />
               </Grid>
               <Grid item lg={12} md={12} sm={12} xs={12}>

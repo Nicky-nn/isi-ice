@@ -17,8 +17,8 @@ export interface FacturaProps {
 const genDetalle = () => {}
 
 export const REGISTRO_ONLINE = gql`
-  mutation EXPO_REGISTRO($notificacion: Boolean, $input: FacturaExportacionInput!) {
-    facturaExportacionRegistro(notificacion: $notificacion, input: $input) {
+  mutation ICE_REGISTRO($notificacion: Boolean, $input: FacturaIceInput!) {
+    facturaIceRegistro(notificacion: $notificacion, input: $input) {
       state
       numeroFactura
       representacionGrafica {
@@ -49,7 +49,7 @@ export const fetchFacturaCreate = async (
       notificacion: notificacion,
       input: input,
     })
-    return data.facturaExportacionRegistro
+    return data.facturaIceRegistro
   } catch (e: any) {
     console.log('error', e)
     // error en json

@@ -25,18 +25,9 @@ export interface FacturaAlquilerDetalleInput extends ProductoVarianteProps {
   codigoNandina: string
   // descripcion: string
   cantidad: number
+  cantidadIce: number
   precioUnitario: number
   montoDescuento: number
-}
-
-export interface FacturaExpoCostosGastosNacionalesInputProps {
-  campo: string
-  valor: number
-}
-
-export interface FacturaExpoCostosGastosInternacionalesInputProps {
-  campo: string
-  valor: number
 }
 
 export interface FacturaInputProps {
@@ -48,7 +39,6 @@ export interface FacturaInputProps {
   codigoMetodoPago: MetodoPagoProp
   descuentoAdicional: number
   codigoMoneda: number
-  periodoFacturado: string
   detalle: FacturaAlquilerDetalleInput[]
   detalleExtra?: string | null
   detalleExtraText?: string | null
@@ -61,18 +51,7 @@ export interface FacturaInputProps {
   inputMontoPagar: number
   inputVuelto: number
   moneda?: MonedaProps
-  direccionComprador?: string
-  lugarDestino?: string
-  incoterm?: string
-  incotermDetalle?: string
-  puertoDestino?: string
-  codigoPais?: number
-  costosGastosNacionales?: FacturaExpoCostosGastosNacionalesInputProps[]
-  costosGastosInternacionales?: FacturaExpoCostosGastosInternacionalesInputProps[]
-  numeroDescripcionPaquetesBultos?: string
-  informacionAdicional?: string
   notificacion?: boolean
-  codigoNandina?: string
 }
 
 /**
@@ -90,30 +69,18 @@ export const FacturaInitialValues: FacturaInputProps = {
     codigoClasificador: 1,
     descripcion: 'EFECTIVO',
   },
-  periodoFacturado: '',
   codigoMoneda: 1,
   descuentoAdicional: 0,
   detalle: [] as FacturaAlquilerDetalleInput[],
   detalleExtra: '',
   detalleExtraText: '',
   emailCliente: null,
-  // montoGiftCard: 0,
   numeroTarjeta: null,
   montoSubTotal: 0,
   montoPagar: 0,
   total: 0,
   inputMontoPagar: 0,
   inputVuelto: 0,
-  direccionComprador: '',
-  incoterm: '',
-  incotermDetalle: '',
-  puertoDestino: '',
-  lugarDestino: '',
-  codigoPais: 0,
-  costosGastosNacionales: [] as FacturaExpoCostosGastosNacionalesInputProps[],
-  costosGastosInternacionales: [] as FacturaExpoCostosGastosInternacionalesInputProps[],
-  numeroDescripcionPaquetesBultos: '',
-  informacionAdicional: '',
 }
 
 export interface RepresentacionGraficaProps {

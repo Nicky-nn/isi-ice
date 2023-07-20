@@ -83,6 +83,7 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
         ...(newInput as FacturaAlquilerDetalleInput),
         codigoProductoSin: newInput.sinProductoServicio.codigoProducto,
         cantidad: 1,
+        cantidadIce: 0,
         precioUnitario: newInput.precio,
         montoDescuento: 0,
         subtotal: 0,
@@ -202,6 +203,9 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                         Cantidad
                       </th>
                       <th scope="col" style={{ width: 160 }}>
+                        Cantidad ICE
+                      </th>
+                      <th scope="col" style={{ width: 160 }}>
                         Precio ({monedaTienda.sigla})
                       </th>
                       <th scope="col" style={{ width: 160 }}>
@@ -261,7 +265,10 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                           color="text.primary"
                                         >
                                           {`Código: ${item.codigoProducto}`} <br />
-                                          {`Código Nandina: ${item.codigoNandina}`}{' '}
+                                          {`Código Ice: ${item.marcaIce}`} <br />
+                                          {`Alicuota Específica: ${item.alicuotaEspecifica}`}
+                                          <br />
+                                          {`Alicuota Porcentual: ${item.alicuotaPorcentual}`}{' '}
                                         </Typography>{' '}
                                         <br />
                                         {`${item.unidadMedida.descripcion || ''}`}
@@ -286,7 +293,29 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                     }
                                   }
                                 }}
-                                formatter={numberWithCommas}
+                                formatter={(value, info) =>
+                                  numberWithCommas(value, info, 5)
+                                }
+                              />
+                            </td>
+                            <td data-label="CANTIDAD ICE">
+                              <InputNumber
+                                min={0.1}
+                                value={item.cantidadIce}
+                                onFocus={handleFocus}
+                                onChange={(cantidadIce: number | null) => {
+                                  if (cantidadIce) {
+                                    if (cantidadIce >= 0) {
+                                      update(index, {
+                                        ...item,
+                                        cantidadIce,
+                                      })
+                                    }
+                                  }
+                                }}
+                                formatter={(value, info) =>
+                                  numberWithCommas(value, info, 5)
+                                }
                               />
                             </td>
                             <td data-label={`PRECIO (${monedaTienda.sigla})`}>
@@ -305,7 +334,9 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                     }
                                   }
                                 }}
-                                formatter={numberWithCommas}
+                                formatter={(value, info) =>
+                                  numberWithCommas(value, info, 5)
+                                }
                               />
                             </td>
                             <td data-label={`DESCUENTO (${monedaTienda.sigla})`}>
@@ -328,7 +359,9 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                     }
                                   }
                                 }}
-                                formatter={numberWithCommas}
+                                formatter={(value, info) =>
+                                  numberWithCommas(value, info, 5)
+                                }
                               />
                             </td>
                             <td
