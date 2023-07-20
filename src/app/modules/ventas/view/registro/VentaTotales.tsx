@@ -69,6 +69,26 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
   const inputMoneda = getValues('moneda')
   const tipoCambio = getValues('tipoCambio')
 
+  // Obtener los detalles del formulario usando getValues
+  const detalles = getValues('detalle')
+
+  // Calcular la suma de alicuotaEspecifica
+  let sumAlicuotaEspecifica = 0
+  detalles.forEach((detalle, index) => {
+    const alicuotaEspecifica = detalle?.alicuotaEspecifica
+    if (alicuotaEspecifica !== undefined) {
+      sumAlicuotaEspecifica += alicuotaEspecifica
+    }
+  })
+
+  let sumAlicuotaPorcentual = 0
+  detalles.forEach((detalle, index) => {
+    const alicuotaPorcentual = detalle?.alicuotaPorcentual
+    if (alicuotaPorcentual !== undefined) {
+      sumAlicuotaPorcentual += alicuotaPorcentual
+    }
+  })
+
   const [checked, setChecked] = useState(false)
 
   const handleChange = (event: any) => {
@@ -257,17 +277,35 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
           >
             <ListItemText primary={<strong>TOTAL</strong>} />
           </ListItem>
+
           <ListItem
             style={{ padding: 0 }}
             secondaryAction={
               <Typography variant="subtitle1" gutterBottom>
-                {numberWithCommas(calculoMoneda(Number(getValues('total')) || 0), {})}
+                {sumAlicuotaEspecifica.toLocaleString('en', {
+                  minimumFractionDigits: 2,
+                })}
                 <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
               </Typography>
             }
           >
             <ListItemText primary={<strong>TOTAL ICE ESPECÍFICO</strong>} />
           </ListItem>
+
+          <ListItem
+            style={{ padding: 0 }}
+            secondaryAction={
+              <Typography variant="subtitle1" gutterBottom>
+                {sumAlicuotaPorcentual.toLocaleString('en', {
+                  minimumFractionDigits: 2,
+                })}
+                <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
+              </Typography>
+            }
+          >
+            <ListItemText primary={<strong>TOTAL ICE PORCENTUAL</strong>} />
+          </ListItem>
+
           <Divider
             variant="inset"
             component="li"

@@ -52,6 +52,7 @@ export interface FacturaInputProps {
   inputVuelto: number
   moneda?: MonedaProps
   notificacion?: boolean
+  totalICE?: number
 }
 
 /**
