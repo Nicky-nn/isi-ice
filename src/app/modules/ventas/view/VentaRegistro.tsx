@@ -9,11 +9,6 @@ import Breadcrumb from '../../../base/components/Template/Breadcrumb/Breadcrumb'
 import SimpleCard from '../../../base/components/Template/Cards/SimpleCard'
 import useAuth from '../../../base/hooks/useAuth'
 import usePlantillaDetalleExtra from '../../base/detalleExtra/hook/usePlantillaDetalleExtra'
-import Direcciones from '../components/Registro/Direcciones'
-import Incoter from '../components/Registro/Gastos'
-import Gastos from '../components/Registro/Gastos'
-import InformacionAdicional from '../components/Registro/InformacionAdicional'
-import RangeDays from '../components/Registro/RangeDays'
 import { FacturaInitialValues, FacturaInputProps } from '../interfaces/factura'
 import { VentaRegistroValidator } from '../validator/ventaRegistroValidator'
 import DatosActividadEconomica from './registro/DatosActividadEconomica'
@@ -33,7 +28,6 @@ const VentaRegistro = () => {
     // @ts-ignore
     resolver: yupResolver(VentaRegistroValidator),
   })
-  // console.log(form.getValues())
 
   const { pdeLoading, plantillaDetalleExtra } = usePlantillaDetalleExtra()
 

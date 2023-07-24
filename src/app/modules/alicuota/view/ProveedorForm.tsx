@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@mui/material'
+import { Grid, InputAdornment, TextField } from '@mui/material'
 import { FormikProps } from 'formik'
 import React, { FunctionComponent } from 'react'
 
@@ -43,7 +43,17 @@ const ProveedorForm: FunctionComponent<Props> = (props) => {
               type="number"
               fullWidth
               value={formik.values.alicuotaEspecifica}
-              onChange={formik.handleChange}
+              onChange={(e) => {
+                const inputValue = e.target.value
+                if (
+                  inputValue === '' || // Permite borrar el campo
+                  (/^(100000(\.\d{1,5})?|\d{0,5}(\.\d{0,5})?)$/.test(inputValue) &&
+                    parseFloat(inputValue) >= 0 &&
+                    parseFloat(inputValue) <= 100000)
+                ) {
+                  formik.setFieldValue('alicuotaEspecifica', inputValue)
+                }
+              }}
               onBlur={formik.handleBlur}
               error={
                 formik.touched.alicuotaEspecifica &&
@@ -54,6 +64,7 @@ const ProveedorForm: FunctionComponent<Props> = (props) => {
               }
             />
           </Grid>
+
           <Grid item xs={12} md={4} lg={4}>
             <TextField
               name="alicuotaPorcentual"
@@ -62,8 +73,17 @@ const ProveedorForm: FunctionComponent<Props> = (props) => {
               type="number"
               fullWidth
               value={formik.values.alicuotaPorcentual}
-              onChange={formik.handleChange}
-              required
+              onChange={(e) => {
+                const inputValue = e.target.value
+                if (
+                  inputValue === '' || // Permite borrar el campo
+                  (/^(100(\.\d{1,5})?|\d{0,2}(\.\d{0,5})?)$/.test(inputValue) &&
+                    parseFloat(inputValue) >= 0 &&
+                    parseFloat(inputValue) <= 100)
+                ) {
+                  formik.setFieldValue('alicuotaPorcentual', parseFloat(inputValue))
+                }
+              }}
               onBlur={formik.handleBlur}
               error={
                 formik.touched.alicuotaPorcentual &&
@@ -72,8 +92,12 @@ const ProveedorForm: FunctionComponent<Props> = (props) => {
               helperText={
                 formik.touched.alicuotaPorcentual && formik.errors.alicuotaPorcentual
               }
+              InputProps={{
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              }}
             />
           </Grid>
+
           <Grid item xs={12} md={8} lg={8}>
             <TextField
               name="descripcion"

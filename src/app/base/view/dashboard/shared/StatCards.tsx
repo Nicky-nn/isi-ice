@@ -191,23 +191,6 @@ const StatCards = () => {
           />
         </Card>
       </Grid>
-
-      <Grid item xs={12} md={8}>
-        <Card elevation={3} sx={{ p: 2 }}>
-          <ContentBox>
-            <Icon sx={{ color: textError }}>star_outline</Icon>
-            <H3 textcolor={textError}>Ventas de mes</H3>
-          </ContentBox>
-          <ContentBox sx={{ pt: 2 }}>
-            <H1>{tablaData.totalVentaMes} DOL</H1>{' '}
-            {/* Mostrar el monto total de ventas del mes */}
-            <IconBox sx={{ background: bgError }}>
-              <Icon className="icon">expand_less</Icon>
-            </IconBox>
-            {/* <Span textcolor={textError}>(+21%)</Span> */}
-          </ContentBox>
-        </Card>
-      </Grid>
     </Grid>
   )
 }

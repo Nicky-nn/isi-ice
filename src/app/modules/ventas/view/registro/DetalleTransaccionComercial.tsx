@@ -83,7 +83,7 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
         ...(newInput as FacturaAlquilerDetalleInput),
         codigoProductoSin: newInput.sinProductoServicio.codigoProducto,
         cantidad: 1,
-        cantidadIce: 0,
+        cantidadIce: 1,
         precioUnitario: newInput.precio,
         montoDescuento: 0,
         subtotal: 0,
@@ -265,7 +265,7 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                           color="text.primary"
                                         >
                                           {`Código: ${item.codigoProducto}`} <br />
-                                          {`Código Ice: ${item.marcaIce}`} <br />
+                                          {`Marca Ice: ${item.marcaIce}`} <br />
                                           {`Alicuota Específica: ${item.alicuotaEspecifica}`}
                                           <br />
                                           {`Alicuota Porcentual: ${item.alicuotaPorcentual}`}{' '}
@@ -301,23 +301,34 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                             <td data-label="CANTIDAD ICE">
                               <InputNumber
                                 min={0.1}
-                                value={item.cantidadIce}
+                                value={item.marcaIce === 2 ? 0 : item.cantidadIce}
                                 onFocus={handleFocus}
                                 onChange={(cantidadIce: number | null) => {
-                                  if (cantidadIce) {
-                                    if (cantidadIce >= 0) {
+                                  if (cantidadIce !== null) {
+                                    if (item.marcaIce === 2) {
+                                      // Si marcaIce es 2, establecer cantidadIce en 0 y no permitir la edición.
                                       update(index, {
                                         ...item,
-                                        cantidadIce,
+                                        cantidadIce: 0,
                                       })
+                                    } else {
+                                      // Si marcaIce no es 2, permitir la edición del valor de cantidadIce.
+                                      if (cantidadIce >= 0) {
+                                        update(index, {
+                                          ...item,
+                                          cantidadIce,
+                                        })
+                                      }
                                     }
                                   }
                                 }}
                                 formatter={(value, info) =>
                                   numberWithCommas(value, info, 5)
                                 }
+                                readOnly={item.marcaIce === 2} // Deshabilitar la edición si marcaIce es 2.
                               />
                             </td>
+
                             <td data-label={`PRECIO (${monedaTienda.sigla})`}>
                               <InputNumber
                                 min={0}

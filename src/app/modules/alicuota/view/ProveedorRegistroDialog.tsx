@@ -31,6 +31,11 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
     validationSchema: proveedorRegistroValidationSchema,
     onSubmit: async (values) => {
       const { subPartidaArancelaria, ...valuesWithoutCodigo } = values
+      //editar valuesWithoutCodigo
+      valuesWithoutCodigo.alicuotaEspecifica = parseFloat(
+        // @ts-ignore
+        valuesWithoutCodigo.alicuotaEspecifica,
+      )
       await swalAsyncConfirmDialog({
         preConfirm: () => {
           return apiProveedorRegistro(
@@ -42,11 +47,13 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
             return false
           })
         },
-        text: 'Confirma que desea actualizar Alicuota?',
+        text: 'Confirma que desea Registrar Alicuota?',
       }).then((resp) => {
         if (resp.isConfirmed) {
           notSuccess()
           onClose(resp.value)
+          // lIMPIAR FORMULARIO
+          formik.resetForm()
         }
       })
     },

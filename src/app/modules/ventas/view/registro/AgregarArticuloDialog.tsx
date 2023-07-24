@@ -6,6 +6,7 @@ import {
   DialogTitle,
   FormControl,
   Grid,
+  InputAdornment,
   InputLabel,
   TextField,
 } from '@mui/material'
@@ -146,9 +147,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
       // const resp = await apiProductoServicioUnidadMedida(codigoActividad)
       const resp = await apiProductoServicioUnidadMedida()
       if (resp) {
-        // console.log(resp)
         setUnidadesMedida(resp.sinUnidadMedida)
-        // console.log(resp.sinProductoServicioPorActividad)
         setProductosServicios(resp.sinProductoServicioPorDocumentoSector)
       }
     } catch (e: any) {
@@ -237,17 +236,17 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                   value={inputForm.marcaIce}
                   onChange={(e) => {
                     const inputValue = e.target.value
-                    // Validar que solo sean números entre 1 y 2
-                    if (/^[1-2]{1}$/.test(inputValue)) {
+                    // Validar que solo sean números entre 1 y 2 o campo vacío
+                    if (inputValue === '' || /^[1-2]$/.test(inputValue)) {
                       setInputForm({
                         ...inputForm,
-                        marcaIce: parseInt(inputValue),
+                        marcaIce: inputValue !== '' ? parseInt(inputValue) : '',
                       })
                     }
                   }}
                   onKeyDown={(e) => {
-                    const validKeys = [1, 2]
-                    if (!validKeys.includes(Number(e.key))) {
+                    const validKeys = ['1', '2', 'Backspace', 'Delete']
+                    if (!validKeys.includes(e.key)) {
                       e.preventDefault()
                     }
                   }}
@@ -257,7 +256,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                   }}
                 />
               </Grid>
-              <Grid item lg={4} md={4} sm={4} xs={4}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <TextField
                   id="alicuotaEspecifica"
                   label="Alicuota Especifica"
@@ -268,16 +267,25 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                   onChange={(e) => {
                     // Validar que solo sean números con hasta 5 decimales
                     const inputValue = e.target.value
-                    if (/^\d+(\.\d{0,5})?$/.test(inputValue)) {
-                      setInputForm({
-                        ...inputForm,
-                        alicuotaEspecifica: parseFloat(inputValue),
-                      })
+
+                    // Si el valor está entre 0 y 100, o es una cadena vacía (borrado), se actualiza el estado
+                    if (/^\d+(\.\d{0,5})?$/.test(inputValue) || inputValue === '') {
+                      const numericValue = inputValue === '' ? '' : parseFloat(inputValue)
+                      if (
+                        numericValue === '' ||
+                        (numericValue >= 0 && numericValue <= 10000)
+                      ) {
+                        setInputForm({
+                          ...inputForm,
+                          alicuotaEspecifica: numericValue,
+                        })
+                      }
                     }
                   }}
                   disabled={inputForm.marcaIce === 2}
                 />
               </Grid>
+
               <Grid item lg={4} md={4} sm={4} xs={12}>
                 <TextField
                   id="alicuotaPorcentual"
@@ -289,16 +297,28 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                   onChange={(e) => {
                     // Validar que solo sean números con hasta 5 decimales
                     const inputValue = e.target.value
-                    if (/^\d+(\.\d{0,5})?$/.test(inputValue)) {
-                      setInputForm({
-                        ...inputForm,
-                        alicuotaPorcentual: parseFloat(inputValue),
-                      })
+
+                    // Si el valor está entre 0 y 100, o es una cadena vacía (borrado), se actualiza el estado
+                    if (/^\d+(\.\d{0,5})?$/.test(inputValue) || inputValue === '') {
+                      const numericValue = inputValue === '' ? '' : parseFloat(inputValue)
+                      if (
+                        numericValue === '' ||
+                        (numericValue >= 0 && numericValue <= 100)
+                      ) {
+                        setInputForm({
+                          ...inputForm,
+                          alicuotaPorcentual: numericValue,
+                        })
+                      }
                     }
+                  }}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">%</InputAdornment>,
                   }}
                   disabled={inputForm.marcaIce === 2}
                 />
               </Grid>
+
               <Grid item lg={12} md={12} sm={12} xs={12}>
                 <TextField
                   id="nombre"

@@ -1,13 +1,9 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vitejs.dev/config/
-/**
- * node_modules es principalmente la razón principal del problema de los fragmentos grandes.
- * Con esto le estás diciendo a Vite que trate los módulos usados por separado
- * */
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), VitePWA()],
   envPrefix: 'ISI_',
   build: {
     rollupOptions: {
@@ -22,12 +18,3 @@ export default defineConfig({
     },
   },
 })
-
-/*
-{
-        jsxImportSource: "@emotion/react",
-        babel: {
-            plugins: ["@emotion/babel-plugin"],
-        },
-    }
- */

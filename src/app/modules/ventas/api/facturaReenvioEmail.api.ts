@@ -18,13 +18,11 @@ export const apiFcvReenvioEmails = async (input: {
   cuf: string
   emails: string[]
 }): Promise<boolean> => {
-  // console.log('apiFcvReenvioEmails', input)
   const client = new GraphQLClient(import.meta.env.ISI_API_URL)
   const token = localStorage.getItem(AccessToken)
   // Set a single header
   client.setHeader('authorization', `Bearer ${token}`)
 
-  // console.log('apiFcvReenvioEmails', input)
   const data: any = await client.request(mutation, input)
   return data
 }

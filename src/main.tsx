@@ -16,6 +16,22 @@ import { ToastContainer } from 'react-toastify'
 import App from './App'
 import AlertErrorInternet from './app/base/components/Alert/AlertErrorInternet'
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(
+      (registration) => {
+        console.log(
+          'ServiceWorker registration successful with scope: ',
+          registration.scope,
+        )
+      },
+      (error) => {
+        console.log('ServiceWorker registration failed: ', error)
+      },
+    )
+  })
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AlertErrorInternet />

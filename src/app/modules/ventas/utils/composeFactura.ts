@@ -14,7 +14,6 @@ const calculoMonedaBs = (monto: number, tipoCambioBs: number): number => {
 }
 
 export const composeFactura = (fcv: FacturaInputProps): any => {
-  console.log(fcv)
   const input = {
     actividadEconomica: fcv.actividadEconomica!?.codigoActividad,
     cliente: {
@@ -35,11 +34,11 @@ export const composeFactura = (fcv: FacturaInputProps): any => {
       unidadMedida: parseInt(item.unidadMedida.codigoClasificador.toString()),
       montoDescuento: calculoMonedaBs(item.montoDescuento, fcv.tipoCambio),
       marcaIce: item.marcaIce,
-      cantidadIce: item.cantidadIce,
       precioUnitario: calculoMonedaBs(item.precioUnitario, fcv.tipoCambio),
       ...(item.marcaIce === 2
         ? {}
         : {
+            cantidadIce: item.cantidadIce,
             alicuotaEspecifica: item.alicuotaEspecifica,
             alicuotaPorcentual: item.alicuotaPorcentual,
           }),
@@ -70,7 +69,6 @@ export const composeFacturaValidator = async (fcv: any): Promise<boolean> => {
           descripcionProducto: string().min(1).max(500).required(),
           cantidad: number().min(0).required(),
           unidadMedida: number().integer().min(1).required(),
-          cantidadIce: number().min(1).required('Debe ingresar la cantidad de ICE'),
           precioUnitario: number().min(0).required(),
           montoDescuento: number().min(0),
         }),

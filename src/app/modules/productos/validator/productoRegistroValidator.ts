@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify'
 import { array, boolean, mixed, number, object, setLocale, string } from 'yup'
+import yup from 'yup'
 import { es } from 'yup-locales'
 
 import { ProductoInputProps } from '../interfaces/producto.interface'

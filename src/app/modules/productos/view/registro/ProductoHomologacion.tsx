@@ -157,12 +157,6 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
     setIce(selectedOption.value)
   }
 
-  const options = [
-    { value: 10, label: 'Ten' },
-    { value: 20, label: 'Twenty' },
-    { value: 30, label: 'Thirty' },
-  ]
-
   return (
     <>
       <SimpleCard title={'HOMOLOGACIÓN'}>
@@ -323,11 +317,12 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                   value={field.value}
                   onChange={(e) => {
                     const inputValue = e.target.value
-                    // Validar que solo sean números entre 1 y 2
+                    // Validar que solo sean números entre 1 y 2 o campo vacío
                     if (
-                      /^\d*$/.test(inputValue) &&
-                      Number(inputValue) >= 1 &&
-                      Number(inputValue) <= 2
+                      inputValue === '' ||
+                      (/^\d*$/.test(inputValue) &&
+                        Number(inputValue) >= 1 &&
+                        Number(inputValue) <= 2)
                     ) {
                       // Actualizar el valor solo si cumple las condiciones
                       // Esto también garantizará que el valor se almacene correctamente en el controlador de react-hook-form
@@ -369,6 +364,9 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                       `${ps.subPartidaArancelaria} - ${ps.descripcion} - ${ps.alicuotaPorcentual}% - ${ps.alicuotaEspecifica}`
                     }
                   />
+                  <FormHelperText style={{ color: 'red' }}>
+                    {errors.subPartidaArancelaria?.message}
+                  </FormHelperText>
                 </FormControl>
               )}
             />
