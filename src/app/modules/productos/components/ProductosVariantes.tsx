@@ -51,7 +51,9 @@ const ProductosVariantes: FunctionComponent<Props> = (props) => {
       {
         accessorKey: 'marcaIce',
         header: 'Marca ICE',
-        size: 150,
+        id: 'marcaIce',
+        size: 135,
+        accessorFn: (row) => (row.marcaIce === 1 ? 'SI' : row.marcaIce === 2 ? 'NO' : ''),
       },
       {
         accessorKey: 'subPartidaArancelaria',

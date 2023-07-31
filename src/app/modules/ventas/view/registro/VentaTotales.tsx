@@ -69,25 +69,51 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
   const inputMoneda = getValues('moneda')
   const tipoCambio = getValues('tipoCambio')
 
+  /// Obtener los detalles del formulario usando getValues
   // Obtener los detalles del formulario usando getValues
   const detalles = getValues('detalle')
+  const total = getValues('total')
+  const descuentoAdd = getValues('descuentoAdicional')
 
-  // Calcular la suma de alicuotaEspecifica
-  let sumAlicuotaEspecifica = 0
+  // Inicializar variables para almacenar las sumas de los montos
+  let montoTotal = 0
+  let montoIceEspecificoTotal = 0
+  let montoIcePorcentual = 0
+  let montoTotalDescuento = 0
+
   detalles.forEach((detalle, index) => {
-    const alicuotaEspecifica = detalle?.alicuotaEspecifica
-    if (alicuotaEspecifica !== undefined) {
-      sumAlicuotaEspecifica += alicuotaEspecifica
-    }
+    const cantidad = detalle?.cantidad || 0
+    const precioUnitario = detalle?.precioUnitario || 0
+    const montoDescuento = detalle?.montoDescuento || 0
+    const alicuotaEspecifica = detalle?.alicuotaEspecifica || 0
+    const alicuotaPorcentual = (detalle?.alicuotaPorcentual || 0) / 100 // Dividir por 100 el porcentaje
+    // Calcular el monto ICE porcentual para el producto actual
+    const alicuotaIva = (cantidad * precioUnitario - montoDescuento) * 0.13
+    const precioNetoVentaIce = cantidad * precioUnitario - montoDescuento - alicuotaIva
+    const montoIcePorcentualProducto = precioNetoVentaIce * alicuotaPorcentual
+
+    // Sumar el monto ICE porcentual al total
+    montoIcePorcentual += montoIcePorcentualProducto
+
+    // Calcular el monto ICE específico para el producto actual
+    const montoIceEspecificoProducto = cantidad * alicuotaEspecifica
+
+    // Sumar el monto ICE específico al total
+    montoIceEspecificoTotal += montoIceEspecificoProducto
+
+    // Calcular el subtotal para el producto actual
+    const subTotal =
+      cantidad * precioUnitario -
+      montoDescuento +
+      (montoIcePorcentualProducto + montoIceEspecificoProducto)
+
+    // Sumar el subtotal al monto total
+    montoTotal += subTotal
+    montoTotalDescuento += montoDescuento
   })
 
-  let sumAlicuotaPorcentual = 0
-  detalles.forEach((detalle, index) => {
-    const alicuotaPorcentual = detalle?.alicuotaPorcentual
-    if (alicuotaPorcentual !== undefined) {
-      sumAlicuotaPorcentual += alicuotaPorcentual
-    }
-  })
+  // Calcular el monto total sujeto a IVA
+  let calculosTotales = montoTotal - descuentoAdd
 
   const [checked, setChecked] = useState(false)
 
@@ -165,8 +191,12 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
     const totales = genCalculoTotalesService(getValues())
     setValue('montoSubTotal', totales.subTotal)
     setValue('montoPagar', totales.montoPagar)
-    setValue('inputVuelto', totales.vuelto)
-    setValue('total', totales.total)
+    const inputMontoPaga = getValues('inputMontoPagar')
+    setValue(
+      'inputVuelto',
+      montoTotal - descuentoAdd - montoTotalDescuento - inputMontoPaga,
+    )
+    // setValue('total', totales.total)
   }, [getValues('descuentoAdicional'), getValues('inputMontoPagar')])
 
   return (
@@ -224,7 +254,7 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             style={{ padding: 0 }}
             secondaryAction={
               <Typography variant="subtitle1" gutterBottom>
-                {numberWithCommas(calculoMoneda(getValues('montoSubTotal') || 0), {})}
+                {numberWithCommas(calculoMoneda(montoTotal || 0), {})}
                 <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
               </Typography>
             }
@@ -270,7 +300,9 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             style={{ padding: 0 }}
             secondaryAction={
               <Typography variant="subtitle1" gutterBottom>
-                {numberWithCommas(calculoMoneda(getValues('total') || 0), {})}
+                {numberWithCommas(calculoMoneda(montoTotal - descuentoAdd), {
+                  maximumFractionDigits: 2,
+                })}
                 <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
               </Typography>
             }
@@ -282,8 +314,8 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             style={{ padding: 0 }}
             secondaryAction={
               <Typography variant="subtitle1" gutterBottom>
-                {sumAlicuotaEspecifica.toLocaleString('en', {
-                  minimumFractionDigits: 2,
+                {numberWithCommas(calculoMoneda(montoIceEspecificoTotal), {
+                  maximumFractionDigits: 2,
                 })}
                 <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
               </Typography>
@@ -296,8 +328,8 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             style={{ padding: 0 }}
             secondaryAction={
               <Typography variant="subtitle1" gutterBottom>
-                {sumAlicuotaPorcentual.toLocaleString('en', {
-                  minimumFractionDigits: 2,
+                {numberWithCommas(calculoMoneda(montoIcePorcentual), {
+                  maximumFractionDigits: 2,
                 })}
                 <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
               </Typography>
@@ -315,7 +347,10 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             style={{ padding: 0 }}
             secondaryAction={
               <Typography variant="h6" gutterBottom>
-                {numberWithCommas(calculoMoneda(getValues('montoPagar') || 0), {})}
+                {numberWithCommas(
+                  calculoMoneda(montoTotal - descuentoAdd - montoTotalDescuento),
+                  {},
+                )}
                 <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
               </Typography>
             }

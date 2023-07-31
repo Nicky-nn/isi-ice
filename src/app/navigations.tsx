@@ -42,23 +42,6 @@ export const navigations: NavigationProps[] = [
         iconText: 'ALGE',
         path: '/ventas/gestion',
       },
-    ],
-  },
-  // {
-  //   name: 'Nota Crédito Debito',
-  //   icon: 'document_scanner',
-  //   children: [
-  //     {
-  //       name: 'Gestión de Notas',
-  //       iconText: 'NCD',
-  //       path: ncdRouteMap.gestion,
-  //     },
-  //   ],
-  // },
-  {
-    name: 'Alicuota',
-    icon: 'science_sharp',
-    children: [
       {
         name: 'Gestión de Alicuotas',
         iconText: 'AL',
@@ -68,7 +51,7 @@ export const navigations: NavigationProps[] = [
   },
 
   {
-    name: 'Servicios',
+    name: 'Servicios / Productos',
     icon: 'storefront_sharp',
     children: [
       {

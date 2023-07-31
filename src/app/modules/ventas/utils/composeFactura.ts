@@ -38,7 +38,7 @@ export const composeFactura = (fcv: FacturaInputProps): any => {
       ...(item.marcaIce === 2
         ? {}
         : {
-            cantidadIce: item.cantidadIce,
+            cantidadIce: item.cantidad,
             alicuotaEspecifica: item.alicuotaEspecifica,
             alicuotaPorcentual: item.alicuotaPorcentual,
           }),

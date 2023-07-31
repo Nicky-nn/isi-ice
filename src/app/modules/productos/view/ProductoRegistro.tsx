@@ -78,7 +78,7 @@ const ProductoRegistro: FunctionComponent<Props> = (props) => {
         <Breadcrumb
           routeSegments={[
             { name: 'Servicios', path: '/productos/gestion' },
-            { name: 'Nuevo Servicio' },
+            { name: 'Nuevo Producto / Servicio' },
           ]}
         />
       </div>

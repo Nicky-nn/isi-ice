@@ -79,8 +79,9 @@ const tableColumns: MRT_ColumnDef<ProductoProps>[] = [
     header: 'Marca ICE',
     id: 'marcaIce',
     size: 135,
-    accessorFn: (row) => genReplaceEmpty(row.marcaIce, ''),
+    accessorFn: (row) => (row.marcaIce === 1 ? 'SI' : row.marcaIce === 2 ? 'NO' : ''),
   },
+
   {
     accessorKey: 'subPartidaArancelaria',
     header: 'Sub Partida Arancelaria',

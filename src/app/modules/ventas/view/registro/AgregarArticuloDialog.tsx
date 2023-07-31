@@ -1,10 +1,12 @@
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
+  FormControlLabel,
   Grid,
   InputAdornment,
   InputLabel,
@@ -174,7 +176,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
         open={open}
         {...other}
       >
-        <DialogTitle>Agregar Servicio Personalizado</DialogTitle>
+        <DialogTitle>Agregar Producto/Servicio Personalizado</DialogTitle>
         <DialogContent dividers>
           {!isError ? (
             <Grid container spacing={2.5}>
@@ -227,6 +229,25 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
               </Grid>
 
               <Grid item lg={4} md={4} sm={4} xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={inputForm.marcaIce === 1}
+                      onChange={(e) => {
+                        const value = e.target.checked ? 1 : 2
+                        setInputForm({
+                          ...inputForm,
+                          marcaIce: value,
+                        })
+                      }}
+                      inputProps={{ 'aria-label': 'Marca Ice' }}
+                    />
+                  }
+                  label="Marca Ice"
+                />
+              </Grid>
+
+              {/* <Grid item lg={4} md={4} sm={4} xs={12}>
                 <TextField
                   type="number"
                   id="marcaIce"
@@ -255,7 +276,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                     max: 2,
                   }}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item lg={4} md={4} sm={4} xs={12}>
                 <TextField
                   id="alicuotaEspecifica"

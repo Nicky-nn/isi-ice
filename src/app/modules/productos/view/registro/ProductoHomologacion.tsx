@@ -1,5 +1,6 @@
 import {
   Box,
+  Checkbox,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -197,7 +198,6 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               />
             )}
           </Grid>
-
           <Grid item lg={12} md={12} xs={12}>
             {prodServError ? (
               <AlertError mensaje={prodServError.message} />
@@ -241,7 +241,7 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               render={({ field }) => (
                 <FormTextField
                   name="nombre"
-                  label="Nombre Servicio"
+                  label="Nombre Producto / Servicio"
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={() => {
@@ -274,21 +274,30 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               )}
             />
           </Grid>
-          <Grid item lg={12} md={12} xs={12}>
+          <Grid item lg={8} md={12} xs={12}>
             <Controller
               control={control}
               name={'codigoProducto'}
               render={({ field }) => (
                 <FormTextField
                   name="codigoProducto"
-                  label="Código Servicio (SKU)"
+                  label="Código Producto / Servicio (SKU)"
                   value={field.value}
                   onChange={(event) => {
-                    const nuevoCodigo = event.target.value
+                    const nuevoCodigo = event.target.value.toUpperCase() // Convertir a mayúsculas antes de guardar
                     const esCodigoValido = /^[A-Z0-9-]*$/.test(nuevoCodigo)
                     if (esCodigoValido) {
-                      field.onChange(nuevoCodigo.toUpperCase())
-                      setCodigoProducto(nuevoCodigo.toUpperCase())
+                      field.onChange(nuevoCodigo)
+                      setCodigoProducto(nuevoCodigo)
+                    }
+                  }}
+                  onBlur={(event) => {
+                    const nuevoCodigo = event.target.value // Mantener el valor en minúsculas
+                    const esCodigoValido = /^[A-Z0-9-]*$/.test(nuevoCodigo)
+                    if (esCodigoValido) {
+                      field.value = nuevoCodigo.toUpperCase() // Convertir a mayúsculas antes de guardar
+                      field.onBlur()
+                      setCodigoProducto(nuevoCodigo.toUpperCase()) // Opcional: Actualizar el estado local si es necesario
                     }
                   }}
                   error={
@@ -298,13 +307,13 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                   helperText={
                     errors.codigoProducto?.message ||
                     (field.value !== undefined &&
-                      'Solo se puede utilizar letras, números y un guión, escriba en MAYÚSCULAS.')
+                      'Solo se puede utilizar letras, números y un guión.')
                   }
                 />
               )}
             />
           </Grid>
-          <Grid item lg={3} md={12} xs={12}>
+          {/* <Grid item lg={3} md={12} xs={12}>
             <Controller
               control={control}
               name="marcaIce"
@@ -335,9 +344,31 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                 />
               )}
             />
+          </Grid> */}
+          <Grid item lg={3} md={12} xs={12}>
+            <Controller
+              control={control}
+              name="marcaIce"
+              render={({ field }) => (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={field.value === 1} // Si el valor es 1, el Checkbox estará marcado (true)
+                      onChange={(e) => {
+                        const isChecked = e.target.checked
+                        // Establecer el valor según si está marcado o no
+                        const value = isChecked ? 1 : 2 // 1 representa "true", 2 representa "false"
+                        field.onChange(value)
+                      }}
+                      color="primary"
+                    />
+                  }
+                  label="Marca ICE"
+                />
+              )}
+            />
           </Grid>
-
-          <Grid item lg={9} md={12} xs={12}>
+          <Grid item lg={23} md={12} xs={12}>
             <Controller
               control={control}
               name={'subPartidaArancelaria'}
@@ -345,7 +376,7 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                 <FormControl fullWidth>
                   <MyInputLabel shrink>Sub Partida Arancelaria </MyInputLabel>
                   <Select<AlicuotasProps>
-                    {...field}
+                    // {...field}
                     styles={reactSelectStyles}
                     menuPosition={'fixed'}
                     name="subPartidaArancelaria"

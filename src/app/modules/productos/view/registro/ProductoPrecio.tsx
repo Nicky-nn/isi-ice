@@ -42,7 +42,7 @@ const ProductoPrecio: FunctionComponent<Props> = (props) => {
   return (
     <SimpleCard title={'PRECIO'}>
       <Grid container columnSpacing={3} rowSpacing={2}>
-        <Grid item lg={12} md={12} xs={12}>
+        <Grid item lg={8} md={12} xs={12}>
           <Controller
             control={control}
             name={'codigoUnidadMedida'}

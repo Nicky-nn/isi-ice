@@ -202,9 +202,9 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                       <th scope="col" style={{ width: 160 }}>
                         Cantidad
                       </th>
-                      <th scope="col" style={{ width: 160 }}>
+                      {/* <th scope="col" style={{ width: 160 }}>
                         Cantidad ICE
-                      </th>
+                      </th> */}
                       <th scope="col" style={{ width: 160 }}>
                         Precio ({monedaTienda.sigla})
                       </th>
@@ -265,10 +265,17 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                           color="text.primary"
                                         >
                                           {`Código: ${item.codigoProducto}`} <br />
-                                          {`Marca Ice: ${item.marcaIce}`} <br />
-                                          {`Alicuota Específica: ${item.alicuotaEspecifica}`}
-                                          <br />
-                                          {`Alicuota Porcentual: ${item.alicuotaPorcentual}`}{' '}
+                                          {`Marca Ice: ${
+                                            item.marcaIce === 1 ? 'Si' : 'No'
+                                          }`}{' '}
+                                          {item.marcaIce !== 2 && (
+                                            <>
+                                              <br />
+                                              {`Alicuota Específica: ${item.alicuotaEspecifica}`}{' '}
+                                              <br />
+                                              {`Alicuota Porcentual: ${item.alicuotaPorcentual} %`}{' '}
+                                            </>
+                                          )}
                                         </Typography>{' '}
                                         <br />
                                         {`${item.unidadMedida.descripcion || ''}`}
@@ -298,10 +305,10 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                 }
                               />
                             </td>
-                            <td data-label="CANTIDAD ICE">
+                            {/* <td data-label="CANTIDAD ICE">
                               <InputNumber
                                 min={0.1}
-                                value={item.marcaIce === 2 ? 0 : item.cantidadIce}
+                                value={item.marcaIce === 2 ? 0 : item.cantidad}
                                 onFocus={handleFocus}
                                 onChange={(cantidadIce: number | null) => {
                                   if (cantidadIce !== null) {
@@ -327,7 +334,7 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                                 }
                                 readOnly={item.marcaIce === 2} // Deshabilitar la edición si marcaIce es 2.
                               />
-                            </td>
+                            </td> */}
 
                             <td data-label={`PRECIO (${monedaTienda.sigla})`}>
                               <InputNumber
