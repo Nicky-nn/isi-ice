@@ -49,7 +49,6 @@ export const fetchFacturaCreate = async (
       notificacion: notificacion,
       input: input,
     })
-    console.log('data', input)
     return data.facturaIceRegistro
   } catch (e: any) {
     console.log('error', e)
