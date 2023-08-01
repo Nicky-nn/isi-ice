@@ -235,10 +235,21 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                       checked={inputForm.marcaIce === 1}
                       onChange={(e) => {
                         const value = e.target.checked ? 1 : 2
-                        setInputForm({
-                          ...inputForm,
-                          marcaIce: value,
-                        })
+
+                        // Si marcaIce es igual a 2, establecer los valores de alicuotaEspecifica y alicuotaPorcentual a 0
+                        if (value === 2) {
+                          setInputForm({
+                            ...inputForm,
+                            marcaIce: value,
+                            alicuotaEspecifica: 0,
+                            alicuotaPorcentual: 0,
+                          })
+                        } else {
+                          setInputForm({
+                            ...inputForm,
+                            marcaIce: value,
+                          })
+                        }
                       }}
                       inputProps={{ 'aria-label': 'Marca Ice' }}
                     />
@@ -286,15 +297,18 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                   fullWidth
                   value={inputForm.alicuotaEspecifica}
                   onChange={(e) => {
-                    // Validar que solo sean números con hasta 5 decimales
-                    const inputValue = e.target.value
+                    // Obtener el valor del campo y eliminar espacios en blanco
+                    let inputValue = e.target.value.trim()
 
-                    // Si el valor está entre 0 y 100, o es una cadena vacía (borrado), se actualiza el estado
+                    // Eliminar comas del valor
+                    inputValue = inputValue.replace(/,/g, '')
+
+                    // Validar que solo sean números con hasta 5 decimales
                     if (/^\d+(\.\d{0,5})?$/.test(inputValue) || inputValue === '') {
                       const numericValue = inputValue === '' ? '' : parseFloat(inputValue)
                       if (
                         numericValue === '' ||
-                        (numericValue >= 0 && numericValue <= 10000)
+                        (numericValue >= 0 && numericValue <= 10000000)
                       ) {
                         setInputForm({
                           ...inputForm,
@@ -316,10 +330,13 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                   type="number"
                   value={inputForm.alicuotaPorcentual}
                   onChange={(e) => {
-                    // Validar que solo sean números con hasta 5 decimales
-                    const inputValue = e.target.value
+                    // Obtener el valor del campo y eliminar espacios en blanco
+                    let inputValue = e.target.value.trim()
 
-                    // Si el valor está entre 0 y 100, o es una cadena vacía (borrado), se actualiza el estado
+                    // Eliminar comas del valor
+                    inputValue = inputValue.replace(/,/g, '')
+
+                    // Validar que solo sean números con hasta 5 decimales
                     if (/^\d+(\.\d{0,5})?$/.test(inputValue) || inputValue === '') {
                       const numericValue = inputValue === '' ? '' : parseFloat(inputValue)
                       if (

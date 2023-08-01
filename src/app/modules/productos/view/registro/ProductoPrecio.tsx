@@ -98,7 +98,7 @@ const ProductoPrecio: FunctionComponent<Props> = (props) => {
                       setValue('precio', parsedValue)
                     }
                   }}
-                  formatter={numberWithCommas}
+                  formatter={(value, info) => numberWithCommas(value, info, 5)}
                 />
                 <FormHelperText>{errors.precio?.message}</FormHelperText>
               </FormControl>

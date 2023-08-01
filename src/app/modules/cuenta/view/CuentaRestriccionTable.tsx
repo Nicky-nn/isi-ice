@@ -92,6 +92,7 @@ const CuentaRestriccionTable: FunctionComponent<Props> = (props) => {
     ['restriccionUsuario'],
     async () => {
       const resp = await apiUsuarioRestriccion()
+      console.log(resp)
       return resp.sucursales
     },
     { keepPreviousData: true },
@@ -142,10 +143,10 @@ const CuentaRestriccionTable: FunctionComponent<Props> = (props) => {
                 aria-controls="panel1d-content"
                 expandIcon={<ExpandMore />}
               >
-                {/* <Typography>
+                <Typography>
                   <strong>SUCURSAL {res.codigo}</strong> / {res.departamento.departamento}{' '}
                   - {res.municipio} / {res.direccion} / {res.telefono}
-                </Typography> */}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container>

@@ -197,7 +197,12 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
       montoTotal - descuentoAdd - montoTotalDescuento - inputMontoPaga,
     )
     // setValue('total', totales.total)
-  }, [getValues('descuentoAdicional'), getValues('inputMontoPagar')])
+  }, [
+    getValues('descuentoAdicional'),
+    getValues('inputMontoPagar'),
+    getValues('detalle'),
+    getValues('moneda'),
+  ])
 
   return (
     <>

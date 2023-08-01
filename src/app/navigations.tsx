@@ -29,7 +29,7 @@ export const navigations: NavigationProps[] = [
     type: 'label',
   },
   {
-    name: 'Consumos Específicos',
+    name: 'Facturacion ICE',
     icon: 'point_of_sale',
     children: [
       {
@@ -38,20 +38,15 @@ export const navigations: NavigationProps[] = [
         path: '/ventas/registro',
       },
       {
-        name: 'Gestión de Consumos',
+        name: 'Gestión de Facturas ICE',
         iconText: 'ALGE',
         path: '/ventas/gestion',
-      },
-      {
-        name: 'Gestión de Alicuotas',
-        iconText: 'AL',
-        path: '/alicuota/gestion',
       },
     ],
   },
 
   {
-    name: 'Servicios / Productos',
+    name: 'Productos / Servicios',
     icon: 'storefront_sharp',
     children: [
       {
@@ -63,6 +58,11 @@ export const navigations: NavigationProps[] = [
         name: 'Proveedores',
         iconText: 'PR',
         path: proveedorRouteMap.gestion,
+      },
+      {
+        name: 'Gestión de Alicuotas',
+        iconText: 'AL',
+        path: '/alicuota/gestion',
       },
     ],
   },

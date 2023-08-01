@@ -157,6 +157,14 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
   const handleChange = (selectedOption: any) => {
     setIce(selectedOption.value)
   }
+  const marcaIceValue = watch('marcaIce')
+  useEffect(() => {
+    if (marcaIceValue === 2) {
+      // @ts-ignore
+      const firstSubPartidaArancelaria = alicuota[0] || null // Asegúrate de que sea null si no hay datos disponibles
+      setValue('subPartidaArancelaria', firstSubPartidaArancelaria)
+    }
+  }, [marcaIceValue, setValue])
 
   return (
     <>
@@ -274,14 +282,14 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               )}
             />
           </Grid>
-          <Grid item lg={8} md={12} xs={12}>
+          <Grid item lg={3} md={4} xs={12} sm={6}>
             <Controller
               control={control}
               name={'codigoProducto'}
               render={({ field }) => (
                 <FormTextField
                   name="codigoProducto"
-                  label="Código Producto / Servicio (SKU)"
+                  label="Código Producto (SKU)"
                   value={field.value}
                   onChange={(event) => {
                     const nuevoCodigo = event.target.value.toUpperCase() // Convertir a mayúsculas antes de guardar
@@ -304,48 +312,12 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                     Boolean(errors.codigoProducto) ||
                     (field.value !== undefined && !/^[A-Z0-9-]*$/.test(field.value))
                   }
-                  helperText={
-                    errors.codigoProducto?.message ||
-                    (field.value !== undefined &&
-                      'Solo se puede utilizar letras, números y un guión.')
-                  }
+                  helperText={errors.codigoProducto?.message}
                 />
               )}
             />
           </Grid>
-          {/* <Grid item lg={3} md={12} xs={12}>
-            <Controller
-              control={control}
-              name="marcaIce"
-              render={({ field }) => (
-                <FormTextField
-                  type="number"
-                  inputProps={{ min: 1, max: 3 }}
-                  name="marcaIce"
-                  label="Marca ICE"
-                  value={field.value}
-                  onChange={(e) => {
-                    const inputValue = e.target.value
-                    // Validar que solo sean números entre 1 y 2 o campo vacío
-                    if (
-                      inputValue === '' ||
-                      (/^\d*$/.test(inputValue) &&
-                        Number(inputValue) >= 1 &&
-                        Number(inputValue) <= 2)
-                    ) {
-                      // Actualizar el valor solo si cumple las condiciones
-                      // Esto también garantizará que el valor se almacene correctamente en el controlador de react-hook-form
-                      field.onChange(e)
-                    }
-                  }}
-                  onBlur={field.onBlur}
-                  error={Boolean(errors.marcaIce)}
-                  helperText={'Escriba la marca ICE'}
-                />
-              )}
-            />
-          </Grid> */}
-          <Grid item lg={3} md={12} xs={12}>
+          <Grid item lg={2} md={4} xs={12}>
             <Controller
               control={control}
               name="marcaIce"
@@ -368,40 +340,43 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               )}
             />
           </Grid>
-          <Grid item lg={23} md={12} xs={12}>
-            <Controller
-              control={control}
-              name={'subPartidaArancelaria'}
-              render={({ field }) => (
-                <FormControl fullWidth>
-                  <MyInputLabel shrink>Sub Partida Arancelaria </MyInputLabel>
-                  <Select<AlicuotasProps>
-                    // {...field}
-                    styles={reactSelectStyles}
-                    menuPosition={'fixed'}
-                    name="subPartidaArancelaria"
-                    placeholder={
-                      field.value ? field.value : 'Seleccione Sub Partida Arancelaria...'
-                    }
-                    value={field.value as any}
-                    onChange={(alicuota: any) => {
-                      // field.onChange(alicuota)
-                      setValue('subPartidaArancelaria', alicuota.subPartidaArancelaria)
-                    }}
-                    options={alicuota as any}
-                    isClearable={true}
-                    getOptionValue={(ps) => ps.subPartidaArancelaria}
-                    getOptionLabel={(ps) =>
-                      `${ps.subPartidaArancelaria} - ${ps.descripcion} - ${ps.alicuotaPorcentual}% - ${ps.alicuotaEspecifica}`
-                    }
-                  />
-                  <FormHelperText style={{ color: 'red' }}>
-                    {errors.subPartidaArancelaria?.message}
-                  </FormHelperText>
-                </FormControl>
-              )}
-            />
-          </Grid>
+          {/* Renderizar subPartidaArancelaria solo si marcaIceValue no es igual a 2 */}
+          {marcaIceValue !== 2 && (
+            <Grid item lg={7} md={4} xs={12}>
+              <Controller
+                control={control}
+                name={'subPartidaArancelaria'}
+                render={({ field }) => (
+                  <FormControl fullWidth error={Boolean(errors.subPartidaArancelaria)}>
+                    <MyInputLabel shrink>Sub Partida Arancelaria</MyInputLabel>
+                    <Select
+                      styles={reactSelectStyles}
+                      menuPosition={'fixed'}
+                      name="subPartidaArancelaria"
+                      placeholder={
+                        field.value
+                          ? field.value
+                          : 'Seleccione la sub partida arancelaria '
+                      }
+                      value={field.value}
+                      onChange={(selectedOption) => {
+                        setValue('subPartidaArancelaria', selectedOption)
+                      }}
+                      options={alicuota as any}
+                      isClearable={true}
+                      getOptionValue={(ps) => ps.subPartidaArancelaria} // Especificar el campo que representa el valor de cada opción
+                      getOptionLabel={(ps) =>
+                        `${ps.descripcion} - ${ps.alicuotaPorcentual}% - ${ps.alicuotaEspecifica} - ${ps.subPartidaArancelaria}`
+                      }
+                    />
+                    <FormHelperText style={{ color: 'red' }}>
+                      {errors.subPartidaArancelaria?.message}
+                    </FormHelperText>
+                  </FormControl>
+                )}
+              />
+            </Grid>
+          )}
         </Grid>
       </SimpleCard>
     </>

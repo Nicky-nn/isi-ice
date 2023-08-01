@@ -205,7 +205,15 @@ const ProductosListado: FunctionComponent<Props> = (props) => {
       <MaterialReactTable
         columns={columns}
         data={data ?? []}
-        initialState={{ showColumnFilters: true }}
+        initialState={{
+          showColumnFilters: true,
+          columnVisibility: {
+            descripcion: false,
+            proveedor: false,
+            precioComparacion: false,
+            subPartidaArancelaria: false,
+          },
+        }}
         manualFiltering
         manualPagination
         manualSorting
@@ -237,20 +245,6 @@ const ProductosListado: FunctionComponent<Props> = (props) => {
         }}
         enableRowActions
         positionActionsColumn={'first'}
-        // renderRowActions={({ row }) => (
-        //   <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', width: 100 }}>
-        //     <IconButton
-        //       onClick={() =>
-        //         navigate(`${productosRouteMap.modificar}/${row.original._id}`)
-        //       }
-        //       color={'primary'}
-        //       aria-label="delete"
-        //     >
-        //       <Edit />
-        //     </IconButton>
-        //     <AuditIconButton row={row.original} />
-        //   </div>
-        // )}
         renderRowActions={({ row }) => (
           <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}>
             <SimpleMenu
@@ -275,15 +269,6 @@ const ProductosListado: FunctionComponent<Props> = (props) => {
                   Modificar
                 </StyledMenuItem>
               </IconButton>
-              {/* ELIMINAR TABLA */}
-              {/* <IconButton>
-                <StyledMenuItem
-                  onClick={() => handleDeleteData(row.original.codigoProducto)}
-                >
-                  <Delete />
-                  Eliminar Fila
-                </StyledMenuItem>
-              </IconButton> */}
             </SimpleMenu>
             <AuditIconButton row={row.original} />
           </div>

@@ -38,7 +38,7 @@ yarn preview
 https://doc.isipass.net/
 
 ```bash
-## Listado de datos 
+## Listado de datos
 ## QUERY
 query FACTURAS_ALQUILER {
     facturasAlquiler(

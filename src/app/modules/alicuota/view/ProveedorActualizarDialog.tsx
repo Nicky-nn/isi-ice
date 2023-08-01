@@ -83,7 +83,7 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
       open={open}
       {...other}
     >
-      <DialogTitle>Editar Proveedor {props.codigo}</DialogTitle>
+      <DialogTitle>Editar Alicuota {props.codigo}</DialogTitle>
       <DialogContent dividers>
         <ProveedorForm formik={formik} />
       </DialogContent>

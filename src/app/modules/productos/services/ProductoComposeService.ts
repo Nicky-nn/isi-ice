@@ -29,6 +29,7 @@ export const productoComposeService = (aql: ProductoInputProps): any => {
     tipoProductoId: aql.tipoProducto?._id,
     codigoProveedor: aql.codigoProveedor?.codigo,
     marcaIce: aql.marcaIce,
-    subPartidaArancelaria: aql.subPartidaArancelaria,
+    // @ts-ignore
+    subPartidaArancelaria: aql.subPartidaArancelaria?.subPartidaArancelaria,
   }
 }

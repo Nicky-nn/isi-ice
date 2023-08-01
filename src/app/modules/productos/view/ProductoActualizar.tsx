@@ -1,25 +1,23 @@
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import { Description, Save } from '@mui/icons-material'
 import { Button, CssBaseline, Grid, Paper, Stack } from '@mui/material'
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import SimpleContainer from '../../../base/components/Container/SimpleContainer'
 import Breadcrumb from '../../../base/components/Template/Breadcrumb/Breadcrumb'
-import { genRandomString, isEmptyValue } from '../../../utils/helper'
-import { notDanger, notError, notSuccess } from '../../../utils/notification'
+import { isEmptyValue } from '../../../utils/helper'
+import { notDanger, notSuccess } from '../../../utils/notification'
 import {
   swalAsyncConfirmDialog,
   swalClose,
   swalException,
   swalLoading,
 } from '../../../utils/swal'
+import { apiAlicuota } from '../../alicuota/api/alicuota.api'
 import { fetchSinActividades } from '../../sin/api/sinActividadEconomica.api'
-import { fetchSinActividadesPorDocumentoSector } from '../../sin/api/sinActividadesPorDocumentoSector'
-import { SinActividadesProps } from '../../sin/interfaces/sin.interface'
-import { apiTipoProductoListado } from '../../tipoProducto/api/tipoProductoListado.api'
 import { apiProductoModificar } from '../api/productoModificar.api'
 import { apiProductoPorId } from '../api/productoPorId.api'
 import {
@@ -32,13 +30,10 @@ import {
   productoRegistroValidator,
   productoRegistroValidatorResponde,
 } from '../validator/productoRegistroValidator'
-import ProductoInventario from './ProductoInventario/ProductoInventario'
 import ProductoClasificador from './registro/ProductoClasificador'
 import Homologacion from './registro/ProductoHomologacion'
-import ProductoOpciones from './registro/ProductoOpciones'
 import ProductoPrecio from './registro/ProductoPrecio'
 import ProductoProveedor from './registro/ProductoProveedor'
-import ProductoVariantes from './registro/ProductoVariantes'
 
 interface OwnProps {}
 
@@ -90,13 +85,30 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
   }
 
   const fetchProductoPorCodigo = async (codigoProducto: string) => {
+    swalLoading()
     try {
-      swalLoading()
       const response = await apiProductoPorId(codigoProducto)
-      setProducto(response[0])
-      const act = await fetchSinActividades()
       if (response) {
-        // form.reset(response)
+        setProducto(response[0])
+        const act = await fetchSinActividades()
+
+        // Obtenemos subPartidaArancelaria del response
+        const subPartidaArancelaria = response.subPartidaArancelaria
+
+        // Verificamos si subPartidaArancelaria es null o tiene un valor
+        if (subPartidaArancelaria !== null) {
+          // Si tiene un valor, hacemos la petición a la API
+          const responseAlicuota = await apiAlicuota(subPartidaArancelaria)
+          console.log(responseAlicuota)
+
+          // Establecemos el valor en el campo correspondiente
+          //@ts-ignore
+          form.setValue('subPartidaArancelaria', responseAlicuota || '0')
+        } else {
+          // Si es null, establecemos el valor directamente
+          form.setValue('subPartidaArancelaria', subPartidaArancelaria)
+        }
+
         const codigoActividad = response.sinProductoServicio
         const matchinActividad = act.find(
           (actividad) => actividad.codigoCaeb === codigoActividad.codigoActividad,
@@ -106,12 +118,10 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
           'codigoActividad.tipoActividad',
           matchinActividad?.tipoActividad || '',
         )
-
         form.setValue(
           'codigoActividad.actividadEconomica',
           matchinActividad?.descripcion || '',
         )
-
         form.setValue('codigoProductoSin', response.sinProductoServicio)
         form.setValue('codigoUnidadMedida', response.unidadMedida)
         form.setValue('codigoProveedor', response.proveedor)
@@ -119,7 +129,6 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
         form.setValue('codigoProducto', response.codigoProducto)
         form.setValue('descripcion', response.descripcion)
         form.setValue('precio', response.precio)
-        form.setValue('subPartidaArancelaria', response.subPartidaArancelaria)
         form.setValue('marcaIce', response.marcaIce)
       } else {
         notDanger('No se encontró el producto')

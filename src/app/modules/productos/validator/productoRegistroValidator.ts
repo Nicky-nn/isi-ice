@@ -18,7 +18,9 @@ export const productoRegistroValidatorResponde = async (
     codigoUnidadMedida: number().required('Debe seleccionar la unidad de medida'),
     tipoProducto: mixed().required('Debe seleccionar el tipo de producto'),
     marcaIce: number().required('Debe seleccionar la marca de ice'),
-    subPartidaArancelaria: string().min(3),
+    subPartidaArancelaria: mixed().required(
+      'Debe seleccionar la sub partida arancelaria',
+    ),
   })
 
   try {
@@ -31,12 +33,12 @@ export const productoRegistroValidatorResponde = async (
 }
 
 export const productoRegistroValidator = object({
-  codigoProducto: string().required(),
+  codigoProducto: string().required('Debe ingresar el código del producto'),
   nombre: string().required(),
   codigoActividad: mixed().required(),
   codigoProductoSin: mixed().required(),
   precio: number().min(0).required(),
   codigoUnidadMedida: mixed().required(),
   marcaIce: number().required(),
-  subPartidaArancelaria: string().min(3),
+  subPartidaArancelaria: mixed().required('Debe seleccionar la sub partida arancelaria'),
 })
