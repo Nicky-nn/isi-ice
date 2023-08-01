@@ -94,6 +94,8 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
 
     setIssRefetching(false) // Establece el estado de "isRefetching" como falso para ocultar el indicador de carga
   }
+  // Modifica la función useQuery:
+  // Modifica la función useQuery:
   const { data, isError, isLoading, status, refetch } = useQuery<AlicuotaProps[]>(
     [
       'alicuotasListado',
@@ -105,25 +107,14 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
     // @ts-ignore
     async () => {
       const query = genApiQuery(columnFilters)
-      const fetchPagination: PageInputProps = {
-        ...PAGE_DEFAULT,
+      const fetchPagination = {
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
         reverse: sorting.length <= 0,
         query,
       }
-      // const { pageInfo, docs } = await apiProveedores(fetchPagination)
       const docs = await apiAlicuotas(fetchPagination)
-      const pageInfo = {
-        hasNextPage: false,
-        hasPrevPage: false,
-        limit: 20,
-        nextPage: 1,
-        page: 1,
-        totalDocs: 1,
-      }
 
-      setRowCount(pageInfo.totalDocs)
       return docs
     },
     {
@@ -152,6 +143,18 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
       }
     })
   }
+  const getCurrentPageItems = () => {
+    const { pageIndex, pageSize } = pagination
+    const start = pageIndex * pageSize
+    // Ordenar los datos en función de 'subPartidaArancelaria' en orden descendente
+    // @ts-ignore
+    const sortedData = data?.sort((a, b) =>
+      b.subPartidaArancelaria.localeCompare(a.subPartidaArancelaria),
+    )
+    // Obtener solo los elementos de la página actual después de ordenar
+    return sortedData?.slice(start, start + pageSize) || []
+  }
+
   return (
     <>
       <Paper
@@ -183,7 +186,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
         <MaterialReactTable
           columns={columns}
           // @ts-ignore
-          data={data || []}
+          data={getCurrentPageItems()}
           initialState={{ showColumnFilters: false }}
           manualFiltering
           manualPagination
@@ -196,7 +199,8 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
           onSortingChange={setSorting}
           enableDensityToggle={false}
           enableGlobalFilter={false}
-          rowCount={rowCount}
+          // @ts-ignore
+          rowCount={data?.length ?? 0}
           localization={localization}
           state={{
             columnFilters,
