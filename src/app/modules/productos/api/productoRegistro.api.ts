@@ -30,7 +30,6 @@ export const apiProductoRegistro = async (
   const client = new GraphQLClient(import.meta.env.ISI_API_URL)
   const token = localStorage.getItem(AccessToken)
   // Set a single header
-  console.log(input)
   client.setHeader('authorization', `Bearer ${token}`)
   const data: any = await client.request(gqlQuery, {
     codigoProducto: codigoProducto,

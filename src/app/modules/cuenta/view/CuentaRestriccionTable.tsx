@@ -92,7 +92,6 @@ const CuentaRestriccionTable: FunctionComponent<Props> = (props) => {
     ['restriccionUsuario'],
     async () => {
       const resp = await apiUsuarioRestriccion()
-      console.log(resp)
       return resp.sucursales
     },
     { keepPreviousData: true },
