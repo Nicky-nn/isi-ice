@@ -3,7 +3,25 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  plugins: [react(), VitePWA()],
+  plugins: [
+    react(),
+    VitePWA({
+      manifest: {
+        name: 'ISI-ICE',
+        short_name: 'ICE',
+        start_url: '/',
+        display: 'standalone',
+        icons: [
+          {
+            src: '/assets/images/512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+        ],
+      },
+    }),
+  ],
   envPrefix: 'ISI_',
   build: {
     rollupOptions: {

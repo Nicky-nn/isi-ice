@@ -1,20 +1,16 @@
 {
   "name": "ISI-ICE",
   "short_name": "ICE",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "https://yt3.ggpht.com/ytc/AOPolaRh_nI56Y7NtwkUZ-JTv-T3KWW0vIlzgV3nlAzy=s68-c-k-c0x00ffffff-no-rj",
-      "sizes": "192x192",
-      "type": "image/jpg"
-    },
-    {
-      "src": "https://yt3.ggpht.com/ytc/AOPolaRh_nI56Y7NtwkUZ-JTv-T3KWW0vIlzgV3nlAzy=s68-c-k-c0x00ffffff-no-rj",
+      "src": "/assets/images/512.png",
       "sizes": "512x512",
-      "type": "image/jpg"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
