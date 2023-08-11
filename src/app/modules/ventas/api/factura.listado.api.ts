@@ -34,6 +34,7 @@ const query = gql`
           rollo
           sin
           pdf
+          xml
         }
         sucursal {
           codigo
@@ -92,6 +93,7 @@ const query = gql`
           apellidos
           email
         }
+        montoTotal
         montoTotalMoneda
         tipoCambio
         state
