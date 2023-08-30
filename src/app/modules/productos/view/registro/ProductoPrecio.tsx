@@ -1,4 +1,10 @@
-import { FormControl, FormHelperText, Grid } from '@mui/material'
+import {
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  OutlinedInput,
+} from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import InputNumber from 'rc-input-number'
 import React, { FunctionComponent } from 'react'
@@ -7,6 +13,7 @@ import Select, { SingleValue } from 'react-select'
 
 import { MyInputLabel } from '../../../../base/components/MyInputs/MyInputLabel'
 import { numberWithCommas } from '../../../../base/components/MyInputs/NumberInput'
+import { NumeroMask } from '../../../../base/components/MyInputs/NumeroMask'
 import { reactSelectStyles } from '../../../../base/components/MySelect/ReactSelect'
 import SimpleCard from '../../../../base/components/Template/Cards/SimpleCard'
 import { handleSelect } from '../../../../utils/helper'
@@ -80,27 +87,20 @@ const ProductoPrecio: FunctionComponent<Props> = (props) => {
             name={'precio'}
             render={({ field }) => (
               <FormControl fullWidth error={Boolean(errors.precio)}>
-                <MyInputLabel shrink>Precio</MyInputLabel>
-                <InputNumber
+                <InputLabel>Precio</InputLabel>
+                <OutlinedInput
                   {...field}
-                  min={0}
-                  placeholder={'0.00'}
-                  name={'precio'}
-                  value={field.value}
+                  label={'Precio'}
+                  size={'small'}
+                  value={field.value.toString()}
                   onFocus={handleSelect}
-                  onChange={(precio: number | null) => {
-                    // @ts-ignore
-                    field.onChange(precio)
-                  }}
-                  onBlur={(e) => {
-                    const parsedValue = parseFloat(e.target.value)
-                    if (!isNaN(parsedValue)) {
-                      setValue('precio', parsedValue)
-                    }
-                  }}
-                  formatter={(value, info) => numberWithCommas(value, info, 5)}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  inputComponent={NumeroMask as any}
+                  inputProps={{}}
+                  error={Boolean(errors.precio)}
                 />
-                <FormHelperText>{errors.precio?.message}</FormHelperText>
+                <FormHelperText>{errors.precio?.message || ''}</FormHelperText>
               </FormControl>
             )}
           />

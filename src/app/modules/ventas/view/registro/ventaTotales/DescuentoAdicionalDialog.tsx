@@ -5,13 +5,16 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  OutlinedInput,
   Typography,
 } from '@mui/material'
 import InputNumber from 'rc-input-number'
 import { useEffect, useRef, useState } from 'react'
 
 import { numberWithCommas } from '../../../../../base/components/MyInputs/NumberInput'
+import { NumeroMask } from '../../../../../base/components/MyInputs/NumeroMask'
 import useAuth from '../../../../../base/hooks/useAuth'
+import { pFloat } from '../../../../../utils/pFloat'
 
 export interface SimpleDialogProps {
   id: string
@@ -61,12 +64,16 @@ export const DescuentoAdicionalDialog = (props: SimpleDialogProps) => {
       <DialogContent dividers>
         <Grid container>
           <Grid item lg={12}>
-            <InputNumber
-              min={0}
-              value={value}
+            <OutlinedInput
+              size={'small'}
+              value={value.toString()}
               onFocus={(e) => e.target.select()}
-              onChange={(val: number | null) => setValue(val!)}
-              formatter={numberWithCommas}
+              onChange={(e) => {
+                const cantidad = pFloat(e.target.value)
+                setValue(cantidad)
+              }}
+              inputComponent={NumeroMask as any}
+              inputProps={{}}
             />
             <Typography variant={'subtitle1'} sx={{ ml: 1 }} component={'small'}>
               {monedaTienda.sigla || ''}

@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  OutlinedInput,
   Stack,
   Typography,
 } from '@mui/material'
@@ -35,6 +36,8 @@ import {
   montoSubTotal,
 } from '../../services/operacionesService'
 import AgregarArticuloDialog from './AgregarArticuloDialog'
+import { pFloat } from '../../../../utils/pFloat'
+import { NumeroMask } from '../../../../base/components/MyInputs/NumeroMask'
 
 interface OwnProps {
   form: UseFormReturn<FacturaInputProps>
@@ -286,100 +289,71 @@ export const DetalleTransaccionComercial: FC<Props> = (props) => {
                               </List>
                             </td>
                             <td data-label="CANTIDAD">
-                              <InputNumber
-                                min={0.1}
-                                value={item.cantidad}
+                              <OutlinedInput
+                                size={'small'}
+                                value={item.cantidad.toString()}
                                 onFocus={handleFocus}
-                                onChange={(cantidad: number | null) => {
-                                  if (cantidad) {
-                                    if (cantidad >= 0) {
-                                      update(index, {
-                                        ...item,
-                                        cantidad,
-                                      })
-                                    }
+                                onChange={(e) => {
+                                  const cantidad = pFloat(e.target.value.toString())
+                                  if (cantidad >= 0) {
+                                    update(index, {
+                                      ...item,
+                                      cantidad,
+                                    })
                                   }
                                 }}
-                                formatter={(value, info) =>
-                                  numberWithCommas(value, info, 5)
-                                }
+                                inputComponent={NumeroMask as any}
+                                inputProps={{
+                                  scale: 5,
+                                }}
                               />
                             </td>
-                            {/* <td data-label="CANTIDAD ICE">
-                              <InputNumber
-                                min={0.1}
-                                value={item.marcaIce === 2 ? 0 : item.cantidad}
-                                onFocus={handleFocus}
-                                onChange={(cantidadIce: number | null) => {
-                                  if (cantidadIce !== null) {
-                                    if (item.marcaIce === 2) {
-                                      // Si marcaIce es 2, establecer cantidadIce en 0 y no permitir la edición.
-                                      update(index, {
-                                        ...item,
-                                        cantidadIce: 0,
-                                      })
-                                    } else {
-                                      // Si marcaIce no es 2, permitir la edición del valor de cantidadIce.
-                                      if (cantidadIce >= 0) {
-                                        update(index, {
-                                          ...item,
-                                          cantidadIce,
-                                        })
-                                      }
-                                    }
-                                  }
-                                }}
-                                formatter={(value, info) =>
-                                  numberWithCommas(value, info, 5)
-                                }
-                                readOnly={item.marcaIce === 2} // Deshabilitar la edición si marcaIce es 2.
-                              />
-                            </td> */}
-
                             <td data-label={`PRECIO (${monedaTienda.sigla})`}>
-                              <InputNumber
-                                min={0}
-                                value={item.precioUnitario}
+                              <OutlinedInput
+                                size={'small'}
+                                value={item.precioUnitario.toString()}
                                 onFocus={handleFocus}
-                                onChange={(precio: number | null) => {
-                                  if (precio) {
-                                    if (precio >= 0 && precio >= item.montoDescuento) {
-                                      update(index, { ...item, precioUnitario: precio })
-                                    } else {
-                                      toast.warn(
-                                        'El precio no puede ser menor al descuento',
-                                      )
-                                    }
+                                onChange={(e) => {
+                                  const precio = pFloat(e.target.value.toString())
+                                  if (precio >= 0 && precio >= item.montoDescuento) {
+                                    update(index, {
+                                      ...item,
+                                      precioUnitario: precio,
+                                    })
+                                  } else {
+                                    toast.warn(
+                                      'El precio no puede ser menor al descuento',
+                                    )
                                   }
                                 }}
-                                formatter={(value, info) =>
-                                  numberWithCommas(value, info, 5)
-                                }
+                                inputComponent={NumeroMask as any}
+                                inputProps={{
+                                  scale: 5,
+                                }}
                               />
                             </td>
                             <td data-label={`DESCUENTO (${monedaTienda.sigla})`}>
-                              <InputNumber
-                                min={0}
-                                max={item.precioUnitario - 0.1}
-                                value={item.montoDescuento || 0}
+                              <OutlinedInput
+                                size={'small'}
+                                value={item.montoDescuento.toString()}
                                 onFocus={handleFocus}
-                                onChange={(montoDescuento: number | null) => {
-                                  if (montoDescuento! >= 0) {
-                                    if (montoDescuento! <= item.precioUnitario) {
-                                      update(index, {
-                                        ...item,
-                                        montoDescuento: montoDescuento!,
-                                      })
-                                    } else {
-                                      toast.warn(
-                                        'El descuento no puede ser mayor al precio',
-                                      )
-                                    }
+                                onChange={(e) => {
+                                  const montoDescuento = pFloat(e.target.value.toString())
+                                  if (montoDescuento! <= item.precioUnitario) {
+                                    update(index, {
+                                      ...item,
+                                      montoDescuento: montoDescuento!,
+                                    })
+                                  } else {
+                                    toast.warn(
+                                      'El descuento no puede ser mayor al precio',
+                                    )
                                   }
                                 }}
-                                formatter={(value, info) =>
-                                  numberWithCommas(value, info, 5)
-                                }
+                                inputComponent={NumeroMask as any}
+                                inputProps={{
+                                  scale: 5,
+                                }}
                               />
                             </td>
                             <td

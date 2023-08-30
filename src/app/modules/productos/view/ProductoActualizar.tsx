@@ -99,7 +99,6 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
         if (subPartidaArancelaria !== null) {
           // Si tiene un valor, hacemos la petición a la API
           const responseAlicuota = await apiAlicuota(subPartidaArancelaria)
-          console.log(responseAlicuota)
 
           // Establecemos el valor en el campo correspondiente
           //@ts-ignore

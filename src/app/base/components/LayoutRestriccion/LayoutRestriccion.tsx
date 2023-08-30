@@ -24,6 +24,7 @@ import React, { FC, useState } from 'react'
 import CuentaRestriccionDialog from '../../../modules/cuenta/view/CuentaRestriccionDialog'
 import { topBarHeightRestriccion } from '../../../utils/constant'
 import useAuth from '../../hooks/useAuth'
+import { MyChip } from '../Mask/MyChip'
 import { themeShadows } from '../Template/MatxTheme/themeColors'
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -77,13 +78,8 @@ const LayoutRestriccion: FC<any> = () => {
               <TableBody>
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell sx={{ minWidth: 200, maxWidth: 400 }}>
-                    <Typography
-                      variant={'body2'}
-                      color={'error'}
-                      fontSize={15}
-                      style={{ fontWeight: 500 }}
-                    >
-                      {user.razonSocial}
+                    <Typography color={'error'} style={{ fontWeight: 500 }}>
+                      <MyChip color="info">{user.razonSocial}</MyChip>
                     </Typography>
                   </TableCell>
 
