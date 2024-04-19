@@ -14,7 +14,6 @@ import {
  */
 
 export const productoComposeService = (aql: ProductoInputProps): any => {
-  console.log('aql', aql)
   return {
     // codigoProducto: aql.codigoProducto,
     nombre: aql.nombre,

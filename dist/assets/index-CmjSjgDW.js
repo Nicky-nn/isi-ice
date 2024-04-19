@@ -1,1 +1,0 @@
-const a={elaborado:"ELABORADO",aprobado:"APROBADO",validada:"VALIDADA",completado:"COMPLETADO",finalizado:"FINALIZADO",pendiente:"PENDIENTE",observado:"OBSERVADO",paqueteObservado:"OBSERVADA",anulado:"ANULADO",eliminado:"ELIMINADO",rechazado:"RECHAZADA"},E={REGISTER:"REGISTER",UPDATE:"UPDATE",DELETE:"DELETE"},A={limit:10,page:0,reverse:!0,query:""};export{A as P,a,E as b};

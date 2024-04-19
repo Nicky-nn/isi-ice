@@ -1,1 +1,0 @@
-import{B as n}from"./react-toastify-Bq65RiZx.js";const r={position:"top-center",theme:"colored"},c=o=>{n.error(o,{...r})},e=(o="Acción realizada correctamente")=>{n.success(o,{...r})},s=o=>{n.warning(o,{...r})};export{c as a,s as b,e as n};

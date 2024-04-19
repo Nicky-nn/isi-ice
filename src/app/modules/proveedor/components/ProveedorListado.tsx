@@ -33,6 +33,7 @@ import { ProveedorProps } from '../interfaces/proveedor.interface'
 import { proveedorRouteMap } from '../ProveedorRoutesMap'
 import ProveedorActualizarDialog from '../view/ProveedorActualizarDialog'
 import ProveedorRegistroDialog from '../view/ProveedorRegistroDialog'
+import { MuiTableAdvancedOptionsProps } from '../../../utils/muiTable/muiTableAdvancedOptionsProps'
 
 interface OwnProps {}
 
@@ -180,6 +181,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
       </Paper>
       <Box sx={{ mb: 2, m: '1rem' }}>
         <MaterialReactTable
+          {...(MuiTableAdvancedOptionsProps as MRT_TableOptions<ProveedorProps>)}
           columns={columns}
           data={data ?? []}
           initialState={{ showColumnFilters: false }}

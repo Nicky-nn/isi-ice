@@ -32,28 +32,28 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} lg={6}>
-         <Controller
+          <Controller
             control={form.control}
             name={'subPartidaArancelaria'}
             render={({ field }) => (
-            <FormControl fullWidth error={Boolean(errors.subPartidaArancelaria)}>
-              <InputLabel>Sub Partidad Arancelaria</InputLabel>
-              <OutlinedInput
-                {...field}
-                label={'Sub Partida Arancelaria'}
-                size={'small'}
-                value={field.value}
-                onFocus={handleSelect}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                error={Boolean(errors.subPartidaArancelaria)}
-              />
-              <FormHelperText>
-                {errors.subPartidaArancelaria?.message || ''}
-              </FormHelperText>
-            </FormControl>
+              <FormControl fullWidth error={Boolean(errors.subPartidaArancelaria)}>
+                <InputLabel size="small">Sub Partidad Arancelaria</InputLabel>
+                <OutlinedInput
+                  {...field}
+                  label={'Sub Partida Arancelaria'}
+                  size={'small'}
+                  value={field.value}
+                  onFocus={handleSelect}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={Boolean(errors.subPartidaArancelaria)}
+                />
+                <FormHelperText>
+                  {errors.subPartidaArancelaria?.message || ''}
+                </FormHelperText>
+              </FormControl>
             )}
-         />
+          />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <Controller
@@ -119,28 +119,26 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
           />
         </Grid>
         <Grid item xs={12} md={7} lg={7}>
-        <Controller
+          <Controller
             control={form.control}
             name={'descripcion'}
             render={({ field }) => (
-            <FormControl fullWidth error={Boolean(errors.descripcion)}>
-              <InputLabel>Descripción</InputLabel>
-              <OutlinedInput
-                {...field}
-                label={'Descripción'}
-                size={'small'}
-                value={field.value}
-                onFocus={handleSelect}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                error={Boolean(errors.descripcion)}
-              />
-              <FormHelperText>
-                {errors.descripcion?.message || ''}
-              </FormHelperText>
-            </FormControl>
+              <FormControl fullWidth error={Boolean(errors.descripcion)}>
+                <InputLabel size="small">Descripción</InputLabel>
+                <OutlinedInput
+                  {...field}
+                  label={'Descripción'}
+                  size={'small'}
+                  value={field.value}
+                  onFocus={handleSelect}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={Boolean(errors.descripcion)}
+                />
+                <FormHelperText>{errors.descripcion?.message || ''}</FormHelperText>
+              </FormControl>
             )}
-         />
+          />
         </Grid>
       </Grid>
     </form>

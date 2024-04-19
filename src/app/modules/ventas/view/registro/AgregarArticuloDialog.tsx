@@ -12,8 +12,9 @@ import {
   InputLabel,
   TextField,
 } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import InputNumber from 'rc-input-number'
-import React, { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import Select from 'react-select'
 
 import AlertError from '../../../../base/components/Alert/AlertError'
@@ -28,10 +29,11 @@ import {
   isEmptyValue,
 } from '../../../../utils/helper'
 import { notError } from '../../../../utils/notification'
-import { ProductoVarianteProps } from '../../../productos/interfaces/producto.interface'
+import { apiSinMonedaUnidadMedida } from '../../../sin/api/sinMonedaUnidadMedida.api'
 import { apiProductoServicioUnidadMedida } from '../../../sin/api/sinProductosUnidadMedida.api'
 import {
   SinProductoServicioProps,
+  SinTipoMonedaProps,
   SinUnidadMedidaProps,
 } from '../../../sin/interfaces/sin.interface'
 
@@ -149,7 +151,9 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
       // const resp = await apiProductoServicioUnidadMedida(codigoActividad)
       const resp = await apiProductoServicioUnidadMedida()
       if (resp) {
+        // console.log(resp)
         setUnidadesMedida(resp.sinUnidadMedida)
+        // console.log(resp.sinProductoServicioPorActividad)
         setProductosServicios(resp.sinProductoServicioPorDocumentoSector)
       }
     } catch (e: any) {
@@ -167,6 +171,36 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
     }
   }, [open])
 
+  const { data, isLoading } = useQuery<
+    {
+      sinTipoMoneda: SinTipoMonedaProps[]
+      sinUnidadMedida: SinUnidadMedidaProps[]
+    },
+    Error
+  >({
+    queryKey: ['monedaUnidadMedida'],
+    queryFn: async () => {
+      const data = await apiSinMonedaUnidadMedida()
+      return data || {}
+    },
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     if (data && !inputForm.unidadMedida) {
+  //       const servicios = data.sinUnidadMedida.find(
+  //         (su) => su.codigoClasificador === '58',
+  //       )
+  //       setInputForm({
+  //         ...inputForm,
+  //         unidadMedida: servicios || null,
+  //       })
+  //     }
+  //   }
+  // }, [isLoading])
+
   return (
     <>
       <Dialog
@@ -176,7 +210,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
         open={open}
         {...other}
       >
-        <DialogTitle>Agregar Producto/Servicio Personalizado</DialogTitle>
+        <DialogTitle>Agregar Producto Personalizado</DialogTitle>
         <DialogContent dividers>
           {!isError ? (
             <Grid container spacing={2.5}>
@@ -205,27 +239,36 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
               </Grid>
 
               <Grid item lg={12} md={12} xs={12}>
-                <FormControl fullWidth component={'div'}>
-                  <MyInputLabel shrink>Unidad Medida</MyInputLabel>
-                  <Select<SinUnidadMedidaProps>
-                    styles={reactSelectStyle(Boolean(isError))}
-                    menuPosition={'fixed'}
-                    name="unidadMedida"
-                    placeholder={'Seleccione la unidad de medida'}
-                    value={genReplaceEmpty(inputForm.unidadMedida, null)}
-                    onChange={(resp) => {
-                      setInputForm({
-                        ...inputForm,
-                        unidadMedida: resp || ({} as SinUnidadMedidaProps),
-                      })
-                    }}
-                    options={unidadesMedida}
-                    // getOptionValue={(ps) => ps.codigoClasificador}
-                    getOptionLabel={(ps) =>
-                      `${ps.codigoClasificador} - ${ps.descripcion}`
-                    }
+                {data?.sinUnidadMedida ? (
+                  <FormControl fullWidth error={Boolean(isError)}>
+                    <MyInputLabel shrink>Unidad de Medida</MyInputLabel>
+                    <Select<SinUnidadMedidaProps>
+                      styles={reactSelectStyle(Boolean(isError))}
+                      name={'unidadMedida'}
+                      placeholder={'Seleccione la unidad de medida'}
+                      menuPosition={'fixed'}
+                      // value={inputForm.unidadMedida}
+                      onChange={(resp) => {
+                        setInputForm({
+                          ...inputForm,
+                          unidadMedida: resp || ({} as SinUnidadMedidaProps),
+                        })
+                      }}
+                      onBlur={() => {}}
+                      options={data.sinUnidadMedida}
+                      //@ts-ignore
+                      getOptionValue={(item) => item.codigoClasificador}
+                      getOptionLabel={(item) =>
+                        `${item.codigoClasificador} - ${item.descripcion}`
+                      }
+                    />
+                  </FormControl>
+                ) : (
+                  <AlertError
+                    tipo={'error'}
+                    mensaje={'No se pudo cargar el clasificador de monedas'}
                   />
-                </FormControl>
+                )}
               </Grid>
 
               <Grid item lg={4} md={4} sm={4} xs={12}>
@@ -258,36 +301,6 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                 />
               </Grid>
 
-              {/* <Grid item lg={4} md={4} sm={4} xs={12}>
-                <TextField
-                  type="number"
-                  id="marcaIce"
-                  label="Marca Ice"
-                  size="small"
-                  fullWidth
-                  value={inputForm.marcaIce}
-                  onChange={(e) => {
-                    const inputValue = e.target.value
-                    // Validar que solo sean números entre 1 y 2 o campo vacío
-                    if (inputValue === '' || /^[1-2]$/.test(inputValue)) {
-                      setInputForm({
-                        ...inputForm,
-                        marcaIce: inputValue !== '' ? parseInt(inputValue) : '',
-                      })
-                    }
-                  }}
-                  onKeyDown={(e) => {
-                    const validKeys = ['1', '2', 'Backspace', 'Delete']
-                    if (!validKeys.includes(e.key)) {
-                      e.preventDefault()
-                    }
-                  }}
-                  inputProps={{
-                    min: 1,
-                    max: 2,
-                  }}
-                />
-              </Grid> */}
               <Grid item lg={4} md={4} sm={4} xs={12}>
                 <TextField
                   id="alicuotaEspecifica"

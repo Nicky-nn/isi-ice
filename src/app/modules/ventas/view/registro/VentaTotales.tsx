@@ -43,6 +43,7 @@ import {
 } from '../../services/operacionesService'
 import { composeFactura, composeFacturaValidator } from '../../utils/composeFactura'
 import { DescuentoAdicionalDialog } from './ventaTotales/DescuentoAdicionalDialog'
+import printJS from 'print-js'
 
 interface OwnProps {
   form: UseFormReturn<FacturaInputProps>
@@ -142,7 +143,9 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
         if (resp.isConfirmed) {
           const { value }: any = resp
           reset({ ...FacturaInitialValues, actividadEconomica: data.actividadEconomica })
-          openInNewTab(value.representacionGrafica.pdf)
+          // si son  pc y laptos usamos printJS y si no usamos openInNewTab
+          printJS(value.representacionGrafica.pdf)
+          // openInNewTab(value.representacionGrafica.pdf)
           mySwal.fire({
             title: `Documento generado correctamente`,
             html: (
@@ -337,6 +340,27 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             }
           >
             <ListItemText primary={<strong>TOTAL ICE PORCENTUAL</strong>} />
+          </ListItem>
+          <ListItem
+            style={{ padding: 0 }}
+            secondaryAction={
+              <Typography variant="subtitle1" gutterBottom>
+                {numberWithCommas(
+                  calculoMoneda(
+                    montoTotal -
+                      descuentoAdd -
+                      montoIcePorcentual -
+                      montoIceEspecificoTotal,
+                  ),
+                  {
+                    maximumFractionDigits: 2,
+                  },
+                )}
+                <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
+              </Typography>
+            }
+          >
+            <ListItemText primary={<strong>IMPORTE BASE CRÉDIO FISCAL</strong>} />
           </ListItem>
 
           <Divider
