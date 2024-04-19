@@ -1,0 +1,1 @@
+const a=(e=!1)=>({menuPortal:o=>({...o,zIndex:9999}),menu:o=>({...o,zIndex:9999}),placeholder:o=>({...o,color:e?"#FF3D57":"#a4a4a4"}),control:(o,r)=>({...o,borderColor:e?"#FF3D57":"rgb(52, 49, 76, 0.3)",":hover":{...o[":hover"],borderColor:e?"#FF3D57":"rgba(52, 49, 76, 1)"}})});export{a as r};

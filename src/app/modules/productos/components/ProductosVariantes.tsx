@@ -1,0 +1,209 @@
+import { AllInclusive } from '@mui/icons-material'
+import { useQuery } from '@tanstack/react-query'
+import {
+  MaterialReactTable,
+  MRT_ColumnDef,
+  MRT_ColumnFiltersState,
+  MRT_PaginationState,
+  MRT_RowSelectionState,
+  MRT_SortingState,
+  MRT_TableOptions,
+} from 'material-react-table'
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { it } from 'yup-locales'
+
+import { numberWithCommas } from '../../../base/components/MyInputs/NumberInput'
+import useAuth from '../../../base/hooks/useAuth'
+import { PAGE_DEFAULT, PageProps } from '../../../interfaces'
+import { genApiQuery, genReplaceEmpty } from '../../../utils/helper'
+import { localization } from '../../../utils/localization'
+// import { muiTableHeadCellFilterTextFieldProps } from '../../../utils/materialReactTableUtils'
+import { apiProductosVariantes } from '../api/productosVariantes.api'
+import {
+  ProductoInputProps,
+  ProductoVarianteProps,
+} from '../interfaces/producto.interface'
+import { MuiTableAdvancedOptionsProps } from '../../../utils/muiTable/muiTableAdvancedOptionsProps'
+
+interface OwnProps {
+  codigoActividad: string
+  setProductosVariantes: React.Dispatch<React.SetStateAction<ProductoVarianteProps[]>>
+}
+
+type Props = OwnProps
+
+const ProductosVariantes: FunctionComponent<Props> = (props) => {
+  const {
+    user: { sucursal },
+  } = useAuth()
+
+  const columns = useMemo<MRT_ColumnDef<ProductoVarianteProps>[]>(
+    () => [
+      {
+        accessorKey: 'codigoProducto',
+        header: 'Código Producto',
+        size: 100,
+      },
+      {
+        accessorKey: 'nombre',
+        header: 'Producto / Servicio',
+      },
+      {
+        accessorKey: 'unidadMedida.descripcion',
+        header: 'Unidad Medida',
+        enableColumnFilter: false,
+      },
+      {
+        accessorKey: 'marcaIce',
+        header: 'Marca ICE',
+        id: 'marcaIce',
+        size: 135,
+        accessorFn: (row) => (row.marcaIce === 1 ? 'SI' : row.marcaIce === 2 ? 'NO' : ''),
+      },
+      {
+        accessorKey: 'subPartidaArancelaria',
+        header: 'Sub Partida Arancelaria',
+      },
+      {
+        accessorKey: 'alicuotaDescripcion',
+        header: 'Alicuota',
+      },
+      {
+        accessorKey: 'alicuotaEspecifica',
+        header: 'Alicuota Especifica',
+      },
+      {
+        accessorKey: 'alicuotaPorcentual',
+        header: 'Alicuota Porcentual',
+      },
+      {
+        accessorKey: 'precio',
+        header: 'Precio',
+        muiTableBodyCellProps: {
+          align: 'right',
+        },
+        accessorFn: (row) => {
+          return numberWithCommas(row.precio, {})
+        },
+        size: 100,
+      },
+      {
+        accessorKey: 'sinProductoServicio.codigoActividad',
+        header: 'Código Actividad',
+        enableColumnFilter: false,
+      },
+    ],
+    [],
+  )
+
+  const { setProductosVariantes, codigoActividad } = props
+  // DATA TABLE
+  const [rowCount, setRowCount] = useState(0)
+  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
+  const [sorting, setSorting] = useState<MRT_SortingState>([])
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: PAGE_DEFAULT.page,
+    pageSize: PAGE_DEFAULT.limit,
+  })
+  // const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({})
+
+  // FIN DATA TABLE
+  const { data, isError, isFetching, isLoading } = useQuery<any>({
+    queryKey: [
+      'tableProductoVarianteDialog',
+      columnFilters,
+      pagination.pageIndex,
+      pagination.pageSize,
+      sorting,
+    ],
+    queryFn: async () => {
+      const query = genApiQuery(columnFilters, [])
+      // console.log(query)
+      const fetchPagination: PageProps = {
+        ...PAGE_DEFAULT,
+        page: pagination.pageIndex + 1,
+        limit: pagination.pageSize,
+        reverse: sorting.length <= 0,
+        query,
+      }
+      const { pageInfo, docs } = await apiProductosVariantes(fetchPagination)
+      setRowCount(pageInfo.totalDocs)
+      return docs
+    },
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  })
+
+  useEffect(() => {
+    if (rowSelection) {
+      const p = Object.keys(rowSelection)
+      if (data) {
+        const pvs = data!.filter((item: ProductoInputProps) =>
+          p.includes(item.codigoProducto),
+        )
+        setProductosVariantes(pvs)
+      }
+    }
+  }, [rowSelection, data, setProductosVariantes])
+
+  return (
+    <>
+      <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+        <MaterialReactTable
+          {...(MuiTableAdvancedOptionsProps as MRT_TableOptions<ProductoVarianteProps>)}
+          columns={columns}
+          data={data ?? []}
+          initialState={{ showColumnFilters: false }}
+          manualFiltering
+          manualPagination
+          manualSorting
+          enableRowActions={false}
+          muiToolbarAlertBannerProps={
+            isError
+              ? {
+                  color: 'error',
+                  children: 'Error en cargar los datos',
+                }
+              : undefined
+          }
+          onColumnFiltersChange={setColumnFilters}
+          onPaginationChange={setPagination}
+          onSortingChange={setSorting}
+          enableDensityToggle={false}
+          enableGlobalFilter={false}
+          rowCount={rowCount ?? 0}
+          state={{
+            isLoading,
+            columnFilters,
+            pagination,
+            showAlertBanner: isError,
+            showProgressBars: isFetching,
+            sorting,
+            density: 'compact',
+            rowSelection,
+          }}
+          /*muiTableHeadCellFilterTextFieldProps={{
+            ...muiTableHeadCellFilterTextFieldProps,
+          }}*/
+          enableRowSelection
+          // enableSelectAll={false}
+          onRowSelectionChange={setRowSelection}
+          getRowId={(row) => row.codigoProducto}
+          muiTableContainerProps={{
+            sx: {
+              maxHeight: '650px',
+            },
+          }}
+          muiTableBodyRowProps={({ row }) => ({
+            onClick: row.getToggleSelectedHandler(),
+            sx: { cursor: 'pointer' },
+          })}
+        />
+      </div>
+    </>
+  )
+}
+
+export default ProductosVariantes
+

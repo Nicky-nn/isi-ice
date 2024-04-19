@@ -10,8 +10,8 @@ const pwaOptions = (env: any): Partial<VitePWAOptions> => ({
     globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp}'],
   },
   manifest: {
-    name: `Módulo de Administración`,
-    short_name: 'ADM',
+    name: `Módulo de Impuesto al Consumo Específico`,
+    short_name: 'ICE',
     theme_color: '#ffffff',
     display: 'minimal-ui',
     icons: [

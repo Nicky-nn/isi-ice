@@ -33,7 +33,9 @@ export const NumeroMask = forwardRef<HTMLElement, CustomProps>(function TextMask
         onChange({
           target: {
             name: props.name,
-            value: isNaN(parseFloat(value)) ? null : parseFloat(value),
+            value: isNaN(parseFloat(value.toString()))
+              ? null
+              : parseFloat(value.toString()),
           },
         })
       }}
@@ -41,3 +43,4 @@ export const NumeroMask = forwardRef<HTMLElement, CustomProps>(function TextMask
     />
   )
 })
+
