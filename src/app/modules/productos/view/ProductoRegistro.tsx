@@ -38,13 +38,13 @@ const ProductoRegistro: FunctionComponent<Props> = (props) => {
     defaultValues: {
       ...PRODUCTO_INITIAL_VALUES,
     },
-    //@ts-ignore
-    resolver: yupResolver(productoRegistroValidator),
+    resolver: yupResolver<any>(productoRegistroValidator),
   })
 
   const onSubmit: SubmitHandler<ProductoInputProps> = async (values) => {
     const val = await productoRegistroValidatorResponde(values)
     const codigoProducto = values.codigoProducto
+    console.log('val', val)
     const apiInput = productoComposeService(values)
     await swalAsyncConfirmDialog({
       preConfirm: async () => {

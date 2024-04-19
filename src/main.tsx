@@ -2,7 +2,7 @@ import './index.css'
 import 'rc-input-number/assets/index.css'
 import 'react-toastify/dist/ReactToastify.css'
 import 'react-datepicker/dist/react-datepicker.css'
-import 'perfect-scrollbar/css/perfect-scrollbar.css'
+// import 'perfect-scrollbar/css/perfect-scrollbar.css'
 import './styles/reactDatePicker.css'
 import './styles/accordion.css'
 

@@ -213,7 +213,6 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                 render={({ field }) => (
                   <FormControl
                     fullWidth
-                    component={'div'}
                     error={Boolean(errors.codigoProductoSin)}
                   >
                     <MyInputLabel shrink>Servicio Homologado</MyInputLabel>

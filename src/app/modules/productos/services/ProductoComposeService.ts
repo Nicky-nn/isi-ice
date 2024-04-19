@@ -14,6 +14,7 @@ import {
  */
 
 export const productoComposeService = (aql: ProductoInputProps): any => {
+  console.log('aql', aql)
   return {
     // codigoProducto: aql.codigoProducto,
     nombre: aql.nombre,
@@ -22,10 +23,7 @@ export const productoComposeService = (aql: ProductoInputProps): any => {
     codigoActividad: aql.codigoActividad?.codigoActividad,
     codigoProductoSin: aql.codigoProductoSin?.codigoProducto,
     precio: aql.precio,
-    codigoUnidadMedida: parseInt(
-      genReplaceEmpty(aql.codigoUnidadMedida?.codigoClasificador, 0),
-      10,
-    ),
+    codigoUnidadMedida: aql.codigoUnidadMedida?.codigoClasificador,
     tipoProductoId: aql.tipoProducto?._id,
     codigoProveedor: aql.codigoProveedor?.codigo,
     marcaIce: aql.marcaIce,
@@ -33,3 +31,4 @@ export const productoComposeService = (aql: ProductoInputProps): any => {
     subPartidaArancelaria: aql.subPartidaArancelaria?.subPartidaArancelaria,
   }
 }
+
