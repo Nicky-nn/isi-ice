@@ -15,6 +15,7 @@ dist
 dist-ssr
 *.local
 NUL
+yarn.lock
 
 # Editor directories and files
 .vscode/*
@@ -30,3 +31,6 @@ dev-dist/sw.js
 dist-zip
 dist-zip/dev.ice.isipass.com.bo.zip
 dist-zip/ice.isipass.net.zip
+dist-zip/dist.zip
+isiTemplate
+dist
