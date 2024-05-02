@@ -1,6 +1,7 @@
-import { PersonAddAlt1Outlined, TableChart } from '@mui/icons-material'
+import { PersonAddAlt1Outlined, PersonSearch, TableChart } from '@mui/icons-material'
 import {
   Button,
+  Checkbox,
   FormControl,
   FormHelperText,
   Grid,
@@ -8,9 +9,8 @@ import {
   ListItem,
   ListItemText,
   TextField,
-  Tooltip,
 } from '@mui/material'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
@@ -33,7 +33,7 @@ interface OwnProps {
 }
 
 type Props = OwnProps
-
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 export const DatosTransaccionComercial: FC<Props> = (props) => {
   const {
     form: {
@@ -48,6 +48,7 @@ export const DatosTransaccionComercial: FC<Props> = (props) => {
   const [openExplorarCliente, setExplorarCliente] = useState(false)
   const [openCliente99001, setCliente99001] = useState(false)
   const watchAllFields = watch()
+  const [isCheckedExecpcion, setIsCheckedExecpcion] = useState(false)
 
   const fetchClientes = async (inputValue: string): Promise<any[]> => {
     try {
@@ -62,6 +63,11 @@ export const DatosTransaccionComercial: FC<Props> = (props) => {
     }
   }
 
+  useEffect(() => {
+    setIsCheckedExecpcion(false)
+    setValue('codigoExcepcion', 0)
+  }, [props.form, props.form.getValues('cliente.codigoCliente')])
+
   return (
     <>
       <Grid container spacing={1} rowSpacing={3}>
@@ -71,7 +77,7 @@ export const DatosTransaccionComercial: FC<Props> = (props) => {
             control={control}
             render={({ field }) => (
               <FormControl fullWidth error={Boolean(errors.cliente)}>
-                <MyInputLabel shrink>Búsqueda de clientes</MyInputLabel>
+                <MyInputLabel shrink>Busqueda de clientes</MyInputLabel>
                 <AsyncSelect<ClienteProps>
                   {...field}
                   cacheOptions={false}
@@ -95,7 +101,7 @@ export const DatosTransaccionComercial: FC<Props> = (props) => {
                   }}
                   onBlur={field.onBlur}
                   noOptionsMessage={() =>
-                    'Ingrese referencia -> Razón Social, Código Cliente, Número documento'
+                    'Ingrese referencia -> Razon Social, Codigo Cliente, Numero documento'
                   }
                   loadingMessage={() => 'Buscando...'}
                 />
@@ -110,7 +116,7 @@ export const DatosTransaccionComercial: FC<Props> = (props) => {
             variant="outlined"
             fullWidth
             onClick={() => setExplorarCliente(true)}
-            startIcon={<TableChart />}
+            startIcon={<PersonSearch />}
           >
             Explorar Clientes
           </Button>
@@ -139,29 +145,46 @@ export const DatosTransaccionComercial: FC<Props> = (props) => {
         </Grid>
 
         <Grid item lg={3} xs={12} md={3}>
-          <Tooltip title="Nuevo Cliente">
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={() => setNuevoCliente(true)}
-              startIcon={<PersonAddAlt1Outlined />}
-            >
-              N. Cliente
-            </Button>
-          </Tooltip>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={() => setNuevoCliente(true)}
+            startIcon={<PersonAddAlt1Outlined />}
+          >
+            Nuevo Cliente
+          </Button>
         </Grid>
         <Grid item lg={4} xs={12} md={3}>
-          <Tooltip title="Nuevo Cliente 99001">
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={() => setCliente99001(true)}
-              startIcon={<PersonAddAlt1Outlined />}
-            >
-              N. Cliente 99001
-            </Button>
-          </Tooltip>
+          <Button
+            variant="outlined"
+            fullWidth
+            onClick={() => setCliente99001(true)}
+            startIcon={<PersonAddAlt1Outlined />}
+          >
+            Nuevo Cliente 99001
+          </Button>
         </Grid>
+        <Grid item lg={12} xs={12} md={12}>
+          <Checkbox
+            {...label}
+            checked={isCheckedExecpcion}
+            sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+            style={{ marginRight: '0px' }}
+            onClick={() => {
+              setIsCheckedExecpcion((prev) => !prev) // Cambia el estado al valor opuesto
+              setValue('codigoExcepcion', isCheckedExecpcion ? 0 : 1) // Envía 1 si está marcado, 0 si está desmarcado
+            }}
+          />
+          <span
+            style={{
+              marginLeft: '8px',
+              marginRight: '8px',
+            }}
+          >
+            Permitir Facturación aunque el N.I.T. esté inválido
+          </span>
+        </Grid>
+
         <Grid item lg={12}>
           <List style={{ marginTop: -10, marginLeft: 10, padding: 0 }}>
             <ListItem style={{ padding: 0 }}>
@@ -239,3 +262,4 @@ export const DatosTransaccionComercial: FC<Props> = (props) => {
     </>
   )
 }
+
