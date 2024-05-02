@@ -29,6 +29,7 @@ const query = gql`
       nombres
       apellidos
       email
+      telefono
       codigoExcepcion
     }
   }
@@ -59,3 +60,4 @@ export const apiClienteActualizar = async (
     throw new MyGraphQlError(e)
   }
 }
+

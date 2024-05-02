@@ -46,3 +46,4 @@ export const apiCliente99001Actualizar = async (
     throw new MyGraphQlError(e)
   }
 }
+

@@ -13,6 +13,7 @@ import { isEmptyValue } from '../../../../utils/helper'
 import useQueryTipoDocumentoIdentidad from '../../../sin/hooks/useQueryTipoDocumento'
 import { SinTipoDocumentoIdentidadProps } from '../../../sin/interfaces/sin.interface'
 import { ClienteInputProps } from '../../interfaces/cliente'
+import { MuiTelInput } from 'mui-tel-input'
 
 interface OwnProps {
   form: UseFormReturn<ClienteInputProps>
@@ -159,10 +160,12 @@ const ClienteForm: FunctionComponent<Props> = (props) => {
             control={control}
             name={'telefono'}
             render={({ field }) => (
-              <FormTextField
+              <MuiTelInput
                 name={'telefono'}
                 label="Teléfonos"
+                size="small"
                 value={field.value}
+                defaultCountry="BO"
                 onChange={field.onChange}
                 onBlur={field.onBlur}
                 error={Boolean(errors.telefono)}
@@ -177,3 +180,4 @@ const ClienteForm: FunctionComponent<Props> = (props) => {
 }
 
 export default ClienteForm
+

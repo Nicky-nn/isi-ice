@@ -43,6 +43,7 @@ export interface ClienteApiInputProps {
   codigoTipoDocumentoIdentidad: number
   numeroDocumento: string
   complemento: string
+  codigoExcepcion: number
   email: string
   razonSocial: string
   telefono: string
@@ -74,3 +75,4 @@ export const CLIENTE_DEFAULT_INPUT: ClienteInputProps = {
   telefono: '',
   action: actionForm.REGISTER,
 }
+

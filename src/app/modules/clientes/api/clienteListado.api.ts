@@ -40,6 +40,7 @@ const query = gql`
         numeroDocumento
         razonSocial
         codigoExcepcion
+        telefono
         tipoDocumentoIdentidad {
           codigoClasificador
           descripcion
@@ -76,3 +77,4 @@ export const fetchClienteListado = async (
   const data: any = await client.request(query, { ...pageInfo })
   return data.clientesAll
 }
+

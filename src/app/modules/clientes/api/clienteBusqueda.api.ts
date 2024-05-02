@@ -20,6 +20,7 @@ const queryGql = gql`
       email
       nombres
       numeroDocumento
+      telefono
       razonSocial
       tipoDocumentoIdentidad {
         codigoClasificador
@@ -47,3 +48,4 @@ export const apiClienteBusqueda = async (query: string): Promise<ClienteProps[]>
     throw new MyGraphQlError(e)
   }
 }
+
