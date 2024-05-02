@@ -53,12 +53,12 @@ export const navigations: NavigationProps[] = [
         name: 'Gestión de Servicios',
         iconText: 'GP',
         path: productosRouteMap.gestion,
-      },
+      } /*
       {
         name: 'Proveedores',
         iconText: 'PR',
         path: proveedorRouteMap.gestion,
-      },
+      },*/,
       {
         name: 'Gestión de Alicuotas',
         iconText: 'AL',

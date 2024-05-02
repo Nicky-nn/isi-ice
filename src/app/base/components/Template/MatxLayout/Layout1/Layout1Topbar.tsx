@@ -31,7 +31,7 @@ import MatxMenu from '../../MatxMenu/MatxMenu'
 import { themeShadows } from '../../MatxTheme/themeColors'
 import NotificationBar from '../../NotificationBar/NotificationBar'
 import { Span } from '../../Typography'
-import { cuentaRouteMap } from '../../../../../modules/cuenta/CuentaRoutesMap'
+import { cuentaRouteMap } from '../../../../../modules/base/cuenta/CuentaRoutesMap'
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,

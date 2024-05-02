@@ -21,10 +21,10 @@ import {
 } from '@mui/material'
 import React, { FC, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
-import CuentaRestriccionDialog from '../../../modules/cuenta/view/CuentaRestriccionDialog'
 import { themeShadows } from '../Template/MatxTheme/themeColors'
 import { topBarHeightRestriccion } from '../../../utils/constant'
 import { MyChip } from '../MyChip/MyChip'
+import CuentaRestriccionDialog from '../../../modules/base/cuenta/view/CuentaRestriccionDialog'
 
 /*import { MyChip } from '../../../../base/components/MyChip/MyChip'
 import { themeShadows } from '../../../../base/components/Template/MatxTheme/themeColors'

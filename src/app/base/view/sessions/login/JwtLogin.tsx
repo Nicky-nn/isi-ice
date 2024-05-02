@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import {
+  Box,
   Card,
   Checkbox,
   FormControl,
@@ -11,9 +12,9 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  styled,
   TextField,
 } from '@mui/material'
-import { Box, styled, useTheme } from '@mui/system'
 import { useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -21,8 +22,11 @@ import CreatableSelect from 'react-select/creatable'
 import Turnstile from 'react-turnstile'
 import { object, string } from 'yup'
 
-import fcvFondo from '/assets/images/isibackgroud.jpg'
-
+import { apiCheckHuman } from '../../../../base/api/checkHuman.api'
+import { MyInputLabel } from '../../../../base/components/MyInputs/MyInputLabel'
+import { reactSelectStyle } from '../../../../base/components/MySelect/ReactSelect'
+import { Paragraph } from '../../../../base/components/Template/Typography'
+import useAuth from '../../../../base/hooks/useAuth'
 import { isEmptyValue } from '../../../../utils/helper'
 import {
   storageComercioActualizar,
@@ -30,13 +34,9 @@ import {
   storageComercioListado,
   StorageShopProps,
 } from '../../../../utils/storage'
-import { apiCheckHuman } from '../../../api/checkHuman.api'
-import { MyInputLabel } from '../../../components/MyInputs/MyInputLabel'
-import { reactSelectStyle } from '../../../components/MySelect/ReactSelect'
-import { Paragraph } from '../../../components/Template/Typography'
-import useAuth from '../../../hooks/useAuth'
 
-const fondo = '/assets/images/isibackgroud.jpg'
+const fondo = import.meta.env.ISI_FONDO
+const logo = import.meta.env.ISI_LOGO_FULL
 
 const FlexBox = styled(Box)(() => ({
   display: 'flex',
@@ -45,7 +45,7 @@ const FlexBox = styled(Box)(() => ({
 
 const JustifyBox = styled(FlexBox)(() => ({
   justifyContent: 'center',
-  padding: '15px 15px 5px 15px',
+  padding: '0 15px',
 }))
 
 const ContentBox = styled(Box)(() => ({
@@ -57,7 +57,7 @@ const ContentBox = styled(Box)(() => ({
 
 const IMG = styled('img')(() => ({
   width: '100%',
-  maxHeight: '90px',
+  // maxHeight: '90px',
 }))
 
 const JWTRoot = styled(JustifyBox)(() => ({
@@ -97,7 +97,6 @@ interface LoginProps {
  * @constructor
  */
 const JwtLogin = () => {
-  const theme = useTheme()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const { login }: any = useAuth()
@@ -157,7 +156,7 @@ const JwtLogin = () => {
           <Grid item sm={12} xs={12}>
             <JustifyBox p={4} height="100%">
               <IMG
-                src="/assets/images/logo-isiinvoice.png"
+                src={logo}
                 alt="Gestión de ventas y servicios"
                 style={{ paddingTop: '20px' }}
               />
@@ -262,7 +261,7 @@ const JwtLogin = () => {
                       style={{ marginBottom: 5 }}
                       sitekey={import.meta.env.ISI_CAPTCHA_KEY || ''}
                       theme={'light'}
-                      onVerify={async (token) => {
+                      onVerify={async (token: any) => {
                         setCaptchaValidator(true)
                         await apiCheckHuman(token)
                       }}
@@ -289,7 +288,6 @@ const JwtLogin = () => {
                           name={'remember'}
                         />
                       </FlexBox>
-
                       {/*
                         <NavLink
                         to="/session/forgot-password"
@@ -305,7 +303,9 @@ const JwtLogin = () => {
                       color="primary"
                       loading={loading}
                       variant="contained"
+                      size={'large'}
                       disabled={!captchaValidator}
+                      fullWidth
                       sx={{ my: 2 }}
                     >
                       Iniciar Sesión
@@ -324,3 +324,4 @@ const JwtLogin = () => {
 }
 
 export default JwtLogin
+
