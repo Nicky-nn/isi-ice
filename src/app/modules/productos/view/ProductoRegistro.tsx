@@ -123,9 +123,9 @@ const ProductoRegistro: FunctionComponent<Props> = (props) => {
             <Grid item lg={12} md={12} xs={12}>
               {<ProductoClasificador form={form} />}
             </Grid>
-            <Grid item lg={12} md={12} xs={12}>
+            {/* <Grid item lg={12} md={12} xs={12}>
               {<ProductoProveedor form={form} />}
-            </Grid>
+            </Grid> */}
           </Grid>
         </Grid>
       </Grid>
@@ -134,3 +134,4 @@ const ProductoRegistro: FunctionComponent<Props> = (props) => {
 }
 
 export default ProductoRegistro
+
