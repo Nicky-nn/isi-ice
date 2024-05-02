@@ -271,7 +271,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                 )}
               </Grid>
 
-              <Grid item lg={4} md={4} sm={4} xs={12}>
+              <Grid item lg={3} md={4} sm={4} xs={12}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -334,7 +334,7 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                 />
               </Grid>
 
-              <Grid item lg={4} md={4} sm={4} xs={12}>
+              <Grid item lg={5} md={4} sm={4} xs={12}>
                 <TextField
                   id="alicuotaPorcentual"
                   label="Alicuota Porcentual"

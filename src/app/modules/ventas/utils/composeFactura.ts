@@ -13,28 +13,29 @@ const calculoMonedaBs = (monto: number, tipoCambioBs: number): number => {
   }
 }
 
-export const composeFactura = (fcv: FacturaInputProps): any => {
+export const composeFactura = (ice: FacturaInputProps): any => {
   const input = {
-    actividadEconomica: fcv.actividadEconomica!?.codigoActividad,
+    actividadEconomica: ice.actividadEconomica!?.codigoActividad,
     cliente: {
-      codigoCliente: fcv.cliente!.codigoCliente,
-      email: fcv.cliente!.email,
+      codigoCliente: ice.cliente!.codigoCliente,
+      email: ice.cliente!.email,
     },
-    codigoMetodoPago: fcv.codigoMetodoPago.codigoClasificador,
-    descuentoAdicional: calculoMonedaBs(fcv.descuentoAdicional, fcv.tipoCambio),
-    codigoMoneda: fcv.moneda!.codigo,
-    tipoCambio: fcv.tipoCambio,
-    detalleExtra: fcv.detalleExtra,
-    detalle: fcv.detalle.map((item) => ({
-      codigoActividad: fcv.actividadEconomica!?.codigoActividad,
+    codigoMetodoPago: ice.codigoMetodoPago.codigoClasificador,
+    descuentoAdicional: calculoMonedaBs(ice.descuentoAdicional, ice.tipoCambio),
+    codigoMoneda: ice.moneda!.codigo,
+    tipoCambio: ice.tipoCambio,
+    detalleExtra: ice.detalleExtra,
+    codigoExcepcion: ice.codigoExcepcion,
+    detalle: ice.detalle.map((item) => ({
+      codigoActividad: ice.actividadEconomica!?.codigoActividad,
       codigoProductoSin: item.codigoProductoSin,
       codigoProducto: item.codigoProducto,
       descripcionProducto: item.nombre,
       cantidad: item.cantidad,
       unidadMedida: parseInt(item.unidadMedida.codigoClasificador.toString()),
-      montoDescuento: calculoMonedaBs(item.montoDescuento, fcv.tipoCambio),
+      montoDescuento: calculoMonedaBs(item.montoDescuento, ice.tipoCambio),
       marcaIce: item.marcaIce,
-      precioUnitario: calculoMonedaBs(item.precioUnitario, fcv.tipoCambio),
+      precioUnitario: calculoMonedaBs(item.precioUnitario, ice.tipoCambio),
       ...(item.marcaIce === 2
         ? {}
         : {
@@ -44,13 +45,13 @@ export const composeFactura = (fcv: FacturaInputProps): any => {
           }),
     })),
   }
-  if (fcv.numeroTarjeta) {
-    return { ...input, numeroTarjeta: fcv.numeroTarjeta }
+  if (ice.numeroTarjeta) {
+    return { ...input, numeroTarjeta: ice.numeroTarjeta }
   }
   // return { input, notificacion }
   return input
 }
-export const composeFacturaValidator = async (fcv: any): Promise<boolean> => {
+export const composeFacturaValidator = async (ice: any): Promise<boolean> => {
   const schema = object({
     actividadEconomica: string().required('Debe seleccionar la actividad economica'),
     cliente: object({
@@ -75,6 +76,7 @@ export const composeFacturaValidator = async (fcv: any): Promise<boolean> => {
       )
       .min(1, 'Debe seleccionar al menos 1 productos / servicio para el detalle'),
   })
-  await schema.validate(fcv)
+  await schema.validate(ice)
   return true
 }
+
