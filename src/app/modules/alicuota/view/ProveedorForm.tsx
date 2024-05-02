@@ -37,7 +37,7 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
             name={'subPartidaArancelaria'}
             render={({ field }) => (
               <FormControl fullWidth error={Boolean(errors.subPartidaArancelaria)}>
-                <InputLabel size="small">Sub Partidad Arancelaria</InputLabel>
+                <InputLabel size="small">Sub Partida Arancelaria</InputLabel>
                 <OutlinedInput
                   {...field}
                   label={'Sub Partida Arancelaria'}
@@ -68,7 +68,17 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
                   size={'small'}
                   value={field.value.toString()}
                   onFocus={handleSelect}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    const inputValue = e.target.value
+                    if (
+                      inputValue === '' || // Permite borrar el campo
+                      (/^(100000(\.\d{1,5})?|\d{0,5}(\.\d{0,5})?)$/.test(inputValue) &&
+                        parseFloat(inputValue) >= 0 &&
+                        parseFloat(inputValue) <= 100000)
+                    ) {
+                      form.setValue('alicuotaEspecifica', parseFloat(inputValue))
+                    }
+                  }}
                   onBlur={field.onBlur}
                   inputComponent={NumeroMask as any}
                   inputProps={{
@@ -89,27 +99,31 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
             name={'alicuotaPorcentual'}
             render={({ field }) => (
               <FormControl fullWidth error={Boolean(errors.alicuotaPorcentual)}>
-                <TextField
+                <InputLabel>Alicuota Porcentual</InputLabel>
+                <OutlinedInput
+                  {...field}
                   name="alicuotaPorcentual"
                   label="Alicuota Porcentual"
                   size="small"
                   type="number"
                   fullWidth
-                  value={form.getValues('alicuotaPorcentual')}
+                  value={field.value.toString()}
                   onChange={(e) => {
-                    const inputValue = e.target.value
+                    let inputValuee = e.target.value
+                    if (isNaN(parseFloat(inputValuee))) {
+                      inputValuee = '0'
+                    }
+
                     if (
-                      inputValue === '' || // Permite borrar el campo
-                      (/^(100(\.\d{1,5})?|\d{0,2}(\.\d{0,5})?)$/.test(inputValue) &&
-                        parseFloat(inputValue) >= 0 &&
-                        parseFloat(inputValue) <= 100)
+                      inputValuee === '' || // Permite borrar el campo
+                      (/^(100(\.\d{1,5})?|\d{0,2}(\.\d{0,5})?)$/.test(inputValuee) &&
+                        parseFloat(inputValuee) >= 0 &&
+                        parseFloat(inputValuee) <= 100)
                     ) {
-                      form.setValue('alicuotaPorcentual', parseFloat(inputValue))
+                      form.setValue('alicuotaPorcentual', parseFloat(inputValuee))
                     }
                   }}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                  }}
+                  endAdornment={'%'}
                 />
                 <FormHelperText>
                   {errors.alicuotaPorcentual?.message || ''}

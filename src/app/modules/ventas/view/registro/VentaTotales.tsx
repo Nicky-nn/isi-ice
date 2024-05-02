@@ -53,7 +53,7 @@ type Props = OwnProps
 
 const VentaTotales: FunctionComponent<Props> = (props) => {
   const {
-    user: { moneda, monedaTienda },
+    user: { moneda, monedaTienda, tipoRepresentacionGrafica },
   } = useAuth()
   const {
     form: {
@@ -124,7 +124,55 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
   }
 
   const handleFocus = (event: any) => event.target.select()
+
+  /**
+   * @description validacion, Composición y envio del formulario de factura
+   * @param data
+   */
   const onSubmit: SubmitHandler<FacturaInputProps> = async (data) => {
+    const inputFactura = composeFactura(data)
+    const notificacion = true
+    const validator = await composeFacturaValidator(inputFactura).catch((err: Error) => {
+      notError(err.message)
+    })
+
+    if (validator) {
+      await swalAsyncConfirmDialog({
+        text: '¿Confirma que desea emitir el documento fiscal?',
+        preConfirm: async () => {
+          return fetchFacturaCreate(notificacion, inputFactura).catch((err) => {
+            swalException(err)
+            return false
+          })
+        },
+      }).then((resp) => {
+        if (resp.isConfirmed) {
+          const { value }: any = resp
+          reset({ ...FacturaInitialValues, actividadEconomica: data.actividadEconomica })
+          if (tipoRepresentacionGrafica === 'pdf') {
+            openInNewTab(value.representacionGrafica.pdf)
+            // si son  pc y laptos usamos printJS y si no usamos openInNewTab
+            printJS(value.representacionGrafica.pdf)
+            // openInNewTab(value.representacionGrafica.pdf)
+          }
+
+          if (tipoRepresentacionGrafica === 'rollo')
+            openInNewTab(value.representacionGrafica.rollo)
+
+          mySwal.fire({
+            title: `Documento generado correctamente`,
+            html: (
+              <RepresentacionGraficaUrls
+                representacionGrafica={value.representacionGrafica}
+              />
+            ),
+          })
+        }
+      })
+    }
+  }
+
+  /*const onSubmit: SubmitHandler<FacturaInputProps> = async (data) => {
     const inputFactura = composeFactura(data)
     const notification = true
     const validator = await composeFacturaValidator(inputFactura).catch((err: Error) => {
@@ -157,7 +205,7 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
         }
       })
     }
-  }
+  }*/
 
   const {
     data: monedas,
@@ -200,7 +248,11 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
     const inputMontoPaga = getValues('inputMontoPagar')
     setValue(
       'inputVuelto',
-      montoTotal - descuentoAdd - montoTotalDescuento - inputMontoPaga,
+      montoTotal -
+        descuentoAdd -
+        montoIcePorcentual -
+        montoIceEspecificoTotal -
+        inputMontoPaga,
     )
     // setValue('total', totales.total)
   }, [
@@ -373,8 +425,15 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
             secondaryAction={
               <Typography variant="h6" gutterBottom>
                 {numberWithCommas(
-                  calculoMoneda(montoTotal - descuentoAdd - montoTotalDescuento),
-                  {},
+                  calculoMoneda(
+                    montoTotal -
+                      descuentoAdd -
+                      montoIcePorcentual -
+                      montoIceEspecificoTotal,
+                  ),
+                  {
+                    maximumFractionDigits: 2,
+                  },
                 )}
                 <span style={{ fontSize: '0.8em' }}> {inputMoneda?.sigla || ''}</span>
               </Typography>

@@ -37,11 +37,17 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
     resolver: yupResolver<any>(proveedorRegistroValidationSchema),
   })
   const onSubmit: SubmitHandler<AlicuotaInputProp> = async (values) => {
-    const { subPartidaArancelaria,alicuotaEspecifica, alicuotaPorcentual, ...valuesWithoutCodigo } = values // Excluir la propiedad 'codigo'
+    console.log(values)
+    const {
+      subPartidaArancelaria,
+      alicuotaEspecifica,
+      alicuotaPorcentual,
+      ...valuesWithoutCodigo
+    } = values // Excluir la propiedad 'codigo'
 
     const alicuotaEspecificaNumber = parseFloat(values.alicuotaEspecifica.toString())
     const alicuotaPorcentualNumber = parseInt(values.alicuotaPorcentual.toString())
-  
+
     await swalAsyncConfirmDialog({
       preConfirm: () => {
         return apiProveedorActualizar(subPartidaArancelaria || '', {
@@ -74,6 +80,8 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
       const obtenerDatosProveedor = async () => {
         try {
           const datosProveedor = await apiAlicuota(props.codigo) // Reemplaza apiProveedor por la función adecuada
+          console.log(datosProveedor)
+          // aqui e
           form.reset(datosProveedor)
         } catch (error) {
           console.log(error)

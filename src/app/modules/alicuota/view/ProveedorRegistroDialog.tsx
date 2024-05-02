@@ -32,6 +32,7 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
   })
   const onSubmit: SubmitHandler<AlicuotaInputProp> = async (values) => {
     console.log(values)
+
     const {
       subPartidaArancelaria,
       alicuotaEspecifica,
