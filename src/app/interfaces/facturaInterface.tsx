@@ -142,6 +142,8 @@ export interface DetalleFacturaProps {
   subTotal: number
   unidadMedida: SinUnidadMedidaProps
   codigoNandina: string
+  alicuotaEspecifica: number
+  alicuotaPorcentual: number
 }
 
 export interface FacturaProps {

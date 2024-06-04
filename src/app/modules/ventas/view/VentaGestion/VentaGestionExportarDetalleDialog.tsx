@@ -75,6 +75,8 @@ const VentaGestionExportarDetalleDialog: FunctionComponent<Props> = (props) => {
             nroItem: item.nroItem,
             actividadEconomica: item.actividadEconomica.codigoCaeb,
             productoServicio: item.productoServicio.descripcionProducto,
+            alicuotaEspecifica: item.alicuotaEspecifica,
+            alicuotaPorcentual: item.alicuotaPorcentual,
             // producto: clearAllLineBreak(item.producto),
             // descripcion: clearAllLineBreak(item.descripcion),
             detalleExtra: clearAllLineBreak(genReplaceEmpty(item.detalleExtra, '')),

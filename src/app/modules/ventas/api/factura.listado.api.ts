@@ -55,6 +55,8 @@ const query = gql`
           descripcion
         }
         detalle {
+          alicuotaEspecifica
+          alicuotaPorcentual
           nroItem
           actividadEconomica {
             codigoCaeb
@@ -118,3 +120,4 @@ export const fetchFacturaListado = async (
   const data: any = await client.request(query, { ...pageInfo })
   return data.facturaIceListado
 }
+

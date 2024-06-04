@@ -92,6 +92,8 @@ export interface RepresentacionGraficaProps {
 }
 
 export interface DetalleFacturaProps {
+  alicuotaEspecifica: number
+  alicuotaPorcentual: number
   actividadEconomica: SinActividadesProps
   cantidad: number
   descripcion: string
@@ -148,3 +150,4 @@ export interface FacturaProps {
   usucre: string
   usumod: string
 }
+
