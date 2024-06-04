@@ -396,6 +396,8 @@ const AgregarArticuloDialog: FunctionComponent<Props> = (props: Props) => {
                   min={0}
                   value={inputForm.precio}
                   onFocus={handleFocus}
+                  inputMode="numeric"
+                  maxLength={10}
                   onChange={(precio: number | null) =>
                     setInputForm({ ...inputForm, precio: precio! })
                   }

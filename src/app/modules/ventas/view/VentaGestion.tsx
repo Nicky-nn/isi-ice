@@ -1,4 +1,5 @@
 import {
+  Cached,
   FileOpen,
   ImportExport,
   LayersClear,
@@ -317,11 +318,9 @@ const VentaGestion: FC<any> = () => {
               }}
               renderTopToolbarCustomActions={({ table }) => {
                 return (
-                  <StackMenuActionTable
-                    refetch={handleRefreshTable}
-                    sx={{ flexGrow: 1 }}
-                    // justifyContent={'flex-start'}
-                  ></StackMenuActionTable>
+                  <IconButton onClick={handleRefreshTable} disabled={isRefetching}>
+                    <Cached />
+                  </IconButton>
                 )
               }}
               renderRowActions={({ row }) => (

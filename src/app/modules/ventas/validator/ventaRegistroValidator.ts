@@ -13,3 +13,4 @@ export const VentaRegistroValidator = object({
     .required(),
   emailCliente: string().email().nullable().required(),
 })
+
