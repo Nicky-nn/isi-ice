@@ -4,6 +4,7 @@ import { es } from 'yup-locales'
 import { genReplaceEmpty } from '../../../utils/helper'
 import { genRound } from '../../../utils/utils'
 import { FacturaInputProps } from '../interfaces/factura'
+import DOMPurify from 'dompurify'
 
 const calculoMonedaBs = (monto: number, tipoCambioBs: number): number => {
   try {
@@ -14,6 +15,9 @@ const calculoMonedaBs = (monto: number, tipoCambioBs: number): number => {
 }
 
 export const composeFactura = (ice: FacturaInputProps): any => {
+  const detalleExtra = DOMPurify.sanitize(genReplaceEmpty(ice.detalleExtra, ''), {
+    FORBID_ATTR: ['style'],
+  }).replace(/\n\s+|\n/g, '')
   const input = {
     actividadEconomica: ice.actividadEconomica!?.codigoActividad,
     cliente: {
@@ -24,13 +28,14 @@ export const composeFactura = (ice: FacturaInputProps): any => {
     descuentoAdicional: calculoMonedaBs(ice.descuentoAdicional, ice.tipoCambio),
     codigoMoneda: ice.moneda!.codigo,
     tipoCambio: ice.tipoCambio,
-    detalleExtra: ice.detalleExtra,
+    detalleExtra,
     codigoExcepcion: ice.codigoExcepcion,
     detalle: ice.detalle.map((item) => ({
       codigoActividad: ice.actividadEconomica!?.codigoActividad,
       codigoProductoSin: item.codigoProductoSin,
       codigoProducto: item.codigoProducto,
       descripcionProducto: item.nombre,
+      detalleExtra: item.detalleExtra,
       cantidad: item.cantidad,
       unidadMedida: parseInt(item.unidadMedida.codigoClasificador.toString()),
       montoDescuento: calculoMonedaBs(item.montoDescuento, ice.tipoCambio),

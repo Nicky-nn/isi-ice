@@ -34,6 +34,7 @@ import ProductoClasificador from './registro/ProductoClasificador'
 import Homologacion from './registro/ProductoHomologacion'
 import ProductoPrecio from './registro/ProductoPrecio'
 import ProductoProveedor from './registro/ProductoProveedor'
+import { actionForm } from '../../../interfaces'
 
 interface OwnProps {}
 
@@ -47,15 +48,18 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
   const form = useForm<ProductoInputProps>({
     defaultValues: {
       ...PRODUCTO_INITIAL_VALUES,
+      action: actionForm.UPDATE,
     },
     // @ts-ignore
     resolver: yupResolver(productoRegistroValidator),
   })
 
   const onSubmit: SubmitHandler<ProductoInputProps> = async (values) => {
+    console.log(values)
+
     const val = await productoRegistroValidatorResponde(values)
     const codigoProducto = values.codigoProducto
-    const apiInput = productoComposeService(values)
+    const apiInput = productoComposeService(values, 'UPDATE')
     await swalAsyncConfirmDialog({
       preConfirm: async () => {
         const resp: any = await apiProductoModificar(codigoProducto, apiInput).catch(

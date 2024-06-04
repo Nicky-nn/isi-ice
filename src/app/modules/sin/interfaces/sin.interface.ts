@@ -127,3 +127,4 @@ export interface SinCuisProps {
   codigo: string
   fechaVigencia: string
 }
+
