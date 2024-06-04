@@ -23,6 +23,7 @@ import {
 import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { cuentaRouteMap } from '../../../../../modules/base/cuenta/CuentaRoutesMap'
 import { topBarHeight } from '../../../../../utils/constant'
 import { NotificationProvider } from '../../../../contexts/NotificationContext'
 import useAuth from '../../../../hooks/useAuth'
@@ -31,7 +32,6 @@ import MatxMenu from '../../MatxMenu/MatxMenu'
 import { themeShadows } from '../../MatxTheme/themeColors'
 import NotificationBar from '../../NotificationBar/NotificationBar'
 import { Span } from '../../Typography'
-import { cuentaRouteMap } from '../../../../../modules/base/cuenta/CuentaRoutesMap'
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -148,13 +148,13 @@ const Layout1Topbar: FC<any> = () => {
           </StyledIconButton>
           <IconBox>
             <StyledIconButton>
-              <Tooltip title="Módulo de Administración">
+              <Tooltip title={import.meta.env.ISI_TITLE || ''}>
                 <Chip
                   size={'small'}
                   icon={<ShoppingBag />}
                   color={'primary'}
                   variant={'outlined'}
-                  label={'ICE'}
+                  label={import.meta.env.ISI_SIGLA || ''}
                 />
               </Tooltip>
             </StyledIconButton>
