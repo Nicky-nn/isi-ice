@@ -41,6 +41,7 @@ const AnularDocumentoDialog: FunctionComponent<Props> = (props: Props) => {
     codigoMotivo: null,
   }
   const [value, setValue] = useState(initalValues)
+  //console.log(value)
 
   useEffect(() => {
     if (open) {
@@ -48,14 +49,23 @@ const AnularDocumentoDialog: FunctionComponent<Props> = (props: Props) => {
     }
   }, [open])
 
+  ///
+
   useEffect(() => {
-    const fetch = async (): Promise<void> => {
-      await fetchSinMotivoAnulacion().then((res) => {
-        setMotivosAnulacion(res || [])
-      })
+    const fetchMotivosAnulacion = async () => {
+      try {
+        const res = await fetchSinMotivoAnulacion()
+        //@ts-ignore
+        const filteredRes = res.filter((item) => item.codigoClasificador !== '2')
+        setMotivosAnulacion(filteredRes)
+      } catch (error) {
+        console.error('Error fetching motivos de anulación:', error)
+      }
     }
-    fetch().then()
+
+    fetchMotivosAnulacion()
   }, [])
+  ///
 
   const handleCancel = () => {
     onClose()
@@ -126,7 +136,7 @@ const AnularDocumentoDialog: FunctionComponent<Props> = (props: Props) => {
               Cliente: {factura?.cliente.razonSocial || ''} <br />
               Fecha Emisión: {factura?.fechaEmision || ''} <br />
             </Grid>
-            <Grid item lg={12} md={12}>
+            <Grid item lg={12} md={12} xs={12}>
               <FormControl sx={{ width: '100%' }} size="small">
                 <InputLabel id="demo-select-small">Motivo de la anulación</InputLabel>
                 <Select
