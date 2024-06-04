@@ -1,5 +1,5 @@
-import { Delete, PersonAddAltSharp } from '@mui/icons-material'
-import { Box, Button, Chip, Stack } from '@mui/material'
+import { Cached, Delete, PersonAddAltSharp } from '@mui/icons-material'
+import { Box, Button, Chip, IconButton, Stack } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import {
   MaterialReactTable,
@@ -186,7 +186,6 @@ const ClientesListado: FunctionComponent<Props> = (props) => {
         manualFiltering
         manualPagination
         manualSorting
-        //muiToolbarAlertBannerProps={MuiToolbarAlertBannerProps(isError)}
         onColumnFiltersChange={setColumnFilters}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
@@ -207,21 +206,30 @@ const ClientesListado: FunctionComponent<Props> = (props) => {
         enableRowActions
         positionActionsColumn={'first'}
         renderRowActions={({ row }) => (
-          <ClientesMenu row={row.original} refetch={refetch} />
+          <div>
+            <ClientesMenu row={row.original} refetch={refetch} />
+          </div>
         )}
-        /*muiSearchTextFieldProps={MuiSearchTextFieldProps}
-        muiTableHeadCellFilterTextFieldProps={MuiTableHeadCellFilterTextFieldProps}
-        muiTableProps={MuiTableProps}
-        displayColumnDefOptions={DisplayColumnDefOptions}*/
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            muiTableHeadCellProps: {
+              align: 'center',
+            },
+            size: 160,
+          },
+        }}
         onRowSelectionChange={setRowSelection}
-        enableRowSelection
+        enableRowSelection={false}
         muiSelectCheckboxProps={({ row }) => ({
           disabled: ['99003', '99002'].includes(row.getValue('numeroDocumento')),
         })}
         renderTopToolbarCustomActions={({ table }) => {
           return (
             <Box sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}>
-              <StackMenuActionTable refetch={handleRefreshTable} sx={{ flexGrow: 1 }} />
+              <IconButton onClick={handleRefreshTable} disabled={isFetching}>
+                <Cached />
+              </IconButton>{' '}
+              {/* // para eliminar varios
               <Button
                 color="error"
                 onClick={() => handleDeleteData(table.getSelectedRowModel().flatRows)}
@@ -235,7 +243,7 @@ const ClientesListado: FunctionComponent<Props> = (props) => {
                 }}
               >
                 Eliminar
-              </Button>
+              </Button> */}
             </Box>
           )
         }}

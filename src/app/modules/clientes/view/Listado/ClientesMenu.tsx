@@ -1,4 +1,4 @@
-import { Edit, MenuOpen } from '@mui/icons-material'
+import { Delete, Edit, MenuOpen } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import React, { FunctionComponent, useState } from 'react'
 
@@ -7,6 +7,9 @@ import SimpleMenu, { SimpleMenuItem } from '../../../../base/components/MyMenu/S
 import { ClienteProps } from '../../interfaces/cliente'
 import Cliente99001ActualizarDialog from '../actualizar/Cliente99001ActualizarDialog'
 import ClienteActualizarDialog from '../actualizar/ClienteActualizarDialog'
+import { swalAsyncConfirmDialog, swalException } from '../../../../utils/swal'
+import { apiClientesEliminar } from '../../api/clientesEliminar.api'
+import { notSuccess } from '../../../../utils/notification'
 
 interface OwnProps {
   row: ClienteProps
@@ -19,30 +22,39 @@ const ClientesMenu: FunctionComponent<Props> = (props) => {
   const { row, refetch } = props
   const [openClienteActualizar, setOpenClienteActualizar] = useState(false)
   const [openCliente99001Actualizar, setOpenCliente99001Actualizar] = useState(false)
-
+  const handleDeleteSingleRow = async (row: ClienteProps) => {
+    await swalAsyncConfirmDialog({
+      text: 'Confirma que desea eliminar el registro seleccionado, esta operación no se podrá revertir',
+      preConfirm: () => {
+        return apiClientesEliminar([row.codigoCliente]).catch((err) => {
+          swalException(err)
+          return false
+        })
+      },
+    }).then((resp) => {
+      if (resp.isConfirmed) {
+        notSuccess()
+        refetch().then()
+      }
+    })
+  }
   return (
     <>
       <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', width: 100 }}>
-        <SimpleMenu
-          menuButton={
-            <>
-              <IconButton aria-label="menuGestionRoles">
-                <MenuOpen />
-              </IconButton>
-            </>
-          }
+        <IconButton
+          onClick={() => {
+            if (row.numeroDocumento === '99001') {
+              setOpenCliente99001Actualizar(true)
+            } else setOpenClienteActualizar(true)
+          }}
+          color="primary"
         >
-          <SimpleMenuItem
-            onClick={() => {
-              if (row.numeroDocumento === '99001') {
-                setOpenCliente99001Actualizar(true)
-              } else setOpenClienteActualizar(true)
-            }}
-          >
-            <Edit /> Modificar
-          </SimpleMenuItem>
-        </SimpleMenu>
+          <Edit />
+        </IconButton>
         <AuditIconButton row={row} />
+        <IconButton color="error" onClick={() => handleDeleteSingleRow(row)}>
+          <Delete />
+        </IconButton>
       </div>
       <ClienteActualizarDialog
         id={'clienteActualizarDialgo'}

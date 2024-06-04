@@ -39,7 +39,7 @@ const Cliente99001Form: FunctionComponent<Props> = (props) => {
             render={({ field }) => (
               <FormTextField
                 name={'codigoCliente'}
-                label="Codigo Cliente"
+                label="Código Cliente"
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -67,6 +67,7 @@ const Cliente99001Form: FunctionComponent<Props> = (props) => {
                 onBlur={field.onBlur}
                 error={Boolean(errors.razonSocial)}
                 helperText={errors.razonSocial?.message}
+                inputProps={{ maxLength: 500 }}
                 required
               />
             )}
@@ -97,3 +98,4 @@ const Cliente99001Form: FunctionComponent<Props> = (props) => {
 }
 
 export default Cliente99001Form
+

@@ -93,6 +93,9 @@ const ClienteForm: FunctionComponent<Props> = (props) => {
                 onBlur={field.onBlur}
                 error={Boolean(errors.razonSocial)}
                 helperText={errors.razonSocial?.message}
+                inputProps={{
+                  maxLength: 500,
+                }}
                 required
               />
             )}
@@ -113,6 +116,9 @@ const ClienteForm: FunctionComponent<Props> = (props) => {
                 error={Boolean(errors.numeroDocumento)}
                 helperText={errors.numeroDocumento?.message}
                 required
+                inputProps={{
+                  maxLength: 20,
+                }}
               />
             )}
           />
@@ -131,6 +137,7 @@ const ClienteForm: FunctionComponent<Props> = (props) => {
                 onBlur={field.onBlur}
                 error={Boolean(errors.complemento)}
                 helperText={errors.complemento?.message}
+                inputProps={{ maxLength: 5 }}
               />
             )}
           />
