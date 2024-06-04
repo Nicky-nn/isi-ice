@@ -1,6 +1,4 @@
-import { toast } from 'react-toastify'
-import { array, boolean, mixed, number, object, setLocale, string } from 'yup'
-import yup from 'yup'
+import { mixed, number, object, setLocale, string } from 'yup'
 
 import { ProductoInputProps } from '../interfaces/producto.interface'
 import { es } from 'yup-locales'
@@ -36,7 +34,7 @@ export const productoRegistroValidator = object({
   nombre: string().required('Debe ingresar el nombre del producto'),
   codigoActividad: mixed().required('Debe seleccionar la actividad económica'),
   codigoProductoSin: mixed().required('Debe seleccionar el producto sin'),
-  precio: number().min(1).required('Debe ingresar el precio del producto'),
+  precio: number().min(1, 'Debe ingresar el precio del producto').required(),
   codigoUnidadMedida: object().required('Debe seleccionar la unidad de medida'),
   marcaIce: number().required('Debe seleccionar la marca de ice'),
   subPartidaArancelaria: mixed().required('Debe seleccionar la sub partida arancelaria'),

@@ -22,14 +22,13 @@ import StackMenuActionTable from '../../../../base/components/MyMenu/StackMenuAc
 import { PAGE_DEFAULT, PageProps } from '../../../../interfaces'
 import { genApiQuery, genReplaceEmpty, openInNewTab } from '../../../../utils/helper'
 import { localization } from '../../../../utils/localization'
-import { notSuccess } from '../../../../utils/notification'
+import { notDanger, notSuccess } from '../../../../utils/notification'
 import { swalAsyncConfirmDialog, swalException } from '../../../../utils/swal'
 import { apiProductos } from '../../api/producto.api'
 import { apiProductosEliminar } from '../../api/productoEliminar.api'
 import { ProductoProps } from '../../interfaces/producto.interface'
 import { productosRouteMap } from '../../ProductosRoutesMap'
 import { MuiTableAdvancedOptionsProps } from '../../../../utils/muiTable/muiTableAdvancedOptionsProps'
-import ProductosMenu from './ProductosMenu'
 
 interface OwnProps {}
 
@@ -176,6 +175,24 @@ const ProductosListado: FunctionComponent<Props> = (props) => {
       }
     })
   }
+  const handleDeleteRow = async (row: ProductoProps) => {
+    await swalAsyncConfirmDialog({
+      text: 'Confirma que desea eliminar el registro seleccionado, esta operación no se podrá revertir',
+      preConfirm: () => {
+        return apiProductosEliminar(row.codigoProducto).catch((err) => {
+          swalException(err)
+          return false
+        })
+      },
+    }).then((resp) => {
+      if (resp.isConfirmed) {
+        notSuccess('Producto eliminado correctamente')
+        refetch()
+      } else {
+        notDanger('Eliminación cancelada')
+      }
+    })
+  }
 
   return (
     <>
@@ -222,14 +239,27 @@ const ProductosListado: FunctionComponent<Props> = (props) => {
         enableRowActions
         positionActionsColumn={'first'}
         renderRowActions={({ row }) => (
-          <ProductosMenu row={row.original} refetch={refetch} />
+          <div>
+            <IconButton
+              onClick={() =>
+                navigate(`${productosRouteMap.modificar}/${row.original.codigoProducto}`)
+              }
+              color="primary"
+            >
+              <Edit />
+            </IconButton>
+            <AuditIconButton row={row.original} />
+            <IconButton color="error" onClick={() => handleDeleteRow(row.original)}>
+              <Delete />
+            </IconButton>
+          </div>
         )}
-        enableRowSelection
+        enableRowSelection={false}
         onRowSelectionChange={setRowSelection}
         renderTopToolbarCustomActions={({ table }) => {
           return (
             <Box sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}>
-              <Button
+              {/* <Button
                 color="error"
                 onClick={() => handleDeleteData(table.getSelectedRowModel().flatRows)}
                 startIcon={<Delete />}
@@ -242,11 +272,11 @@ const ProductosListado: FunctionComponent<Props> = (props) => {
                 disabled={table.getSelectedRowModel().flatRows.length === 0}
               >
                 Eliminar
-              </Button>
-              {/*
+              </Button> */}
+
               <IconButton onClick={handleRefreshTable} disabled={isFetching}>
                 <Cached />
-              </IconButton> */}
+              </IconButton>
             </Box>
           )
         }}
@@ -260,7 +290,7 @@ const ProductosListado: FunctionComponent<Props> = (props) => {
             muiTableHeadCellProps: {
               align: 'center',
             },
-            size: 120,
+            size: 160,
           },
         }}
       />

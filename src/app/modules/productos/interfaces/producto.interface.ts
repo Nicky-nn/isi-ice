@@ -1,4 +1,5 @@
 import { ImagenProps } from '../../../base/interfaces/base'
+import { ActionFormProps, actionForm } from '../../../interfaces'
 import { genRandomString } from '../../../utils/helper'
 import { ProveedorProps } from '../../proveedor/interfaces/proveedor.interface'
 import {
@@ -7,7 +8,6 @@ import {
   SinProductoServicioProps,
   SinUnidadMedidaProps,
 } from '../../sin/interfaces/sin.interface'
-import { SucursalProps } from '../../sucursal/interfaces/sucursal'
 import { TipoProductoProps } from '../../tipoProducto/interfaces/tipoProducto.interface'
 import { InventarioProps } from './inventario.interface'
 
@@ -162,3 +162,4 @@ export interface ProductoInputApiProps {
   tipoProducto: TipoProductoProps | null
   codigoProveedor: ProveedorProps | null
 }
+

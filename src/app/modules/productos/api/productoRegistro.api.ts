@@ -37,3 +37,4 @@ export const apiProductoRegistro = async (
   })
   return data.iceProductoRegistro
 }
+

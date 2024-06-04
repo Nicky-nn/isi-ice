@@ -48,7 +48,6 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
   const form = useForm<ProductoInputProps>({
     defaultValues: {
       ...PRODUCTO_INITIAL_VALUES,
-      action: actionForm.UPDATE,
     },
     // @ts-ignore
     resolver: yupResolver(productoRegistroValidator),
@@ -59,7 +58,7 @@ const ProductoActualizar: FunctionComponent<Props> = (props) => {
 
     const val = await productoRegistroValidatorResponde(values)
     const codigoProducto = values.codigoProducto
-    const apiInput = productoComposeService(values, 'UPDATE')
+    const apiInput = productoComposeService(values)
     await swalAsyncConfirmDialog({
       preConfirm: async () => {
         const resp: any = await apiProductoModificar(codigoProducto, apiInput).catch(

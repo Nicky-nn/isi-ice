@@ -22,10 +22,9 @@ import { MyInputLabel } from '../../../../base/components/MyInputs/MyInputLabel'
 import { reactSelectStyle } from '../../../../base/components/MySelect/ReactSelect'
 import SimpleCard from '../../../../base/components/Template/Cards/SimpleCard'
 import useAuth from '../../../../base/hooks/useAuth'
-import { PageInputProps } from '../../../../interfaces'
+import { PageInputProps, actionForm } from '../../../../interfaces'
 import { apiAlicuotas2 } from '../../../alicuota/api/alicuotas.api'
 import { apiProveedores } from '../../../proveedor/api/proveedores.api'
-import { AlicuotasProps } from '../../../proveedor/interfaces/proveedor.interface'
 import { fetchSinProductoServicioPorActividad } from '../../../sin/api/sinProductoServicio.api'
 import useQueryActividadesPorDocumentoSector from '../../../sin/hooks/useQueryActividadesPorDocumentoSector'
 import { subPartidaArancelariaProps } from '../../../sin/interfaces/sin.interface'
@@ -35,6 +34,7 @@ import {
   SinProductoServicioProps,
 } from '../../../sin/interfaces/sin.interface'
 import { ProductoInputProps } from '../../interfaces/producto.interface'
+import { AlicuotasProps } from '../../interfaces/proveedor.interface'
 
 interface OwnProps {
   form: UseFormReturn<ProductoInputProps>
@@ -55,54 +55,6 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
 
   const codigoActividadWatch = watch('codigoActividad')
   const [codigoProducto, setCodigoProducto] = useState('')
-
-  const generarCodigoProducto = (nombreProducto: string): string => {
-    const palabras = nombreProducto
-      .toUpperCase()
-      .replace(/[^A-Z0-9 ]/g, '') // Eliminar caracteres especiales
-      .split(' ')
-      .map((palabra) => palabra.substring(0, 5)) // Limitar a 3 caracteres por palabra
-
-    let palabrasValidas: string[]
-    if (palabras.length > 3) {
-      palabrasValidas = [...palabras.slice(0, 5), ...palabras.slice(-2)]
-    } else {
-      palabrasValidas = palabras
-    }
-
-    const codigo = palabrasValidas.join('')
-
-    let numeroAleatorio = Math.floor(Math.random() * 100)
-    // Asegurarse de que el número aleatorio tenga al menos 2 dígitos
-    if (numeroAleatorio < 10) {
-      numeroAleatorio += 10
-    }
-
-    const codigoFinal = `${codigo}-${numeroAleatorio}`.slice(
-      0,
-      Math.min(13, codigo.length + 4),
-    ) // Limitar a máximo 13 caracteres
-    // console.log('codigoFinal', codigoFinal)
-    if (nombreProducto.length > 0) {
-      // setValue('codigoProducto', codigoFinal)
-      return codigoFinal
-    } else {
-      // setValue('codigoProducto', '')
-      return ''
-    }
-  }
-
-  useEffect(() => {
-    const nombreProducto = getValues('nombre')
-
-    // Verificar si el campo de codigoProducto ya tiene un valor
-    const codigoProductoExistente = getValues('codigoProducto')
-    const codigoProductoActualizado =
-      codigoProductoExistente || generarCodigoProducto(nombreProducto)
-
-    setCodigoProducto(codigoProductoActualizado)
-    setValue('codigoProducto', codigoProductoActualizado)
-  }, [getValues, setValue, watch('nombre') ? watch('nombre') : ''])
 
   const { user } = useAuth()
 
@@ -139,8 +91,17 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
   }, [actLoading, actividades])
 
   const [openDialog, setOpenDialog] = useState(false)
-  const [cambioValor, setcambioValor] = useState('')
-
+  const [isEditMode, setIsEditMode] = useState(false)
+  useEffect(() => {
+    const url = window.location.pathname
+    if (url.includes('/modificar')) {
+      setIsEditMode(true)
+      //console.log('isEditMode', isEditMode, 'entra')
+    } else {
+      setIsEditMode(false)
+      //console.log('isEditMode', isEditMode, ' sale')
+    }
+  }, [])
   const { data: alicuota, refetch } = useQuery<AlicuotasProps[], Error>({
     queryKey: ['alicuotaData', openDialog],
     // @ts-ignore
@@ -162,7 +123,21 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
       setValue('subPartidaArancelaria', firstSubPartidaArancelaria)
     }
   }, [marcaIceValue, setValue])
+  const getHelperText = (
+    errors: any,
+    value: any,
+    isEditMode: boolean,
+  ): string | undefined => {
+    if (errors.codigoProducto?.message) {
+      return errors.codigoProducto.message
+    }
 
+    if (value !== undefined && !isEditMode) {
+      return 'Solo se puede utilizar letras, números y un guión, escriba en MAYÚSCULAS.'
+    }
+
+    return undefined
+  }
   return (
     <>
       <SimpleCard title={'HOMOLOGACIÓN'}>
@@ -211,10 +186,7 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                 name={'codigoProductoSin'}
                 control={control}
                 render={({ field }) => (
-                  <FormControl
-                    fullWidth
-                    error={Boolean(errors.codigoProductoSin)}
-                  >
+                  <FormControl fullWidth error={Boolean(errors.codigoProductoSin)}>
                     <MyInputLabel shrink>Servicio Homologado</MyInputLabel>
                     <Select<SinProductoServicioProps>
                       {...field}
@@ -248,12 +220,7 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
                   label="Nombre Producto / Servicio"
                   value={field.value}
                   onChange={field.onChange}
-                  onBlur={() => {
-                    const nombreProducto = field.value
-                    const nuevoCodigoProducto = generarCodigoProducto(nombreProducto)
-                    setCodigoProducto(nuevoCodigoProducto)
-                    field.onBlur()
-                  }}
+                  onBlur={field.onBlur}
                   error={Boolean(errors.nombre)}
                   helperText={errors.nombre?.message}
                 />
@@ -267,7 +234,7 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               render={({ field }) => (
                 <FormTextField
                   name="descripcion"
-                  label="Descripcion"
+                  label="Descripción"
                   multiline
                   minRows={3}
                   maxRows={5}
@@ -285,30 +252,24 @@ const ProductoHomologacion: FunctionComponent<Props> = (props) => {
               render={({ field }) => (
                 <FormTextField
                   name="codigoProducto"
-                  label="Código Producto (SKU)"
+                  label="Código Servicio (SKU)"
                   value={field.value}
-                  onChange={(event) => {
-                    const nuevoCodigo = event.target.value.toUpperCase() // Convertir a mayúsculas antes de guardar
-                    const esCodigoValido = /^[A-Z0-9-]*$/.test(nuevoCodigo)
-                    if (esCodigoValido) {
-                      field.onChange(nuevoCodigo)
-                      setCodigoProducto(nuevoCodigo)
-                    }
-                  }}
-                  onBlur={(event) => {
-                    const nuevoCodigo = event.target.value // Mantener el valor en minúsculas
-                    const esCodigoValido = /^[A-Z0-9-]*$/.test(nuevoCodigo)
-                    if (esCodigoValido) {
-                      field.value = nuevoCodigo.toUpperCase() // Convertir a mayúsculas antes de guardar
-                      field.onBlur()
-                      setCodigoProducto(nuevoCodigo.toUpperCase()) // Opcional: Actualizar el estado local si es necesario
-                    }
-                  }}
+                  disabled={isEditMode}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
                   error={
-                    Boolean(errors.codigoProducto) ||
-                    (field.value !== undefined && !/^[A-Z0-9-]*$/.test(field.value))
+                    (isEditMode && !field.value) || // Error si está en modo edición y el campo está vacío
+                    (!isEditMode && Boolean(errors.codigoProducto)) || // Error si no está en modo edición y hay errores de validación
+                    (!isEditMode &&
+                      field.value !== undefined &&
+                      !/^[A-Z0-9-]*$/.test(field.value)) // Error si no está en modo edición y el valor no cumple con el formato requerido
                   }
-                  helperText={errors.codigoProducto?.message}
+                  inputProps={{ style: { textTransform: 'uppercase' } }}
+                  helperText={getHelperText(
+                    Boolean(errors.codigoProducto),
+                    field.value,
+                    isEditMode,
+                  )}
                 />
               )}
             />

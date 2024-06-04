@@ -99,7 +99,7 @@ const ProductoPrecio: FunctionComponent<Props> = (props) => {
                   onBlur={field.onBlur}
                   inputComponent={NumeroMask as any}
                   inputProps={{}}
-                  error={Boolean(errors.precio?.message)}
+                  //error={Boolean(errors.precio?.message)}
                 />
                 <FormHelperText>{errors.precio?.message || ''}</FormHelperText>
               </FormControl>

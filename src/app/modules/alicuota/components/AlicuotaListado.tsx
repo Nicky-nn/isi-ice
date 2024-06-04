@@ -1,4 +1,5 @@
 import {
+  Cached,
   Delete,
   Edit,
   MenuOpen,
@@ -144,6 +145,22 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
       }
     })
   }
+  const handleDeleteRow = async (subPartidaArancelaria: string) => {
+    await swalAsyncConfirmDialog({
+      text: 'Confirma que desea eliminar este registro, esta operación no se podrá revertir',
+      preConfirm: () => {
+        return apiProveedorEliminar(subPartidaArancelaria).catch((err) => {
+          swalException(err)
+          return false
+        })
+      },
+    }).then((resp) => {
+      if (resp.isConfirmed) {
+        notSuccess()
+        refetch()
+      }
+    })
+  }
   const getCurrentPageItems = () => {
     const { pageIndex, pageSize } = pagination
     const start = pageIndex * pageSize
@@ -219,56 +236,53 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
             InputLabelProps: { shrink: true },
             size: 'small',
           }}
-          enableRowActions
+          // enableRowActions
           positionActionsColumn={'first'}
           renderRowActions={({ row }) => (
             <div
-              style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', width: 100 }}
+              style={{
+                display: 'flex',
+                flexWrap: 'nowrap',
+                gap: '0.5rem',
+                width: 'auto',
+              }}
             >
-              <SimpleMenu
-                menuButton={
-                  <>
-                    <IconButton aria-label="delete">
-                      <MenuOpen />
-                    </IconButton>
-                  </>
-                }
+              <IconButton
+                onClick={() => {
+                  setSelectedProveedorCodigo(row.original.subPartidaArancelaria)
+                  setOpenActualizarProveedor(true)
+                }}
+                color={'primary'}
               >
-                <SimpleMenuItem
-                  onClick={() => {
-                    setSelectedProveedorCodigo(row.original.subPartidaArancelaria)
-                    setOpenActualizarProveedor(true)
-                  }}
-                >
-                  <Edit /> Modificar
-                </SimpleMenuItem>
-              </SimpleMenu>
+                <Edit />
+              </IconButton>
+
               <AuditIconButton row={row.original} />
+              <IconButton
+                onClick={() => handleDeleteRow(row.original.subPartidaArancelaria)}
+                color="error"
+              >
+                <Delete />
+              </IconButton>
             </div>
           )}
-          /*muiTableHeadCellFilterTextFieldProps={{
-            sx: { m: '0.5rem 0', width: '95%' },
-            variant: 'outlined',
-            size: 'small',
-          }}*/
-          enableRowSelection
+          enableRowSelection={false}
           onRowSelectionChange={setRowSelection}
           displayColumnDefOptions={{
             'mrt-row-actions': {
               muiTableHeadCellProps: {
                 align: 'center',
               },
-              size: 120,
+              size: 160,
             },
-          }}
+          }} // funcionalidad para eliminar varios
           renderTopToolbarCustomActions={({ table }) => {
             return (
               <Box sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}>
-                <StackMenuActionTable
-                  refetch={handleRefreshTable}
-                  sx={{ flexGrow: 1 }}
-                ></StackMenuActionTable>
-                <Button
+                <IconButton onClick={handleRefreshTable} disabled={isRefetching}>
+                  <Cached />
+                </IconButton>
+                {/* <Button
                   color="error"
                   onClick={() => handleDeleteData(table.getSelectedRowModel().flatRows)}
                   startIcon={<Delete />}
@@ -281,7 +295,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
                   }}
                 >
                   Eliminar
-                </Button>
+                </Button> */}
               </Box>
             )
           }}
