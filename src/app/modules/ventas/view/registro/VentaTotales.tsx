@@ -150,7 +150,6 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
           const { value }: any = resp
           reset({ ...FacturaInitialValues, actividadEconomica: data.actividadEconomica })
           if (tipoRepresentacionGrafica === 'pdf') {
-            openInNewTab(value.representacionGrafica.pdf)
             // si son  pc y laptos usamos printJS y si no usamos openInNewTab
             printJS(value.representacionGrafica.pdf)
             // openInNewTab(value.representacionGrafica.pdf)
@@ -171,41 +170,6 @@ const VentaTotales: FunctionComponent<Props> = (props) => {
       })
     }
   }
-
-  /*const onSubmit: SubmitHandler<FacturaInputProps> = async (data) => {
-    const inputFactura = composeFactura(data)
-    const notification = true
-    const validator = await composeFacturaValidator(inputFactura).catch((err: Error) => {
-      notError(err.message)
-    })
-    if (validator) {
-      await swalAsyncConfirmDialog({
-        text: '¿Confirma que desea emitir el documento fiscal?',
-        preConfirm: () => {
-          return fetchFacturaCreate(notification, inputFactura).catch((err) => {
-            swalException(err)
-            return false
-          })
-        },
-      }).then((resp) => {
-        if (resp.isConfirmed) {
-          const { value }: any = resp
-          reset({ ...FacturaInitialValues, actividadEconomica: data.actividadEconomica })
-          // si son  pc y laptos usamos printJS y si no usamos openInNewTab
-          printJS(value.representacionGrafica.pdf)
-          // openInNewTab(value.representacionGrafica.pdf)
-          mySwal.fire({
-            title: `Documento generado correctamente`,
-            html: (
-              <RepresentacionGraficaUrls
-                representacionGrafica={value.representacionGrafica}
-              />
-            ),
-          })
-        }
-      })
-    }
-  }*/
 
   const {
     data: monedas,

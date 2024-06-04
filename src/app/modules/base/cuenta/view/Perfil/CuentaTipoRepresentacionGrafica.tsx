@@ -17,6 +17,7 @@ import { TipoRepresentacionGrafica } from '../../../../../base/interfaces/base'
 import { notSuccess } from '../../../../../utils/notification'
 import { swalAsyncConfirmDialog, swalException } from '../../../../../utils/swal'
 import { apiUsuarioCambiarTipoRepresentacionGrafica } from '../../api/apiUsuarioCambiarTipoRepresentacionGrafica'
+import { toast } from 'react-toastify'
 
 interface OwnProps {}
 
@@ -35,23 +36,28 @@ const CuentaTipoRepresentacionGrafica: FunctionComponent<Props> = (props) => {
   }
 
   const handleGuardarCambios = async () => {
-    await swalAsyncConfirmDialog({
-      preConfirm: async () => {
-        try {
-          return await apiUsuarioCambiarTipoRepresentacionGrafica({
-            tipoRepresentacionGrafica: tipo,
-          })
-        } catch (err) {
-          swalException(err)
-          return false
+    // Si es pdf, entonces preguntamos si quiere cambiar a rollo
+    if (tipo === 'pdf') {
+      await swalAsyncConfirmDialog({
+        preConfirm: async () => {
+          try {
+            return await apiUsuarioCambiarTipoRepresentacionGrafica({
+              tipoRepresentacionGrafica: tipo,
+            })
+          } catch (err) {
+            swalException(err)
+            return false
+          }
+        },
+      }).then((resp) => {
+        if (resp.isConfirmed) {
+          notSuccess()
+          auth.refreshUser()
         }
-      },
-    }).then((resp) => {
-      if (resp.isConfirmed) {
-        notSuccess()
-        auth.refreshUser()
-      }
-    })
+      })
+    } else {
+      toast('La version de rollo muy pronto disponible')
+    }
   }
   return (
     <>
@@ -99,3 +105,4 @@ const CuentaTipoRepresentacionGrafica: FunctionComponent<Props> = (props) => {
 }
 
 export default CuentaTipoRepresentacionGrafica
+

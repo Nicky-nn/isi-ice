@@ -9,6 +9,7 @@ import {
 import React, { FunctionComponent } from 'react'
 
 import { openInNewTab } from '../../../utils/helper'
+import { toast } from 'react-toastify'
 
 interface OwnProps {
   representacionGrafica: {
@@ -49,7 +50,10 @@ const RepresentacionGraficaUrls: FunctionComponent<Props> = (props) => {
           </Grid>
           <Grid item xs={4} md={3} lg={3}>
             <Card sx={{ height: '100%', padding: 0 }}>
-              <CardActionArea onClick={() => openInNewTab(rollo)}>
+              {/* <CardActionArea onClick={() => openInNewTab(rollo)}> */}
+              <CardActionArea
+                onClick={() => toast('La version de rollo muy pronto disponible')}
+              >
                 <CardContent sx={{ lineHeight: 0.5, padding: 1 }}>
                   <img
                     srcSet={`/assets/images/file-types/rollo.png?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -108,3 +112,4 @@ const RepresentacionGraficaUrls: FunctionComponent<Props> = (props) => {
 }
 
 export default RepresentacionGraficaUrls
+
