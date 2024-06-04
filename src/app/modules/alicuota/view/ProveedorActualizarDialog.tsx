@@ -37,7 +37,7 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
     resolver: yupResolver<any>(proveedorRegistroValidationSchema),
   })
   const onSubmit: SubmitHandler<AlicuotaInputProp> = async (values) => {
-    console.log(values)
+    //console.log(values)
     const {
       subPartidaArancelaria,
       alicuotaEspecifica,
@@ -80,7 +80,7 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
       const obtenerDatosProveedor = async () => {
         try {
           const datosProveedor = await apiAlicuota(props.codigo) // Reemplaza apiProveedor por la función adecuada
-          console.log(datosProveedor)
+          //console.log(datosProveedor)
           // aqui e
           form.reset(datosProveedor)
         } catch (error) {
@@ -101,7 +101,7 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
     >
       <DialogTitle>Editar Alicuota {props.codigo}</DialogTitle>
       <DialogContent dividers>
-        <ProveedorForm form={form} onSubmit={onSubmit} />
+        <ProveedorForm form={form} onSubmit={onSubmit} handleEdit={true} />
       </DialogContent>
       <DialogActions>
         <Button

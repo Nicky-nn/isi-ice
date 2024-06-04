@@ -18,7 +18,7 @@ import { proveedorRegistroValidationSchema } from '../validator/productoRegistro
 import ProveedorForm from './ProveedorForm'
 
 interface OwnProps {
-  //codigo: string
+  // codigo: string
   keepMounted: boolean
   open: boolean
   proveedor: ProveedorProps
@@ -40,8 +40,6 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
   })
 
   const onSubmit: SubmitHandler<ProveedorInputProp> = async (values) => {
-    console.log(values)
-
     const val = await proveedorRegistroValidator(values)
     // eslint-disable-next-line no-unused-vars
     const { codigo, action, ...valuesWithoutCodigo } = values
@@ -54,7 +52,6 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
             codigo || '',
             valuesWithoutCodigo,
           ).catch((e) => ({ error: e }))
-
           if (resp && (resp as { error: any }).error) {
             // Add type assertion here
             swalException((resp as { error: any }).error) // Add type assertion here
@@ -79,24 +76,11 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
     console.error('Error:', error, e)
   }
 
-  /*useEffect(() => {
-    if (open) {
-      // Aquí debemos obtener los datos del proveedor y establecerlos en los valores iniciales del formulario
-      // Puedes utilizar la función apiProveedorActualizar o cualquier otra función para obtener los datos
-      // Actualiza el siguiente código con la lógica adecuada para obtener los datos del proveedor
-      const obtenerDatosProveedor = async () => {
-        try {
-          //aqui e
-          const datosProveedor = await apiProveedor(props.codigo) // Reemplaza apiProveedor por la función adecuada
-          formik.setValues(datosProveedor)
-        } catch (error) {
-          console.log(error)
-        }
-      }
-
-      obtenerDatosProveedor()
+  useEffect(() => {
+    if (proveedor && open) {
+      form.reset(proveedorDecomposeService(proveedor, actionForm.UPDATE))
     }
-  }, [open])*/
+  }, [open])
 
   return (
     <Dialog
@@ -107,7 +91,7 @@ const ProveedorActualizar: FunctionComponent<Props> = (props) => {
     >
       <DialogTitle>Editar Proveedor {form.control._formValues.codigo}</DialogTitle>
       <DialogContent dividers>
-        <ProveedorForm form={form} onSubmit={onSubmit} />
+        <ProveedorForm form={form} />
       </DialogContent>
       <DialogActions>
         <Button

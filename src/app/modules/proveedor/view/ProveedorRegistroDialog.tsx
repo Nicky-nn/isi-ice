@@ -87,7 +87,7 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
     >
       <DialogTitle>Registrar nuevo Proveedor</DialogTitle>
       <DialogContent dividers>
-        <ProveedorForm form={form} onSubmit={onSubmit} />
+        <ProveedorForm form={form} />
       </DialogContent>
       <DialogActions>
         <Button

@@ -1,5 +1,3 @@
-import { ActionFormProps } from "../../../interfaces"
-
 export interface ProveedorProps {
   codigo: string
   nombre: string
@@ -15,6 +13,18 @@ export interface ProveedorProps {
   usumod?: string
 }
 
+export interface AlicuotasProps {
+  subPartidaArancelaria: string
+  descripcion: string
+  alicuotaPorcentual: number
+  alicuotaEspecifica: number
+  createdAt: string
+  state: string
+  updatedAt: string
+  usucre: string
+  usumod?: string
+}
+
 export interface ProveedorInputProp {
   codigo: string
   nombre: string
@@ -23,7 +33,6 @@ export interface ProveedorInputProp {
   contacto: string
   correo: string
   telefono: string
-  action: ActionFormProps,
 }
 export interface ProveedorActualizarInputProp {
   nombre: string
@@ -42,7 +51,6 @@ export const PROVEEDOR_INITIAL_VALUES: ProveedorInputProp = {
   contacto: '',
   correo: '',
   telefono: '',
-  action: 'REGISTER',
 }
 export interface ProveedorApiInputProps {
   codigo: string
@@ -51,5 +59,7 @@ export interface ProveedorApiInputProps {
   correo: string
   direccion: string
   nombre: string
+  notas: string
   telefono: string
 }
+

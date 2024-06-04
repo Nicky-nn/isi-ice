@@ -26,6 +26,6 @@ export const apiProveedor = async (codigoProveedor: string): Promise<ProveedorPr
   // Set a single header
   client.setHeader('authorization', `Bearer ${token}`)
   const data: any = await client.request(gqlQuery, { codigoProveedor })
-  // console.log(data)
+  console.log(data)
   return data.proveedor
 }

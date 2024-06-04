@@ -31,7 +31,7 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
     resolver: yupResolver<any>(proveedorRegistroValidationSchema),
   })
   const onSubmit: SubmitHandler<AlicuotaInputProp> = async (values) => {
-    console.log(values)
+    //console.log(values)
 
     const {
       subPartidaArancelaria,
@@ -86,7 +86,7 @@ const ProveedorRegistro: FunctionComponent<Props> = (props) => {
     >
       <DialogTitle>Registrar Nuevo Alicuota</DialogTitle>
       <DialogContent dividers>
-        <ProveedorForm form={form} onSubmit={onSubmit} />
+        <ProveedorForm form={form} onSubmit={onSubmit} handleEdit={false} />
       </DialogContent>
       <DialogActions>
         <Button

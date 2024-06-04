@@ -1,27 +1,25 @@
 import { Grid, TextField } from '@mui/material'
-import { FunctionComponent, useState } from 'react'
+import { FunctionComponent } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
 import { ProveedorInputProp } from '../interfaces/proveedor.interface'
-import { MuiTelInput, matchIsValidTel } from 'mui-tel-input'
 
 interface OwnProps {
   form: UseFormReturn<ProveedorInputProp>
-  onSubmit: (data: ProveedorInputProp) => void
 }
 
 type Props = OwnProps
 
-const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
-  // const { form } = props
+const ProveedorForm: FunctionComponent<Props> = (props) => {
+  const { form } = props
   const {
     control,
-    handleSubmit,
     formState: { errors },
   } = form
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4} lg={4}>
             <Controller
@@ -124,16 +122,13 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
               name="telefono"
               control={control}
               render={({ field }) => (
-                <MuiTelInput
+                <TextField
                   {...field}
                   label="Teléfono"
                   size="small"
                   fullWidth
-                  value={field.value}
                   error={!!errors.telefono}
                   helperText={errors.telefono && errors.telefono.message?.toString()}
-                  defaultCountry="BO"
-                  onChange={field.onChange}
                 />
               )}
             />

@@ -5,7 +5,6 @@ import React, { useContext } from 'react'
 import SimpleContainer from '../../../base/components/Container/SimpleContainer'
 import Breadcrumb from '../../../base/components/Template/Breadcrumb/Breadcrumb'
 import AuthContext from '../../../base/contexts/JWTAuthContext'
-import ClientesListado from '../../clientes/view/Listado/ClientesListado'
 import { productosRouteMap } from '../../productos/ProductosRoutesMap'
 import ProveedorListado from '../components/ProveedorListado'
 
@@ -36,3 +35,4 @@ const Proveedores = () => {
 }
 
 export default Proveedores
+

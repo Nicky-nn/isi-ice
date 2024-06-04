@@ -1,39 +1,28 @@
-import {
-  Delete,
-  Edit,
-  MenuOpen,
-  Newspaper,
-  RemoveRedEyeOutlined,
-} from '@mui/icons-material'
-import { Box, Button, Chip, IconButton, Paper, Stack } from '@mui/material'
+import { Delete, Edit, Newspaper } from '@mui/icons-material'
+import { Button, Chip, IconButton, Paper } from '@mui/material'
+import { Box, Stack } from '@mui/system'
 import { useQuery } from '@tanstack/react-query'
 import {
-  MaterialReactTable,
-  MRT_ColumnDef,
-  MRT_ColumnFiltersState,
-  MRT_PaginationState,
-  MRT_RowSelectionState,
-  MRT_SortingState,
-  MRT_TableOptions,
-} from 'material-react-table'
-import React, { FunctionComponent, useMemo, useState } from 'react'
+  ColumnFiltersState,
+  PaginationState,
+  RowSelectionState,
+  SortingState,
+} from '@tanstack/react-table'
+import { MaterialReactTable, MRT_ColumnDef, MRT_TableOptions } from 'material-react-table'
+import { FunctionComponent, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import AuditIconButton from '../../../base/components/Auditoria/AuditIconButton'
-import SimpleMenu, { SimpleMenuItem } from '../../../base/components/MyMenu/SimpleMenu'
-import StackMenuActionTable from '../../../base/components/MyMenu/StackMenuActionTable'
 import { PAGE_DEFAULT, PageInputProps } from '../../../interfaces'
 import { genApiQuery } from '../../../utils/helper'
-import { localization } from '../../../utils/localization'
+import { MuiTableAdvancedOptionsProps } from '../../../utils/muiTable/muiTableAdvancedOptionsProps'
 import { notSuccess } from '../../../utils/notification'
 import { swalAsyncConfirmDialog, swalException } from '../../../utils/swal'
 import { apiProveedorEliminar } from '../api/proveedorEliminar.api'
 import { apiProveedores } from '../api/proveedores.api'
 import { ProveedorProps } from '../interfaces/proveedor.interface'
-import { proveedorRouteMap } from '../ProveedorRoutesMap'
 import ProveedorActualizarDialog from '../view/ProveedorActualizarDialog'
 import ProveedorRegistroDialog from '../view/ProveedorRegistroDialog'
-import { MuiTableAdvancedOptionsProps } from '../../../utils/muiTable/muiTableAdvancedOptionsProps'
 
 interface OwnProps {}
 
@@ -77,22 +66,20 @@ const tableColumns: MRT_ColumnDef<ProveedorProps>[] = [
 
 const ProveedorListado: FunctionComponent<Props> = (props) => {
   const navigate = useNavigate()
-  const [selectedProveedorCodigo, setSelectedProveedorCodigo] = useState<string | null>(
-    null,
-  )
+  const [selectedProveedorCodigo, setSelectedProveedorCodigo] = useState<string>('')
   const [openNuevoProveedor, setOpenNuevoProveedor] = useState<boolean>(false)
   const [openActualizarProveedor, setOpenActualizarProveedor] = useState<boolean>(false)
   // ESTADO DATATABLE
-  const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
-  const [pagination, setPagination] = useState<MRT_PaginationState>({
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: PAGE_DEFAULT.page,
     pageSize: PAGE_DEFAULT.limit,
   })
   const [rowCount, setRowCount] = useState(0)
   const [isRefetching, setIsRefetching] = useState(false)
-  const [sorting, setSorting] = useState<MRT_SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = useState('')
-  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   // FIN ESTADO DATATABLE
   const [issRefetching, setIssRefetching] = useState(false)
 
@@ -107,7 +94,7 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
 
     setIssRefetching(false) // Establece el estado de "isRefetching" como falso para ocultar el indicador de carga
   }
-  const { data, isError, isLoading, status, refetch } = useQuery<ProveedorProps[]>({
+  const { data, isError, isLoading, status, refetch } = useQuery({
     queryKey: [
       'proveedoresListado',
       columnFilters,
@@ -128,8 +115,8 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
       setRowCount(pageInfo.totalDocs)
       return docs
     },
-    refetchOnWindowFocus: false,
     refetchInterval: false,
+    refetchOnWindowFocus: false,
   })
 
   const columns = useMemo(() => tableColumns, [])
@@ -184,7 +171,14 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
           {...(MuiTableAdvancedOptionsProps as MRT_TableOptions<ProveedorProps>)}
           columns={columns}
           data={data ?? []}
-          initialState={{ showColumnFilters: false }}
+          initialState={{
+            showColumnFilters: true,
+            columnVisibility: {
+              descripcion: false,
+              proveedor: false,
+              precioComparacion: false,
+            },
+          }}
           manualFiltering
           manualPagination
           manualSorting
@@ -197,9 +191,10 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
           enableDensityToggle={false}
           enableGlobalFilter={false}
           rowCount={rowCount}
+          // localization={localization}
           state={{
-            columnFilters,
             isLoading,
+            columnFilters,
             pagination,
             showAlertBanner: isError,
             showProgressBars: isRefetching,
@@ -219,34 +214,50 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
             <div
               style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', width: 100 }}
             >
-              <SimpleMenu
-                menuButton={
-                  <>
-                    <IconButton aria-label="delete">
-                      <MenuOpen />
-                    </IconButton>
-                  </>
-                }
+              <IconButton
+                onClick={() => {
+                  //@ts-ignore
+                  setSelectedProveedorCodigo(row.original) // Update the argument type to ProveedorProps | null
+                  setOpenActualizarProveedor(true)
+                }}
+                color={'primary'}
               >
-                <SimpleMenuItem
-                  onClick={() => {
-                    setSelectedProveedorCodigo(row.original.codigo)
-                    setOpenActualizarProveedor(true)
-                  }}
-                >
-                  <Edit /> Modificar
-                </SimpleMenuItem>
-              </SimpleMenu>
+                <Edit />
+              </IconButton>
               <AuditIconButton row={row.original} />
             </div>
           )}
-          /*muiTableHeadCellFilterTextFieldProps={{
-            sx: { m: '0.5rem 0', width: '95%' },
-            variant: 'outlined',
-            size: 'small',
-          }}*/
           enableRowSelection
           onRowSelectionChange={setRowSelection}
+          renderTopToolbarCustomActions={({ table }) => {
+            return (
+              <Box sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}>
+                <Button
+                  color="error"
+                  onClick={() => handleDeleteData(table.getSelectedRowModel().flatRows)}
+                  startIcon={<Delete />}
+                  variant="contained"
+                  size="small"
+                  sx={{
+                    height: '28px',
+                    top: '0.5rem',
+                  }}
+                  disabled={table.getSelectedRowModel().flatRows.length === 0}
+                >
+                  Eliminar
+                </Button>
+                {/*
+              <IconButton onClick={handleRefreshTable} disabled={isFetching}>
+                <Cached />
+              </IconButton> */}
+              </Box>
+            )
+          }}
+          muiTableProps={{
+            sx: {
+              tableLayout: 'fixed',
+            },
+          }}
           displayColumnDefOptions={{
             'mrt-row-actions': {
               muiTableHeadCellProps: {
@@ -254,30 +265,6 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
               },
               size: 120,
             },
-          }}
-          renderTopToolbarCustomActions={({ table }) => {
-            return (
-              <Box sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}>
-                <StackMenuActionTable
-                  refetch={handleRefreshTable}
-                  sx={{ flexGrow: 1 }}
-                ></StackMenuActionTable>
-                <Button
-                  color="error"
-                  onClick={() => handleDeleteData(table.getSelectedRowModel().flatRows)}
-                  startIcon={<Delete />}
-                  variant="contained"
-                  size={'small'}
-                  disabled={table.getSelectedRowModel().flatRows.length === 0}
-                  sx={{
-                    height: '28px',
-                    top: '0.5rem',
-                  }}
-                >
-                  Eliminar
-                </Button>
-              </Box>
-            )
           }}
         />
       </Box>
@@ -295,14 +282,13 @@ const ProveedorListado: FunctionComponent<Props> = (props) => {
       <ProveedorActualizarDialog
         keepMounted={false}
         open={openActualizarProveedor}
-        // @ts-ignore //aqui e
+        // @ts-ignore
         proveedor={selectedProveedorCodigo || null} // Update the type of the proveedor prop to allow for null
-        onClose={(value?: ProveedorProps) => {
-          if (value) {
+        onClose={(resp?: ProveedorProps) => {
+          setOpenActualizarProveedor(false)
+          if (resp) {
             refetch().then()
           }
-          setSelectedProveedorCodigo(null) // Reinicia el estado selectedProveedorCodigo
-          setOpenActualizarProveedor(false)
         }}
       />
     </>

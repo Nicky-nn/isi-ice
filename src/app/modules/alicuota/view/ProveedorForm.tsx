@@ -16,12 +16,13 @@ import { handleSelect } from '../../../utils/helper'
 
 interface OwnProps {
   form: UseFormReturn<AlicuotaInputProp>
+  handleEdit: boolean
   onSubmit: (data: AlicuotaInputProp) => void
 }
 
 type Props = OwnProps
 
-const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
+const ProveedorForm: FunctionComponent<Props> = ({ form, handleEdit, onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -44,9 +45,11 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
                   size={'small'}
                   value={field.value}
                   onFocus={handleSelect}
+                  disabled={handleEdit}
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   error={Boolean(errors.subPartidaArancelaria)}
+                  inputProps={{ maxLength: 20 }}
                 />
                 <FormHelperText>
                   {errors.subPartidaArancelaria?.message || ''}
@@ -148,6 +151,7 @@ const ProveedorForm: FunctionComponent<Props> = ({ form, onSubmit }) => {
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   error={Boolean(errors.descripcion)}
+                  inputProps={{ maxLength: 100 }}
                 />
                 <FormHelperText>{errors.descripcion?.message || ''}</FormHelperText>
               </FormControl>
